@@ -15,7 +15,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
     }}>
       <ScrollGloss />
       {/* Header */}
-      <div style={{ padding: '62px 20px 10px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+      <div style={{ padding: 'max(32px, env(safe-area-inset-top)) 20px 10px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
         <div>
           <div style={{ fontSize: 11, letterSpacing: 2.5, fontWeight: 700, color: P.accent, marginBottom: 6 }}>
             ◆ CAMPEONATO 2026

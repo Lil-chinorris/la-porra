@@ -151,11 +151,11 @@ const OFFICIAL_RESULTS = {
 
 // Palmarés
 const PALMARES_DRIVERS = [
-  { year: 2021, winner: 'Caña',      note: null },
-  { year: 2022, winner: 'Mari Adry', note: 'Ya no compite' },
-  { year: 2023, winner: 'Jane',      note: null },
-  { year: 2024, winner: 'Chino',     note: null },
-  { year: 2025, winner: 'Lojo',      note: null },
+  { year: 2021, winner: 'Caña',      team: null },
+  { year: 2022, winner: 'Mari Adry', team: 'Okavangδ' },
+  { year: 2023, winner: 'Jane',      team: 'El Pulplan' },
+  { year: 2024, winner: 'Chino',     team: 'Biscoito de amorodos' },
+  { year: 2025, winner: 'Lojo',      team: 'Azkarrak Racing' },
 ];
 
 const PALMARES_TEAMS = [
@@ -373,6 +373,50 @@ const MIAMI_CIRCUIT = {
 };
 
 // ───────────────────────────────────────────────────────────────────
+// Tablas históricas acumuladas (suma de todos los años por piloto/equipo)
+// Normalizamos nombres (sin tildes, sin espacios, sin puntos) para unificar
+// grafías distintas como 'JAVI SUA' / 'JAVISUA' o 'MARI ADRY' / 'MARIADRY'.
+// ───────────────────────────────────────────────────────────────────
+function _normLoose(s) {
+  return (s || '').toString()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase().replace(/[\s\.]/g, '');
+}
+function _buildTotalDrivers() {
+  const acc = {};
+  // recorremos por años descendentes para que la "grafía oficial" sea la más reciente
+  const years = Object.keys(HISTORY_DRIVERS).map(Number).sort((a, b) => b - a);
+  for (const y of years) {
+    for (const [name, pts] of HISTORY_DRIVERS[y]) {
+      const k = _normLoose(name);
+      if (!acc[k]) acc[k] = { name, pts: 0, years: 0 };
+      acc[k].pts += pts;
+      acc[k].years += 1;
+    }
+  }
+  return Object.values(acc)
+    .sort((a, b) => b.pts - a.pts)
+    .map(r => [r.name, r.pts]);
+}
+function _buildTotalTeams() {
+  const acc = {};
+  const years = Object.keys(HISTORY_TEAMS).map(Number).sort((a, b) => b - a);
+  for (const y of years) {
+    for (const [name, emoji, pts] of HISTORY_TEAMS[y]) {
+      const k = _normLoose(name);
+      if (!acc[k]) acc[k] = { name, emoji, pts: 0, years: 0 };
+      acc[k].pts += pts;
+      acc[k].years += 1;
+    }
+  }
+  return Object.values(acc)
+    .sort((a, b) => b.pts - a.pts)
+    .map(r => [r.name, r.emoji, r.pts]);
+}
+const TOTAL_DRIVERS = _buildTotalDrivers();
+const TOTAL_TEAMS = _buildTotalTeams();
+
+// ───────────────────────────────────────────────────────────────────
 // Helpers para mostrar campeonatos en fichas
 // Comparan ignorando mayúsculas, tildes y espacios extra.
 // ───────────────────────────────────────────────────────────────────
@@ -404,5 +448,6 @@ Object.assign(window, {
   TEAM_BEST, PALMARES_DRIVERS, PALMARES_TEAMS, PALMARES_KART, HALL_OF_FAME_TEAMS,
   MIAMI_HISTORY, MIAMI_CIRCUIT,
   CALENDAR, HISTORY_DRIVERS, HISTORY_TEAMS, BEST_LAPS_DRY, BEST_LAPS_WET,
+  TOTAL_DRIVERS, TOTAL_TEAMS,
   getDriverTitles, getTeamTitles, getKartWins, getKartFastest,
 });

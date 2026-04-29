@@ -4,9 +4,12 @@ function ScreenPalmares({ onBack }) {
   const P = window.PALETTE;
   const [tab, setTab] = React.useState('pilotos');
 
-  // Año seleccionado para mostrar la tabla final
+  // Año seleccionado para mostrar la tabla final.
+  // Valor 'total' = tabla acumulada de todas las temporadas.
   const driverYears = Object.keys(window.HISTORY_DRIVERS).map(Number).sort((a, b) => b - a);
   const teamYears = Object.keys(window.HISTORY_TEAMS).map(Number).sort((a, b) => b - a);
+  const driverOptions = ['total', ...driverYears];
+  const teamOptions = ['total', ...teamYears];
   const [driverYear, setDriverYear] = React.useState(driverYears[0]);
   const [teamYear, setTeamYear] = React.useState(teamYears[0]);
 
@@ -21,7 +24,7 @@ function ScreenPalmares({ onBack }) {
     }}>
       <ScrollGloss />
       <div style={{
-        padding: '62px 20px 20px',
+        padding: 'max(32px, env(safe-area-inset-top)) 20px 20px',
         background: `linear-gradient(180deg, #FFD93D22 0%, transparent 80%)`,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
@@ -72,7 +75,7 @@ function ScreenPalmares({ onBack }) {
                 <TrophyRow key={p.year}
                   year={p.year}
                   title={p.winner}
-                  subtitle={p.note}
+                  subtitle={p.team}
                   iconBg={i === 0 ? 'linear-gradient(135deg,#FFD93D,#FFB800)' : 'rgba(255,255,255,0.08)'}
                   iconColor={i === 0 ? '#1a1a1a' : P.muted}
                   latest={i === 0}
@@ -82,8 +85,11 @@ function ScreenPalmares({ onBack }) {
             </div>
 
             <SectionTitle>Tabla final por temporada</SectionTitle>
-            <YearChips years={driverYears} value={driverYear} onChange={setDriverYear} palette={P} />
-            <FinalStandings rows={window.HISTORY_DRIVERS[driverYear]} mode="driver" />
+            <YearChips options={driverOptions} value={driverYear} onChange={setDriverYear} palette={P} />
+            <FinalStandings
+              rows={driverYear === 'total' ? window.TOTAL_DRIVERS : window.HISTORY_DRIVERS[driverYear]}
+              mode="driver"
+            />
           </>
         )}
 
@@ -103,8 +109,11 @@ function ScreenPalmares({ onBack }) {
             </div>
 
             <SectionTitle>Tabla final por temporada</SectionTitle>
-            <YearChips years={teamYears} value={teamYear} onChange={setTeamYear} palette={P} />
-            <FinalStandings rows={window.HISTORY_TEAMS[teamYear]} mode="team" />
+            <YearChips options={teamOptions} value={teamYear} onChange={setTeamYear} palette={P} />
+            <FinalStandings
+              rows={teamYear === 'total' ? window.TOTAL_TEAMS : window.HISTORY_TEAMS[teamYear]}
+              mode="team"
+            />
 
             <SectionTitle>Salón de la fama · equipos históricos</SectionTitle>
             <div style={{
@@ -213,16 +222,20 @@ function ScreenPalmares({ onBack }) {
 
             {trackCond === 'wet' && (
               <div style={{
-                margin: '0 0 10px', padding: '10px 12px',
-                background: 'rgba(30, 136, 229, 0.10)',
-                border: `1px dashed rgba(30, 136, 229, 0.45)`,
-                borderRadius: 12,
-                fontSize: 11.5, lineHeight: 1.5, color: P.text, opacity: 0.92,
-                fontStyle: 'italic',
+                margin: '6px 4px 18px',
+                textAlign: 'center',
               }}>
-                <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.2, color: P.muted, marginBottom: 4, fontStyle: 'normal' }}>CITA</div>
-                "The rain puts the cars on the same level, but not the drivers."
-                <div style={{ fontSize: 10.5, fontWeight: 700, color: P.muted, marginTop: 4, fontStyle: 'normal' }}>
+                <div style={{
+                  fontSize: 16, lineHeight: 1.4, fontWeight: 600,
+                  fontStyle: 'italic', color: P.text,
+                  letterSpacing: -0.2,
+                }}>
+                  “The rain puts the cars on the same level, but not the drivers.”
+                </div>
+                <div style={{
+                  fontSize: 11, fontWeight: 700, color: P.muted,
+                  marginTop: 8, letterSpacing: 1, textTransform: 'uppercase',
+                }}>
                   — Ayrton Senna
                 </div>
               </div>
@@ -236,7 +249,8 @@ function ScreenPalmares({ onBack }) {
   );
 }
 
-function YearChips({ years, value, onChange, palette }) {
+function YearChips({ options, value, onChange, palette }) {
+  // options puede ser ['total', 2025, 2024, ...] — 'total' se renderiza distinto
   return (
     <div style={{
       display: 'flex', gap: 6, marginBottom: 10,
@@ -244,18 +258,28 @@ function YearChips({ years, value, onChange, palette }) {
       WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none',
       paddingBottom: 2,
     }}>
-      {years.map(y => {
-        const active = y === value;
+      {options.map(opt => {
+        const active = opt === value;
+        const isTotal = opt === 'total';
+        const label = isTotal ? 'Σ Total' : opt;
+        const bg = active
+          ? (isTotal ? palette.accent2 : palette.accent)
+          : 'rgba(255,255,255,0.04)';
+        const fg = active
+          ? (isTotal ? '#1a1a1a' : '#fff')
+          : palette.muted;
+        const border = active
+          ? (isTotal ? palette.accent2 : palette.accent)
+          : (palette.text + '10');
         return (
-          <button key={y} onClick={() => onChange(y)} className="touchable" style={{
+          <button key={String(opt)} onClick={() => onChange(opt)} className="touchable" style={{
             flexShrink: 0, padding: '6px 12px',
             borderRadius: 999, fontSize: 12, fontWeight: 800,
-            background: active ? palette.accent : 'rgba(255,255,255,0.04)',
-            color: active ? '#fff' : palette.muted,
-            border: `1px solid ${active ? palette.accent : palette.text + '10'}`,
+            background: bg, color: fg,
+            border: `1px solid ${border}`,
             cursor: 'pointer', fontFamily: 'inherit',
-            letterSpacing: 0.3,
-          }}>{y}</button>
+            letterSpacing: 0.3, whiteSpace: 'nowrap',
+          }}>{label}</button>
         );
       })}
     </div>

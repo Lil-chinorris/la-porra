@@ -24,7 +24,7 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
       
       <ScrollGloss />
       <div style={{
-        padding: '62px 20px 20px',
+        padding: 'max(32px, env(safe-area-inset-top)) 20px 20px',
         background: `linear-gradient(180deg, ${teamColor}33 0%, ${teamColor}08 60%, transparent 100%)`,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>

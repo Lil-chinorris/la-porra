@@ -13,7 +13,7 @@ function ScreenNext({ onBack }) {
     }}>
       <ScrollGloss />
       <div style={{
-        padding: '62px 20px 22px',
+        padding: 'max(32px, env(safe-area-inset-top)) 20px 22px',
         background: `linear-gradient(180deg, ${P.accent2}28 0%, ${P.accent2}08 55%, transparent 100%)`,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>

@@ -32,7 +32,7 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
       
       <ScrollGloss />
       <div style={{
-        padding: '62px 20px 18px',
+        padding: 'max(32px, env(safe-area-inset-top)) 20px 18px',
         background: `linear-gradient(180deg, ${P.accent}2C 0%, ${P.accent}08 70%, transparent 100%)`
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>

@@ -22,7 +22,7 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
       
       <ScrollGloss />
       <div style={{
-        padding: '62px 20px 22px',
+        padding: 'max(32px, env(safe-area-inset-top)) 20px 22px',
         background: `linear-gradient(180deg, ${teamColor}40 0%, ${teamColor}10 65%, transparent 100%)`,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>

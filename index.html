@@ -114,6 +114,14 @@
   <script type="text/babel">
     function App() {
       const [stack, setStack] = React.useState([{ screen: 'home' }]);
+      const [fullscreen, setFullscreen] = React.useState(
+        typeof window !== 'undefined' && window.innerWidth < 768
+      );
+      React.useEffect(() => {
+        const onResize = () => setFullscreen(window.innerWidth < 768);
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+      }, []);
       const push = (entry) => setStack(s => [...s, entry]);
       const pop = () => setStack(s => s.length > 1 ? s.slice(0, -1) : s);
       const current = stack[stack.length - 1];
@@ -157,6 +165,18 @@
         }
       })();
 
+      if (fullscreen) {
+        // En móvil: pantalla completa, sin marco iPhone, sin status bar simulada
+        return (
+          <div style={{
+            width: '100vw', height: '100vh', overflow: 'hidden',
+            background: '#0F1923',
+          }}>
+            {screen}
+          </div>
+        );
+      }
+      // Escritorio: mockup centrado
       return (
         <div style={{ transform: 'scale(var(--lp-scale, 1))', transformOrigin: 'center center' }}>
           <IOSDevice dark={true} width={402} height={874}>
@@ -169,6 +189,7 @@
     function setScale() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
+      if (vw < 768) { document.documentElement.style.setProperty('--lp-scale', 1); return; }
       const sx = vw / (402 + 40);
       const sy = vh / (874 + 40);
       const s = Math.min(1, sx, sy);
