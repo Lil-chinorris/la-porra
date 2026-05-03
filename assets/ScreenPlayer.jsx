@@ -11,9 +11,12 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
   const kartWins = window.getKartWins(player.name);
   const kartFastest = window.getKartFastest(player.name);
 
-  const cumulative = player.results.reduce((acc, v, i) => {
-    acc.push((acc[i - 1] || 0) + v); return acc;
-  }, []);
+  // Estado de forma: últimas 5 carreras (puntos por carrera, sin acumular)
+  const FORM_WINDOW = 5;
+  const formStart = Math.max(0, player.results.length - FORM_WINDOW);
+  const formValues = player.results.slice(formStart);
+  const formRaces = window.RACES.slice(formStart);
+  const formSum = formValues.reduce((a, b) => a + b, 0);
 
   return (
     <div className="lp-screen" style={{
@@ -70,7 +73,7 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
             `▼ ${Math.abs(player.delta)} vs C${window.RACE_NUMBER - 1}`
           } subColor={player.delta > 0 ? P.success : player.delta < 0 ? P.danger : P.muted} />
           <Kpi label="TOTAL" value={<TickNumber value={player.total} />} sub="PUNTOS" highlight />
-          <Kpi label="GP JAPÓN"
+          <Kpi label={`GP ${(window.RACES[window.RACE_NUMBER - 1]?.name || '').toUpperCase()}`}
                value={(player.last > 0 ? '+' : '') + player.last}
                sub={`C${window.RACE_NUMBER}`}
                subColor={player.last > 0 ? P.success : player.last < 0 ? P.danger : P.muted} />
@@ -78,11 +81,42 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
       </div>
 
       <div style={{ padding: '8px 16px' }}>
-        <SectionTitle>Evolución · campeonato</SectionTitle>
-        <div style={{ background: P.surface, borderRadius: 14, padding: '16px 14px', border: `1px solid ${P.text}10` }}>
-          <Sparkline values={cumulative} color={teamColor} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
-            {window.RACES.map((r) => (
+        <SectionTitle>Estado de forma · últimas {formValues.length} carreras</SectionTitle>
+        <div style={{ background: P.surface, borderRadius: 14, padding: '14px 14px 12px', border: `1px solid ${P.text}10` }}>
+          {/* Contador destacado: suma del estado de forma */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12,
+          }}>
+            <div style={{
+              fontSize: 38, fontWeight: 900, lineHeight: 1, letterSpacing: -1.4,
+              color: formSum < 0 ? P.danger : teamColor,
+              fontFamily: '"Space Grotesk", system-ui',
+              flexShrink: 0,
+            }}>
+              {formSum > 0 ? '+' : ''}{formSum}
+            </div>
+            <div style={{
+              display: 'flex', flexDirection: 'column',
+              justifyContent: 'center', gap: 3,
+              minWidth: 0,
+            }}>
+              <div style={{
+                fontSize: 9, fontWeight: 800, letterSpacing: 1.2,
+                color: P.muted, lineHeight: 1.1,
+              }}>
+                PUNTOS · ÚLT. {formValues.length}
+              </div>
+              <div style={{
+                fontSize: 10.5, fontWeight: 700, color: P.mutedDim,
+                letterSpacing: 0.2, lineHeight: 1.1,
+              }}>
+                Criterio de desempate
+              </div>
+            </div>
+          </div>
+          <FormChart values={formValues} color={teamColor} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
+            {formRaces.map((r) => (
               <div key={r.n} style={{ fontSize: 9, fontWeight: 700, color: P.muted, letterSpacing: 0.5, textAlign: 'center', flex: 1 }}>
                 {r.short}
               </div>
@@ -173,7 +207,9 @@ function Kpi({ label, value, sub, subColor, highlight }) {
         fontSize: 22, fontWeight: 900, marginTop: 2, letterSpacing: -0.8, lineHeight: 1,
         color: highlight ? P.accent2 : P.text,
       }}>{value}</div>
-      <div style={{ fontSize: 10, fontWeight: 700, marginTop: 3, color: subColor || P.muted, letterSpacing: 0.3 }}>{sub}</div>
+      {sub && (
+        <div style={{ fontSize: 10, fontWeight: 700, marginTop: 3, color: subColor || P.muted, letterSpacing: 0.3 }}>{sub}</div>
+      )}
     </div>
   );
 }
@@ -189,30 +225,70 @@ function SectionTitle({ children }) {
   );
 }
 
-function Sparkline({ values, color, width = 340, height = 64 }) {
+function FormChart({ values, color, width = 340, height = 78 }) {
   const P = window.PALETTE;
+  // Layout: una columna a la izquierda con la leyenda de eje Y (sutil) + área del gráfico
+  const axisW = 22;
+  const padTop = 8, padBottom = 8;
   const min = Math.min(0, ...values);
   const max = Math.max(0, ...values);
   const range = max - min || 1;
-  const step = values.length > 1 ? width / (values.length - 1) : 0;
-  const pts = values.map((v, i) => [i * step, height - ((v - min) / range) * height]);
+  const innerH = height - padTop - padBottom;
+  const yFor = v => padTop + (1 - (v - min) / range) * innerH;
+  const chartLeft = axisW;
+  const chartW = width - axisW;
+  const step = values.length > 1 ? chartW / (values.length - 1) : 0;
+  const pts = values.map((v, i) => [
+    values.length === 1 ? chartLeft + chartW / 2 : chartLeft + i * step,
+    yFor(v),
+  ]);
   const d = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0]} ${p[1]}`).join(' ');
-  const area = `${d} L ${width} ${height} L 0 ${height} Z`;
+  const zeroY = yFor(0);
+  // Marcas del eje Y: max, 0 (si está dentro del rango), min — solo las distintas
+  const ticksRaw = [max, 0, min];
+  const ticks = Array.from(new Set(ticksRaw)).filter(v => v >= min && v <= max);
   return (
     <svg viewBox={`0 0 ${width} ${height}`} width="100%" height={height} preserveAspectRatio="none">
       <defs>
-        <linearGradient id="spark" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.4" />
+        <linearGradient id="form-grad" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.32" />
           <stop offset="100%" stopColor={color} stopOpacity="0" />
         </linearGradient>
       </defs>
-      <path d={area} fill="url(#spark)" />
+      {/* leyenda eje Y: marcas sutiles con líneas tenues */}
+      {ticks.map((v, i) => {
+        const y = yFor(v);
+        const isZero = v === 0;
+        return (
+          <g key={i}>
+            <line x1={chartLeft} x2={width} y1={y} y2={y}
+              stroke={P.text}
+              strokeOpacity={isZero ? 0.12 : 0.06}
+              strokeWidth="1"
+              strokeDasharray={isZero ? '3 4' : '2 5'} />
+            <text x={chartLeft - 4} y={y + 3}
+              textAnchor="end"
+              fontSize="8" fontWeight="700"
+              fill={P.mutedDim} opacity="0.7"
+              fontFamily="ui-monospace, system-ui">
+              {v > 0 ? `+${v}` : v}
+            </text>
+          </g>
+        );
+      })}
+      {/* área bajo la línea, recortada al eje cero */}
+      <path d={`${d} L ${width} ${zeroY} L ${chartLeft} ${zeroY} Z`} fill="url(#form-grad)" />
+      {/* línea principal */}
       <path d={d} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      {pts.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r={i === pts.length - 1 ? 4 : 2.5}
-          fill={i === pts.length - 1 ? color : P.bg}
-          stroke={color} strokeWidth="2" />
-      ))}
+      {/* puntos */}
+      {pts.map(([x, y], i) => {
+        const isLast = i === pts.length - 1;
+        return (
+          <circle key={i} cx={x} cy={y} r={isLast ? 4.5 : 3}
+            fill={isLast ? color : P.bg}
+            stroke={color} strokeWidth="2" />
+        );
+      })}
     </svg>
   );
 }

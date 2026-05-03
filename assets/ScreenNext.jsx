@@ -1,9 +1,10 @@
-// screen-next.jsx — Próxima carrera (Miami): datos del circuito + récords + curiosidades
+// screen-next.jsx — Próxima carrera: deadline + sesiones + datos circuito + curiosidades
 
 function ScreenNext({ onBack }) {
   const P = window.PALETTE;
   const r = window.NEXT_RACE;
-  const c = window.MIAMI_CIRCUIT;
+  const c = window.NEXT_CIRCUIT;
+  const history = window.NEXT_HISTORY || [];
 
   return (
     <div className="lp-screen" style={{
@@ -43,6 +44,80 @@ function ScreenNext({ onBack }) {
       </div>
 
       <div style={{ padding: '8px 16px' }}>
+        {/* Deadline destacado y prioritario */}
+        {c.deadline && (
+          <div style={{
+            margin: '8px 0 14px',
+            padding: '16px 18px',
+            borderRadius: 16,
+            background: `linear-gradient(135deg, ${P.accent}, #B30500)`,
+            color: '#fff',
+            boxShadow: `0 12px 24px -8px ${P.accent}88, inset 0 1px 0 rgba(255,255,255,0.18)`,
+            border: `1px solid ${P.accent}`,
+            position: 'relative', overflow: 'hidden',
+          }}>
+            <div style={{
+              position: 'absolute', top: -30, right: -30,
+              fontSize: 130, opacity: 0.12, lineHeight: 1,
+            }}>⏱️</div>
+            <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2, opacity: 0.9 }}>
+              ⚠️ NO TE OLVIDES
+            </div>
+            <div style={{
+              fontSize: 14, fontWeight: 700, marginTop: 6, opacity: 0.95, letterSpacing: -0.1,
+            }}>
+              {c.deadline.label}
+            </div>
+            <div style={{
+              fontSize: 22, fontWeight: 900, marginTop: 4, letterSpacing: -0.6, lineHeight: 1.1,
+            }}>
+              {c.deadline.when}
+            </div>
+          </div>
+        )}
+
+        {/* Sesiones del fin de semana */}
+        {c.sessions && c.sessions.length > 0 && (
+          <>
+            <SectionTitle>Horarios del GP</SectionTitle>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {c.sessions.map((day, di) => (
+                <div key={di} style={{
+                  background: P.surface, border: `1px solid ${P.text}10`,
+                  borderRadius: 14, overflow: 'hidden',
+                }}>
+                  <div style={{
+                    padding: '8px 14px',
+                    background: `${P.accent2}10`,
+                    borderBottom: `1px solid ${P.text}10`,
+                    fontSize: 11, fontWeight: 800, letterSpacing: 0.6,
+                    color: P.accent2, textTransform: 'uppercase',
+                  }}>{day.day}</div>
+                  {day.items.map((it, ii) => (
+                    <div key={ii} style={{
+                      display: 'flex', alignItems: 'center', gap: 12,
+                      padding: '11px 14px',
+                      borderBottom: ii < day.items.length - 1 ? `1px solid ${P.text}0A` : 'none',
+                      background: it.highlight ? `${P.accent}10` : 'transparent',
+                    }}>
+                      <div style={{
+                        fontSize: 13, fontWeight: it.highlight ? 900 : 700,
+                        color: it.highlight ? P.accent : P.text,
+                        letterSpacing: -0.1, flex: 1,
+                      }}>{it.label}</div>
+                      <div style={{
+                        fontSize: 14, fontWeight: 900, letterSpacing: -0.3,
+                        color: it.highlight ? P.accent : P.text,
+                        fontFamily: 'ui-monospace, "SF Mono", monospace',
+                      }}>{it.time}</div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
         {/* Datos del circuito */}
         <SectionTitle>Datos del circuito</SectionTitle>
         <div style={{
@@ -54,24 +129,13 @@ function ScreenNext({ onBack }) {
           <Fact label="Longitud" value={r.length} />
           <Fact label="Vueltas" value={r.laps} />
           <Fact label="Curvas" value={r.corners} />
-          <Fact label="Zonas DRS" value={r.drsZones} />
+          <Fact label="Ediciones" value={c.editions} />
+          <Fact label="Primera carrera" value={c.firstGp} />
           <Fact label="Récord vuelta" value={r.lapRecord} mono full />
         </div>
 
-        {/* Estadísticas históricas del circuito */}
-        <SectionTitle>Histórico del circuito</SectionTitle>
-        <div style={{
-          display: 'grid', gridTemplateColumns: 'repeat(2,1fr)',
-          gap: 1, background: P.text + '10',
-          borderRadius: 14, overflow: 'hidden',
-          border: `1px solid ${P.text}10`,
-        }}>
-          <Fact label="Primera carrera" value={c.firstGp} />
-          <Fact label="Ediciones" value={c.editions} />
-        </div>
-
         {/* Records F1 en el circuito */}
-        <SectionTitle>Récords en Miami</SectionTitle>
+        <SectionTitle>Récords en {r.name}</SectionTitle>
         <div style={{
           background: P.surface, border: `1px solid ${P.text}10`,
           borderRadius: 14, padding: 4, overflow: 'hidden',
@@ -80,7 +144,7 @@ function ScreenNext({ onBack }) {
             icon="🏆"
             label="Más victorias"
             primary={`${c.mostWinsDriver.name} · ${c.mostWinsDriver.wins}`}
-            sub={`Empatado con ${c.mostWinsAlsoNorris.name} (${c.mostWinsAlsoNorris.wins})`}
+            sub={c.mostWinsCoLeader ? `Empatado con ${c.mostWinsCoLeader.name} (${c.mostWinsCoLeader.wins})` : null}
           />
           <RecordRow
             icon="⚡"
@@ -92,96 +156,108 @@ function ScreenNext({ onBack }) {
         </div>
 
         {/* Pole positions histórico */}
-        <SectionTitle>Pole positions</SectionTitle>
-        <div style={{
-          background: P.surface, border: `1px solid ${P.text}10`,
-          borderRadius: 14, padding: 4, overflow: 'hidden',
-        }}>
-          {c.polePositions.map((p, i) => (
-            <div key={p.year} style={{
-              display: 'flex', alignItems: 'center', gap: 12,
-              padding: '9px 12px',
-              borderBottom: i < c.polePositions.length - 1 ? `1px solid ${P.text}0A` : 'none',
+        {c.polePositions && c.polePositions.length > 0 && (
+          <>
+            <SectionTitle>Pole positions</SectionTitle>
+            <div style={{
+              background: P.surface, border: `1px solid ${P.text}10`,
+              borderRadius: 14, padding: 4, overflow: 'hidden',
             }}>
-              <div style={{
-                fontSize: 11, fontWeight: 900, letterSpacing: 0.5,
-                color: P.muted, fontFamily: 'ui-monospace, "SF Mono", monospace',
-                width: 38,
-              }}>{p.year}</div>
-              <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: -0.2, flex: 1 }}>
-                {p.driver}
-              </div>
-              <div style={{ fontSize: 9, fontWeight: 800, color: P.accent2, letterSpacing: 1.2 }}>POLE</div>
+              {c.polePositions.map((p, i) => (
+                <div key={p.year} style={{
+                  display: 'flex', alignItems: 'center', gap: 12,
+                  padding: '9px 12px',
+                  borderBottom: i < c.polePositions.length - 1 ? `1px solid ${P.text}0A` : 'none',
+                }}>
+                  <div style={{
+                    fontSize: 11, fontWeight: 900, letterSpacing: 0.5,
+                    color: P.muted, fontFamily: 'ui-monospace, "SF Mono", monospace',
+                    width: 38,
+                  }}>{p.year}</div>
+                  <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: -0.2, flex: 1 }}>
+                    {p.driver}
+                  </div>
+                  <div style={{ fontSize: 9, fontWeight: 800, color: P.accent2, letterSpacing: 1.2 }}>POLE</div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </>
+        )}
 
         {/* Datos curiosos */}
-        <SectionTitle>Datos curiosos</SectionTitle>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {c.funFacts.map((fact, i) => (
-            <div key={i} style={{
-              display: 'flex', gap: 10,
-              background: P.surface, borderRadius: 12, padding: '11px 12px',
-              border: `1px solid ${P.text}10`,
-            }}>
-              <div style={{
-                width: 24, height: 24, borderRadius: 6,
-                background: `${P.accent2}1F`, color: P.accent2,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 11, fontWeight: 900, flexShrink: 0,
-                fontFamily: 'ui-monospace, monospace',
-              }}>{i + 1}</div>
-              <div style={{ fontSize: 12.5, lineHeight: 1.45, fontWeight: 600, color: P.text, opacity: 0.92 }}>
-                {fact}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Histórico porra en Miami */}
-        <SectionTitle>Mejor de la porra · histórico Miami</SectionTitle>
-        <div style={{
-          background: P.surface, border: `1px solid ${P.text}10`,
-          borderRadius: 14, padding: 4, overflow: 'hidden',
-        }}>
-          {window.MIAMI_HISTORY.slice().reverse().map((h, i) => {
-            const isLatest = i === 0;
-            return (
-              <div key={h.year} style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                padding: '10px 12px',
-                borderBottom: i < window.MIAMI_HISTORY.length - 1 ? `1px solid ${P.text}0A` : 'none',
-                background: isLatest ? `${P.accent2}0E` : 'transparent',
-                borderRadius: isLatest ? 10 : 0,
-              }}>
-                <div style={{
-                  fontSize: 11, fontWeight: 900, letterSpacing: 0.5,
-                  color: isLatest ? P.accent2 : P.muted,
-                  fontFamily: 'ui-monospace, "SF Mono", monospace',
-                  width: 38,
-                }}>{h.year}</div>
-                <div style={{
-                  width: 28, height: 28, borderRadius: 8,
-                  background: isLatest ? `linear-gradient(135deg,#FFD93D,#FFB800)` : 'rgba(255,255,255,0.06)',
-                  color: isLatest ? '#1a1a1a' : P.muted,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 14,
-                }}>🏆</div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: -0.2 }}>{h.player}</div>
-                  <div style={{ fontSize: 10.5, color: P.muted, fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {h.team}{h.note ? ` · ${h.note}` : ''}
+        {c.funFacts && c.funFacts.length > 0 && (
+          <>
+            <SectionTitle>Datos curiosos</SectionTitle>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {c.funFacts.map((fact, i) => (
+                <div key={i} style={{
+                  display: 'flex', gap: 10,
+                  background: P.surface, borderRadius: 12, padding: '11px 12px',
+                  border: `1px solid ${P.text}10`,
+                }}>
+                  <div style={{
+                    width: 24, height: 24, borderRadius: 6,
+                    background: `${P.accent2}1F`, color: P.accent2,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 11, fontWeight: 900, flexShrink: 0,
+                    fontFamily: 'ui-monospace, monospace',
+                  }}>{i + 1}</div>
+                  <div style={{ fontSize: 12.5, lineHeight: 1.45, fontWeight: 600, color: P.text, opacity: 0.92 }}>
+                    {fact}
                   </div>
                 </div>
-                <div style={{
-                  fontSize: 16, fontWeight: 900, letterSpacing: -0.5,
-                  color: P.text,
-                }}>+{h.pts}</div>
-              </div>
-            );
-          })}
-        </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Histórico ganadores de la porra en este circuito (opcional) */}
+        {history.length > 0 && (
+          <>
+            <SectionTitle>Mejor de la porra · histórico {r.name}</SectionTitle>
+            <div style={{
+              background: P.surface, border: `1px solid ${P.text}10`,
+              borderRadius: 14, padding: 4, overflow: 'hidden',
+            }}>
+              {history.slice().reverse().map((h, i) => {
+                const isLatest = i === 0;
+                return (
+                  <div key={h.year} style={{
+                    display: 'flex', alignItems: 'center', gap: 10,
+                    padding: '10px 12px',
+                    borderBottom: i < history.length - 1 ? `1px solid ${P.text}0A` : 'none',
+                    background: isLatest ? `${P.accent2}0E` : 'transparent',
+                    borderRadius: isLatest ? 10 : 0,
+                  }}>
+                    <div style={{
+                      fontSize: 11, fontWeight: 900, letterSpacing: 0.5,
+                      color: isLatest ? P.accent2 : P.muted,
+                      fontFamily: 'ui-monospace, "SF Mono", monospace',
+                      width: 38,
+                    }}>{h.year}</div>
+                    <div style={{
+                      width: 28, height: 28, borderRadius: 8,
+                      background: isLatest ? `linear-gradient(135deg,#FFD93D,#FFB800)` : 'rgba(255,255,255,0.06)',
+                      color: isLatest ? '#1a1a1a' : P.muted,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 14,
+                    }}>🏆</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: -0.2 }}>{h.player}</div>
+                      <div style={{ fontSize: 10.5, color: P.muted, fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {h.team}{h.note ? ` · ${h.note}` : ''}
+                      </div>
+                    </div>
+                    <div style={{
+                      fontSize: 16, fontWeight: 900, letterSpacing: -0.5,
+                      color: P.text,
+                    }}>+{h.pts}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

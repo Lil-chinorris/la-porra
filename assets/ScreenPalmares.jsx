@@ -207,14 +207,14 @@ function ScreenPalmares({ onBack }) {
               display: 'flex', gap: 2,
             }}>
               {[
-                { k: 'dry', label: '☀️ En seco' },
-                { k: 'wet', label: '🌧️ En mojado' },
+                { k: 'dry', label: '☀️ En seco', activeBg: P.accent2, activeFg: '#1a1a1a' },
+                { k: 'wet', label: '🌧️ En mojado', activeBg: '#3DA5F5', activeFg: '#0A1A2A' },
               ].map(c => (
                 <button key={c.k} onClick={() => setTrackCond(c.k)} className="touchable" style={{
                   flex: 1, padding: '8px 0', borderRadius: 9,
                   fontSize: 12, fontWeight: 700,
-                  background: trackCond === c.k ? P.accent2 : 'transparent',
-                  color: trackCond === c.k ? '#1a1a1a' : P.muted,
+                  background: trackCond === c.k ? c.activeBg : 'transparent',
+                  color: trackCond === c.k ? c.activeFg : P.muted,
                   border: 'none', cursor: 'pointer', fontFamily: 'inherit',
                 }}>{c.label}</button>
               ))}

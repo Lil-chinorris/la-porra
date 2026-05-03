@@ -1,25 +1,25 @@
-// data.jsx — La Porra · datos reales hasta Carrera 3 (Japón · 29 mar 2026)
+// data.jsx — La Porra · datos reales hasta Carrera 4 (Miami · 3 may 2026)
 
-const RACE_NUMBER = 3;
+const RACE_NUMBER = 4;
 
 // Calendario — solo las carreras disputadas + próxima
 const RACES = [
   { n: 1, name: 'Australia', emoji: '🇦🇺', short: 'AUS', date: '16 MAR 2026', circuit: 'Albert Park' },
   { n: 2, name: 'China',     emoji: '🇨🇳', short: 'CHN', date: '23 MAR 2026', circuit: 'Shanghai Intl.' },
   { n: 3, name: 'Japón',     emoji: '🇯🇵', short: 'JPN', date: '29 MAR 2026', circuit: 'Suzuka' },
+  { n: 4, name: 'Miami',     emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  circuit: 'Miami International Autodrome' },
 ];
 
-// Próxima: Miami (C4)
+// Próxima: Canadá (C5)
 const NEXT_RACE = {
-  n: 4, name: 'Miami', emoji: '🇺🇸', short: 'MIA',
-  date: '3 MAYO 2026',
-  circuit: 'Miami International Autodrome',
-  length: '5.412 km',
-  laps: 57,
-  corners: 19,
-  drsZones: 3,
-  lapRecord: "1:29.708 — M. Verstappen (2023)",
-  firstGp: 2022,
+  n: 5, name: 'Canadá', emoji: '🇨🇦', short: 'CAN',
+  date: '24 MAY 2026',
+  circuit: 'Circuit Gilles-Villeneuve',
+  length: '4.361 km',
+  laps: 70,
+  corners: 14,
+  lapRecord: "1:13.078 — V. Bottas (2019)",
+  firstGp: 1978,
 };
 
 // Resultados por carrera (nombre → puntos esa carrera)
@@ -39,6 +39,11 @@ const RACE_RESULTS = {
     CHINO: 5, ENRIC: 4, DAPE: 4, MISTIC: 4, MARVIN: 5, CAÑA: 5, ALEX: 5,
     MARTÍ: 2, LOJO: 1, ITZIAR: 3, SARAY: 4, JANE: 3, JAVISUA: 2, SAMU: -1, ÁLVARO: -1,
   },
+  4: { // Miami
+    BALADO: 2, ALBA: 3, ALEJA: 0, BLANQUI: 2, PATACA: 3, EVA: 2, LARA: 0,
+    CHINO: 2, ENRIC: 0, DAPE: 0, MISTIC: 3, MARVIN: 2, CAÑA: 2, ALEX: 0,
+    MARTÍ: 0, LOJO: 0, ITZIAR: 4, SARAY: 0, JANE: 2, JAVISUA: 2, SAMU: 0, ÁLVARO: 0,
+  },
 };
 
 const TEAM_RESULTS = {
@@ -51,6 +56,9 @@ const TEAM_RESULTS = {
   3: { 'Freyja Racing Team': 10, 'Amigas Alo': 6, 'Red Force': 9, 'Pepinou': 9,
        'Azkarrak Racing': 5, 'El Cruasán': 10, 'Tapas Team': 5, 'Champis': 8,
        'No Power F1 Team': 3, 'Os Rapatundas': 7, 'Agente Libre': 1 },
+  4: { 'Freyja Racing Team': 4, 'Amigas Alo': 5, 'Red Force': 0, 'Pepinou': 2,
+       'Azkarrak Racing': 0, 'El Cruasán': 2, 'Tapas Team': 5, 'Champis': 6,
+       'No Power F1 Team': 3, 'Os Rapatundas': 2, 'Agente Libre': 0 },
 };
 
 // Roster
@@ -96,20 +104,46 @@ const TEAM_META = [
 const TEAM_EMOJI = Object.fromEntries(TEAM_META.map(t => [t.name, t.emoji]));
 const TEAM_BEST = Object.fromEntries(TEAM_META.map(t => [t.name, { label: t.bestYear, num: t.bestNum }]));
 
+// ───────────────────────────────────────────────────────────────────
+// Comparador de clasificación con desempate por "estado de forma":
+//   1) puntos totales (descendente)
+//   2) si empatan: suma de las últimas 5 carreras
+//   3) si siguen empatando: últimas 6, 7, 8...
+//   4) si tras agotar todo el histórico siguen empatados: orden de inscripción.
+// `getResults` permite calcular la clasificación previa (recorta la última).
+// ───────────────────────────────────────────────────────────────────
+const FORM_WINDOW = 5;
+function makeFormComparator(getResults) {
+  return (a, b) => {
+    const ra = getResults(a);
+    const rb = getResults(b);
+    const ta = ra.reduce((x, y) => x + y, 0);
+    const tb = rb.reduce((x, y) => x + y, 0);
+    if (tb !== ta) return tb - ta;
+    const maxLen = Math.max(ra.length, rb.length);
+    for (let w = FORM_WINDOW; w <= maxLen; w++) {
+      const sa = ra.slice(-w).reduce((x, y) => x + y, 0);
+      const sb = rb.slice(-w).reduce((x, y) => x + y, 0);
+      if (sb !== sa) return sb - sa;
+    }
+    return a._i - b._i;
+  };
+}
+
 // Building
 function buildPlayers() {
   const enriched = ROSTER.map((r, i) => {
-    const results = [1, 2, 3].map(n => RACE_RESULTS[n][r.name] ?? 0);
+    const results = Array.from({ length: RACE_NUMBER }, (_, i) => RACE_RESULTS[i + 1][r.name] ?? 0);
     const total = results.reduce((a, b) => a + b, 0);
     const last = results[RACE_NUMBER - 1];
     const prevTotal = total - last;
     return { ...r, results, total, last, prevTotal, _i: i, emoji: TEAM_EMOJI[r.team] || '🏁' };
   });
-  // rank prev
-  const prev = [...enriched].sort((a, b) => b.prevTotal - a.prevTotal || a._i - b._i);
+  // rank prev (clasificación tras la penúltima carrera)
+  const prev = [...enriched].sort(makeFormComparator(p => p.results.slice(0, -1)));
   const prevRank = new Map(prev.map((p, i) => [p.name, i + 1]));
-  // rank cur
-  const cur = [...enriched].sort((a, b) => b.total - a.total || a._i - b._i);
+  // rank actual
+  const cur = [...enriched].sort(makeFormComparator(p => p.results));
   return cur.map((p, i) => ({
     ...p, pos: i + 1, prevPos: prevRank.get(p.name),
     delta: prevRank.get(p.name) - (i + 1),
@@ -118,15 +152,15 @@ function buildPlayers() {
 
 function buildTeams() {
   const enriched = TEAM_META.map((t, i) => {
-    const results = [1, 2, 3].map(n => TEAM_RESULTS[n][t.name] ?? 0);
+    const results = Array.from({ length: RACE_NUMBER }, (_, i) => TEAM_RESULTS[i + 1][t.name] ?? 0);
     const total = results.reduce((a, b) => a + b, 0);
     const last = results[RACE_NUMBER - 1];
     const prevTotal = total - last;
     return { ...t, results, total, last, prevTotal, _i: i };
   });
-  const prev = [...enriched].sort((a, b) => b.prevTotal - a.prevTotal || a._i - b._i);
+  const prev = [...enriched].sort(makeFormComparator(p => p.results.slice(0, -1)));
   const prevRank = new Map(prev.map((t, i) => [t.name, i + 1]));
-  const cur = [...enriched].sort((a, b) => b.total - a.total || a._i - b._i);
+  const cur = [...enriched].sort(makeFormComparator(p => p.results));
   return cur.map((t, i) => ({
     ...t, pos: i + 1, prevPos: prevRank.get(t.name),
     delta: prevRank.get(t.name) - (i + 1),
@@ -147,6 +181,9 @@ const OFFICIAL_RESULTS = {
   3: { top5: ['ANTONELLI','PIASTRI','LECLERC','RUSSELL','NORRIS'],
        driverOfTheDay: { name: 'VERSTAPPEN', pts: 8 },
        fastestLap: { name: 'ANTONELLI', time: '1:32.432' } },
+  4: { top5: ['ANTONELLI','NORRIS','PIASTRI','RUSSELL','VERSTAPPEN'],
+       driverOfTheDay: { name: 'SAINZ', pts: 9 },
+       fastestLap: { name: 'NORRIS', time: '1:31.869' } },
 };
 
 // Palmarés
@@ -199,13 +236,8 @@ const HALL_OF_FAME_TEAMS = [
   { emoji: '💬', name: 'Terrorbabyla33' },
 ];
 
-// Miami · histórico ganador de la porra (por año, simulado desde 2021)
-const MIAMI_HISTORY = [
-  { year: 2022, player: 'Chino',     team: 'Okavangδ',              pts: 8, note: '1ª edición en Miami' },
-  { year: 2023, player: 'Jane',      team: 'El Pulplan',            pts: 9, note: null },
-  { year: 2024, player: 'Caña',      team: 'Biscoito de amorodos',  pts: 7, note: null },
-  { year: 2025, player: 'Lojo',      team: 'Azkarrak Racing',       pts: 10, note: 'Récord' },
-];
+// Histórico ganador de la porra en el próximo circuito (vacío si no aplica)
+const NEXT_HISTORY = []; // Canadá: sin histórico cargado por ahora
 
 // Paleta Paddock
 const PALETTE = {
@@ -237,8 +269,8 @@ const CALENDAR = [
   { n: 1,  name: 'Australia',    emoji: '🇦🇺', short: 'AUS', date: '16 MAR 2026', status: 'done' },
   { n: 2,  name: 'China',        emoji: '🇨🇳', short: 'CHN', date: '23 MAR 2026', status: 'done' },
   { n: 3,  name: 'Japón',        emoji: '🇯🇵', short: 'JPN', date: '29 MAR 2026', status: 'done' },
-  { n: 4,  name: 'Miami',        emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  status: 'next' },
-  { n: 5,  name: 'Canadá',       emoji: '🇨🇦', short: 'CAN', date: '7 JUN 2026',  status: 'future' },
+  { n: 4,  name: 'Miami',        emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  status: 'done' },
+  { n: 5,  name: 'Canadá',       emoji: '🇨🇦', short: 'CAN', date: '24 MAY 2026', status: 'next' },
   { n: 6,  name: 'Mónaco',       emoji: '🇲🇨', short: 'MON', date: '14 JUN 2026', status: 'future' },
   { n: 7,  name: 'Barcelona',    emoji: '🇪🇸', short: 'BCN', date: '21 JUN 2026', status: 'future' },
   { n: 8,  name: 'Austria',      emoji: '🇦🇹', short: 'AUT', date: '5 JUL 2026',  status: 'future' },
@@ -350,26 +382,44 @@ const BEST_LAPS_WET = [
 ];
 
 // ───────────────────────────────────────────────────────────────────
-// Datos del circuito de Miami (próxima carrera)
+// Datos del circuito de la próxima carrera (Canadá)
 // ───────────────────────────────────────────────────────────────────
-const MIAMI_CIRCUIT = {
-  firstGp: 2022,
-  editions: 4, // 2022, 2023, 2024, 2025
-  mostWinsDriver: { name: 'M. Verstappen', wins: 2 }, // 2022, 2023
-  mostWinsAlsoNorris: { name: 'L. Norris', wins: 2 }, // 2024, 2025 (empate)
+const NEXT_CIRCUIT = {
+  firstGp: 1978, // primera edición en Île Notre-Dame (Circuit Gilles-Villeneuve)
+  editions: 44,
+  mostWinsDriver: { name: 'L. Hamilton', wins: 7 },
+  mostWinsCoLeader: { name: 'M. Schumacher', wins: 7 },
   polePositions: [
-    { year: 2022, driver: 'S. Pérez' },
-    { year: 2023, driver: 'S. Pérez' },
-    { year: 2024, driver: 'M. Verstappen' },
-    { year: 2025, driver: 'M. Verstappen' },
+    { year: 2022, driver: 'M. Verstappen' },
+    { year: 2023, driver: 'M. Verstappen' },
+    { year: 2024, driver: 'G. Russell' },
+    { year: 2025, driver: 'G. Russell' },
   ],
   funFacts: [
-    'El trazado se monta en el aparcamiento del Hard Rock Stadium, casa de los Miami Dolphins.',
-    'La "marina" del paddock es decorativa: los yates están sobre el asfalto, no en el agua.',
-    'El asfalto se repavimentó en 2023 para reducir el grano que sufrió la primera edición.',
-    'La curva 17 es la más lenta del calendario en su categoría: paso por curva ~85 km/h.',
-    'Récord de velocidad punta: ≈ 340 km/h en la recta hacia la curva 17.',
+    'Se disputa en la Île Notre-Dame, isla artificial creada para la Expo 67 de Montreal.',
+    'Su última chicane es famosa por el "Mur des Champions": en 1999 Damon Hill, Schumacher y Villeneuve se estrellaron contra él, todos campeones del mundo.',
+    'Bautizado en honor a Gilles Villeneuve, leyenda canadiense fallecida en Zolder en 1982.',
+    'El GP de 2011 marcó la carrera más larga de la historia de la F1: 4 h 4 min, interrumpida por la lluvia.',
+    'Una de las pistas que más castiga frenos y motores: muchas frenadas fuertes y pocas curvas rápidas.',
   ],
+  // Sesiones del fin de semana (zona horaria local de España)
+  sessions: [
+    { day: 'Viernes 22 de mayo', items: [
+      { label: 'Entrenamientos Libres 1 (FP1)', time: '18:30' },
+      { label: 'Clasificación Sprint',          time: '22:30' },
+    ]},
+    { day: 'Sábado 23 de mayo', items: [
+      { label: 'Sprint',         time: '18:00' },
+      { label: 'Clasificación',  time: '22:00' },
+    ]},
+    { day: 'Domingo 24 de mayo', items: [
+      { label: 'Carrera',        time: '22:00', highlight: true },
+    ]},
+  ],
+  deadline: {
+    label: 'Hora límite envío de la porra',
+    when: 'Domingo 24 de mayo · 21:59',
+  },
 };
 
 // ───────────────────────────────────────────────────────────────────
@@ -442,12 +492,15 @@ function getKartFastest(name) {
   return PALMARES_KART.filter(g => _norm(g.fastest) === k).map(g => g.year);
 }
 
+// URL del documento PDF con las normas de la porra
+const RULES_URL = 'https://drive.google.com/file/d/1sEZVlJRlSHoYKc_j8xRqJWlao-4m_KFN/view?usp=sharing';
+
 Object.assign(window, {
   PLAYERS, TEAMS, PALETTE, RACES, RACE_NUMBER, NEXT_RACE,
   RACE_RESULTS, TEAM_RESULTS, OFFICIAL_RESULTS,
   TEAM_BEST, PALMARES_DRIVERS, PALMARES_TEAMS, PALMARES_KART, HALL_OF_FAME_TEAMS,
-  MIAMI_HISTORY, MIAMI_CIRCUIT,
+  NEXT_HISTORY, NEXT_CIRCUIT,
   CALENDAR, HISTORY_DRIVERS, HISTORY_TEAMS, BEST_LAPS_DRY, BEST_LAPS_WET,
-  TOTAL_DRIVERS, TOTAL_TEAMS,
+  TOTAL_DRIVERS, TOTAL_TEAMS, RULES_URL,
   getDriverTitles, getTeamTitles, getKartWins, getKartFastest,
 });

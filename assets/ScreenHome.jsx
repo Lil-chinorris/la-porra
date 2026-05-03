@@ -1,5 +1,25 @@
 // screen-home.jsx — Home con scroll horizontal de carreras + tabs
 
+function CuloSeparator() {
+  const P = window.PALETTE;
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: 10,
+      margin: '4px 4px 2px',
+    }}>
+      <div style={{ flex: 1, height: 1, background: `${P.text}14` }} />
+      <div style={{
+        fontSize: 10, fontWeight: 900, letterSpacing: 2,
+        color: P.danger, textTransform: 'uppercase',
+        padding: '3px 10px', borderRadius: 999,
+        background: `${P.danger}1A`,
+        border: `1px solid ${P.danger}40`,
+      }}>💩 culo</div>
+      <div style={{ flex: 1, height: 1, background: `${P.text}14` }} />
+    </div>
+  );
+}
+
 function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPalmares }) {
   const P = window.PALETTE;
   const [tab, setTab] = React.useState('pilotos');
@@ -69,14 +89,19 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
           const done = r.status === 'done';
           const isNext = r.status === 'next';
           const future = r.status === 'future';
+          const onClick = done
+            ? () => setView(`race-${r.n}`)
+            : isNext
+              ? onOpenNext
+              : null;
           return (
             <Chip key={r.n} active={view === `race-${r.n}`}
-              onClick={done ? () => setView(`race-${r.n}`) : null}
-              disabled={!done}
+              onClick={onClick}
+              disabled={future}
               palette={P}
               badge={isLast ? 'Últ.' : isNext ? 'Próx.' : null}
               variant={isNext ? 'next' : future ? 'future' : 'done'}>
-              <span style={{ marginRight: 4, opacity: done ? 1 : 0.55 }}>{r.emoji}</span>
+              <span style={{ marginRight: 4, opacity: future ? 0.55 : 1 }}>{r.emoji}</span>
               <span>{r.short}</span>
             </Chip>
           );
@@ -143,6 +168,32 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
           <path d="M1 1l6 6-6 6" stroke={P.text} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
+
+      {/* Normas de la porra (abre el PDF de Drive en nueva pestaña) */}
+      <a href={window.RULES_URL} target="_blank" rel="noopener noreferrer" style={{
+        margin: '12px 20px 0', width: 'calc(100% - 40px)',
+        padding: '14px 16px', borderRadius: 14,
+        background: P.surface, border: `1px solid ${P.text}15`,
+        display: 'flex', alignItems: 'center', gap: 12,
+        color: P.text, cursor: 'pointer', textAlign: 'left',
+        fontFamily: 'inherit', textDecoration: 'none',
+      }}>
+        <div style={{ fontSize: 28 }}>📜</div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: P.muted, letterSpacing: 1.2 }}>
+            DOCUMENTO OFICIAL
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 800, letterSpacing: -0.2 }}>
+            Normas de la porra
+          </div>
+          <div style={{ fontSize: 11, color: P.muted, fontWeight: 700, marginTop: 2 }}>
+            Abre en Google Drive
+          </div>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 16 16" style={{ opacity: 0.6 }}>
+          <path d="M3 13L13 3M13 3H6M13 3v7" stroke={P.text} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </a>
     </div>
   );
 }
@@ -225,9 +276,13 @@ function PlayerList({ view, onOpen }) {
         const sub = view === 'general'
           ? <LastChip last={p.last} />
           : <div style={{ fontSize: 10, fontWeight: 700, color: P.muted }}>tot. {p.total}</div>;
+        // Separador "culo" antes del último de la tabla general
+        const showCulo = view === 'general' && idx === list.length - 1;
 
         return (
-          <button key={p.name} onClick={() => onOpen(p.name)}
+          <React.Fragment key={p.name}>
+            {showCulo && <CuloSeparator />}
+          <button onClick={() => onOpen(p.name)}
             className="lp-row touchable" style={{
               animationDelay: `${idx * 20}ms`,
               position: 'relative',
@@ -264,6 +319,7 @@ function PlayerList({ view, onOpen }) {
               {sub}
             </div>
           </button>
+          </React.Fragment>
         );
       })}
     </div>
@@ -291,9 +347,12 @@ function TeamList({ view, onOpen }) {
         const isLeader = rank === 1;
         const count = window.PLAYERS.filter(p => p.team === t.name).length;
         const big = view === 'general' ? t.total : t._racePts;
+        const showCulo = view === 'general' && idx === list.length - 1;
 
         return (
-          <button key={t.name} onClick={() => onOpen(t.name)}
+          <React.Fragment key={t.name}>
+            {showCulo && <CuloSeparator />}
+          <button onClick={() => onOpen(t.name)}
             className="lp-row touchable" style={{
               animationDelay: `${idx * 20}ms`,
               position: 'relative',
@@ -332,6 +391,7 @@ function TeamList({ view, onOpen }) {
                 : <div style={{ fontSize: 10, fontWeight: 700, color: P.muted }}>tot. {t.total}</div>}
             </div>
           </button>
+          </React.Fragment>
         );
       })}
     </div>

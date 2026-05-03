@@ -68,9 +68,8 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
                     `▼ ${Math.abs(team.delta)} vs C${window.RACE_NUMBER - 1}`}
                subColor={team.delta > 0 ? P.success : team.delta < 0 ? P.danger : P.muted} />
           <Kpi label="TOTAL" value={<TickNumber value={team.total} />} sub="PUNTOS" highlight />
-          <Kpi label="GP JAPÓN"
+          <Kpi label={`GP ${(window.RACES[window.RACE_NUMBER - 1]?.name || '').toUpperCase()}`}
                value={(team.last > 0 ? '+' : '') + team.last}
-               sub={`C${window.RACE_NUMBER}`}
                subColor={team.last > 0 ? P.success : team.last < 0 ? P.danger : P.muted} />
         </div>
       </div>
