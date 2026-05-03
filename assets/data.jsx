@@ -420,6 +420,15 @@ const NEXT_CIRCUIT = {
     label: 'Hora límite envío de la porra',
     when: 'Domingo 24 de mayo · 21:59',
   },
+  // Para añadir al calendario del móvil (formato ISO con offset Madrid CEST = +02:00)
+  event: {
+    title: 'GP Canadá · La Porra',
+    location: 'Circuit Gilles-Villeneuve, Montreal',
+    description: 'Carrera del GP de Canadá. Hora límite envío de la porra: 21:59h.',
+    start: '2026-05-24T22:00:00+02:00',
+    end:   '2026-05-25T00:00:00+02:00',
+    filename: 'gp-canada-2026.ics',
+  },
 };
 
 // ───────────────────────────────────────────────────────────────────

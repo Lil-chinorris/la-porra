@@ -6,6 +6,45 @@ function ScreenNext({ onBack }) {
   const c = window.NEXT_CIRCUIT;
   const history = window.NEXT_HISTORY || [];
 
+  function addToCalendar() {
+    if (!c.event) return;
+    const ev = c.event;
+    // Formato UTC compacto exigido por iCalendar: 20260524T200000Z
+    const fmt = (iso) => new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    const esc = (s) => (s || '').replace(/\\/g, '\\\\').replace(/,/g, '\\,').replace(/;/g, '\\;').replace(/\n/g, '\\n');
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//La Porra//ES',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${fmt(ev.start)}-laporra`,
+      `DTSTAMP:${fmt(new Date().toISOString())}`,
+      `DTSTART:${fmt(ev.start)}`,
+      `DTEND:${fmt(ev.end)}`,
+      `SUMMARY:${esc(ev.title)}`,
+      `DESCRIPTION:${esc(ev.description)}`,
+      `LOCATION:${esc(ev.location)}`,
+      'BEGIN:VALARM',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:Recordatorio: hora límite de la porra (21:59h)',
+      'TRIGGER:-PT1H',
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = ev.filename || 'evento.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 200);
+  }
+
   return (
     <div className="lp-screen" style={{
       width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden',
@@ -31,14 +70,31 @@ function ScreenNext({ onBack }) {
             <div style={{ fontSize: 12, fontWeight: 700, color: P.muted, marginTop: 4 }}>
               {r.circuit}
             </div>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              marginTop: 8, padding: '3px 8px', borderRadius: 6,
-              background: `${P.accent2}1F`, border: `1px solid ${P.accent2}40`,
-              fontSize: 11, fontWeight: 800, letterSpacing: 0.4, color: P.accent2,
-            }}>
+            <button onClick={addToCalendar} className="touchable"
+              disabled={!c.event}
+              title={c.event ? 'Añadir al calendario del móvil' : ''}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                marginTop: 8, padding: '5px 10px 5px 9px', borderRadius: 8,
+                background: `${P.accent2}1F`, border: `1px solid ${P.accent2}40`,
+                fontSize: 11, fontWeight: 800, letterSpacing: 0.4, color: P.accent2,
+                cursor: c.event ? 'pointer' : 'default', fontFamily: 'inherit',
+              }}>
               📅 {r.date}
-            </div>
+              {c.event && (
+                <>
+                  <span style={{
+                    opacity: 0.4, fontWeight: 700, fontSize: 11, margin: '0 2px',
+                  }}>·</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+                      <path d="M6 2v8M2 6h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                    </svg>
+                    Añadir
+                  </span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>

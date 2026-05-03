@@ -64,8 +64,8 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
         <div style={{ marginTop: 22, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
           <Kpi label="POSICIÓN" value={`P${team.pos}`}
                sub={team.delta === 0 ? '= sin cambio' :
-                    team.delta > 0 ? `▲ ${team.delta} vs C${window.RACE_NUMBER - 1}` :
-                    `▼ ${Math.abs(team.delta)} vs C${window.RACE_NUMBER - 1}`}
+                    team.delta > 0 ? `▲ ${team.delta}` :
+                    `▼ ${Math.abs(team.delta)}`}
                subColor={team.delta > 0 ? P.success : team.delta < 0 ? P.danger : P.muted} />
           <Kpi label="TOTAL" value={<TickNumber value={team.total} />} sub="PUNTOS" highlight />
           <Kpi label={`GP ${(window.RACES[window.RACE_NUMBER - 1]?.name || '').toUpperCase()}`}
@@ -101,7 +101,7 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
                         fontSize: 8, fontWeight: 800, letterSpacing: 0.8,
                         padding: '2px 5px', borderRadius: 4,
                         background: teamColor, color: '#fff',
-                      }}>TOP C{window.RACE_NUMBER}</span>
+                      }}>TOP GP</span>
                     )}
                   </div>
                   <div style={{ fontSize: 11, color: P.muted, fontWeight: 600, marginTop: 2 }}>

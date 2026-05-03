@@ -69,13 +69,12 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
         <div style={{ marginTop: 22, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
           <Kpi label="POSICIÓN" value={`P${player.pos}`} sub={
             player.delta === 0 ? '= sin cambio' :
-            player.delta > 0 ? `▲ ${player.delta} vs C${window.RACE_NUMBER - 1}` :
-            `▼ ${Math.abs(player.delta)} vs C${window.RACE_NUMBER - 1}`
+            player.delta > 0 ? `▲ ${player.delta}` :
+            `▼ ${Math.abs(player.delta)}`
           } subColor={player.delta > 0 ? P.success : player.delta < 0 ? P.danger : P.muted} />
           <Kpi label="TOTAL" value={<TickNumber value={player.total} />} sub="PUNTOS" highlight />
           <Kpi label={`GP ${(window.RACES[window.RACE_NUMBER - 1]?.name || '').toUpperCase()}`}
                value={(player.last > 0 ? '+' : '') + player.last}
-               sub={`C${window.RACE_NUMBER}`}
                subColor={player.last > 0 ? P.success : player.last < 0 ? P.danger : P.muted} />
         </div>
       </div>
@@ -143,12 +142,14 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
                   background: isCurrent ? `${teamColor}22` : 'rgba(255,255,255,0.04)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
                 }}>{r.emoji}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13.5, fontWeight: 800, letterSpacing: -0.1, display: 'flex', alignItems: 'center', gap: 6 }}>
-                    Carrera {r.n} · GP {r.name}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: 14.5, fontWeight: 800, letterSpacing: -0.2, display: 'flex', alignItems: 'center', gap: 6 }}>
+                    {r.name}
                     {isCurrent && <span style={{ fontSize: 9, fontWeight: 800, color: P.accent2, letterSpacing: 1 }}>ÚLT.</span>}
                   </div>
-                  <div style={{ fontSize: 10.5, color: P.muted, fontWeight: 600 }}>{r.date}</div>
+                  <div style={{ fontSize: 10.5, color: P.muted, fontWeight: 600, marginTop: 1 }}>
+                    {r.date} · Carrera {r.n}
+                  </div>
                 </div>
                 <div style={{
                   fontSize: 17, fontWeight: 900,
