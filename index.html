@@ -17,7 +17,7 @@
   <meta name="twitter:title" content="La Porra · Campeonato 2026">
   <meta name="twitter:description" content="Clasificación, equipos, palmarés y próxima carrera.">
   <meta name="twitter:image" content="https://lil-chinorris.github.io/la-porra/assets/og-image.png">
-  <link rel="icon" type="image/png" href="assets/og-image.png">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -122,6 +122,8 @@
   <script type="text/babel" src="assets/ScreenRace.jsx"></script>
   <script type="text/babel" src="assets/ScreenNext.jsx"></script>
   <script type="text/babel" src="assets/ScreenPalmares.jsx"></script>
+  <script type="text/babel" src="assets/ScreenPro.jsx"></script>
+  <script type="text/babel" src="assets/ScreenDesafios.jsx"></script>
 </head>
 <body>
   <div id="root"></div>
@@ -150,6 +152,8 @@
               onOpenRace={(n) => push({ screen: 'race', arg: n })}
               onOpenNext={() => push({ screen: 'next' })}
               onOpenPalmares={() => push({ screen: 'palmares' })}
+              onOpenPro={() => push({ screen: 'pro' })}
+              onOpenDesafios={() => push({ screen: 'desafios' })}
             />;
           case 'player':
             return <ScreenPlayer
@@ -175,6 +179,10 @@
             return <ScreenNext onBack={pop} />;
           case 'palmares':
             return <ScreenPalmares onBack={pop} />;
+          case 'pro':
+            return <ScreenPro onBack={pop} />;
+          case 'desafios':
+            return <ScreenDesafios onBack={pop} />;
           default:
             return null;
         }

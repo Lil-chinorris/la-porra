@@ -1,6 +1,6 @@
-// data.jsx — La Porra · datos reales hasta Carrera 4 (Miami · 3 may 2026)
+// data.jsx — La Porra · datos reales hasta Carrera 5 (Canadá · 24 may 2026)
 
-const RACE_NUMBER = 4;
+const RACE_NUMBER = 5;
 
 // Calendario — solo las carreras disputadas + próxima
 const RACES = [
@@ -8,18 +8,19 @@ const RACES = [
   { n: 2, name: 'China',     emoji: '🇨🇳', short: 'CHN', date: '23 MAR 2026', circuit: 'Shanghai Intl.' },
   { n: 3, name: 'Japón',     emoji: '🇯🇵', short: 'JPN', date: '29 MAR 2026', circuit: 'Suzuka' },
   { n: 4, name: 'Miami',     emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  circuit: 'Miami International Autodrome' },
+  { n: 5, name: 'Canadá',    emoji: '🇨🇦', short: 'CAN', date: '24 MAY 2026', circuit: 'Circuit Gilles-Villeneuve' },
 ];
 
-// Próxima: Canadá (C5)
+// Próxima: Mónaco (C6)
 const NEXT_RACE = {
-  n: 5, name: 'Canadá', emoji: '🇨🇦', short: 'CAN',
-  date: '24 MAY 2026',
-  circuit: 'Circuit Gilles-Villeneuve',
-  length: '4.361 km',
-  laps: 70,
-  corners: 14,
-  lapRecord: "1:13.078 — V. Bottas (2019)",
-  firstGp: 1978,
+  n: 6, name: 'Mónaco', emoji: '🇲🇨', short: 'MON',
+  date: '7 JUN 2026',
+  circuit: 'Circuit de Monaco',
+  length: '3.337 km',
+  laps: 78,
+  corners: 19,
+  lapRecord: "1:12.909 — L. Hamilton (2021)",
+  firstGp: 1950,
 };
 
 // Resultados por carrera (nombre → puntos esa carrera)
@@ -44,6 +45,11 @@ const RACE_RESULTS = {
     CHINO: 2, ENRIC: 0, DAPE: 0, MISTIC: 3, MARVIN: 2, CAÑA: 2, ALEX: 0,
     MARTÍ: 0, LOJO: 0, ITZIAR: 4, SARAY: 0, JANE: 2, JAVISUA: 2, SAMU: 0, ÁLVARO: 0,
   },
+  5: { // Canadá
+    BALADO: -2, ALBA: -2, ALEJA: -1, BLANQUI: -2, PATACA: 0, EVA: 0, LARA: -1,
+    CHINO: -1, ENRIC: -1, DAPE: -2, MISTIC: -1, MARVIN: 1, CAÑA: -1, ALEX: 1,
+    MARTÍ: 0, LOJO: -2, ITZIAR: -2, SARAY: -2, JANE: -1, JAVISUA: -2, SAMU: -2, ÁLVARO: -2,
+  },
 };
 
 const TEAM_RESULTS = {
@@ -59,6 +65,9 @@ const TEAM_RESULTS = {
   4: { 'Freyja Racing Team': 4, 'Amigas Alo': 5, 'Red Force': 0, 'Pepinou': 2,
        'Azkarrak Racing': 0, 'El Cruasán': 2, 'Tapas Team': 5, 'Champis': 6,
        'No Power F1 Team': 3, 'Os Rapatundas': 2, 'Agente Libre': 0 },
+  5: { 'Freyja Racing Team': -4, 'Amigas Alo': -2, 'Red Force': -2, 'Pepinou': -3,
+       'Azkarrak Racing': -3, 'El Cruasán': 2, 'Tapas Team': -2, 'Champis': -3,
+       'No Power F1 Team': -3, 'Os Rapatundas': -3, 'Agente Libre': -2 },
 };
 
 // Roster
@@ -184,6 +193,9 @@ const OFFICIAL_RESULTS = {
   4: { top5: ['ANTONELLI','NORRIS','PIASTRI','RUSSELL','VERSTAPPEN'],
        driverOfTheDay: { name: 'SAINZ', pts: 9 },
        fastestLap: { name: 'NORRIS', time: '1:31.869' } },
+  5: { top5: ['ANTONELLI','HAMILTON','VERSTAPPEN','LECLERC','HADJAR'],
+       driverOfTheDay: { name: 'COLAPINTO', pts: 6 },
+       fastestLap: { name: 'ANTONELLI', time: '1:14.210' } },
 };
 
 // Palmarés
@@ -237,7 +249,11 @@ const HALL_OF_FAME_TEAMS = [
 ];
 
 // Histórico ganador de la porra en el próximo circuito (vacío si no aplica)
-const NEXT_HISTORY = []; // Canadá: sin histórico cargado por ahora
+const NEXT_HISTORY = [ // Mónaco
+  { year: 2023, player: 'Marvin', pts: 5 },
+  { year: 2024, player: 'Chino',  pts: 14 },
+  { year: 2025, player: 'Cris',   pts: 12 },
+];
 
 // Paleta Paddock
 const PALETTE = {
@@ -270,8 +286,8 @@ const CALENDAR = [
   { n: 2,  name: 'China',        emoji: '🇨🇳', short: 'CHN', date: '23 MAR 2026', status: 'done' },
   { n: 3,  name: 'Japón',        emoji: '🇯🇵', short: 'JPN', date: '29 MAR 2026', status: 'done' },
   { n: 4,  name: 'Miami',        emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  status: 'done' },
-  { n: 5,  name: 'Canadá',       emoji: '🇨🇦', short: 'CAN', date: '24 MAY 2026', status: 'next' },
-  { n: 6,  name: 'Mónaco',       emoji: '🇲🇨', short: 'MON', date: '14 JUN 2026', status: 'future' },
+  { n: 5,  name: 'Canadá',       emoji: '🇨🇦', short: 'CAN', date: '24 MAY 2026', status: 'done' },
+  { n: 6,  name: 'Mónaco',       emoji: '🇲🇨', short: 'MON', date: '7 JUN 2026',  status: 'next' },
   { n: 7,  name: 'Barcelona',    emoji: '🇪🇸', short: 'BCN', date: '21 JUN 2026', status: 'future' },
   { n: 8,  name: 'Austria',      emoji: '🇦🇹', short: 'AUT', date: '5 JUL 2026',  status: 'future' },
   { n: 9,  name: 'Gran Bretaña', emoji: '🇬🇧', short: 'GBR', date: '19 JUL 2026', status: 'future' },
@@ -382,52 +398,51 @@ const BEST_LAPS_WET = [
 ];
 
 // ───────────────────────────────────────────────────────────────────
-// Datos del circuito de la próxima carrera (Canadá)
+// Datos del circuito de la próxima carrera (Mónaco)
 // ───────────────────────────────────────────────────────────────────
 const NEXT_CIRCUIT = {
-  firstGp: 1978, // primera edición en Île Notre-Dame (Circuit Gilles-Villeneuve)
-  editions: 44,
-  mostWinsDriver: { name: 'L. Hamilton', wins: 7 },
-  mostWinsCoLeader: { name: 'M. Schumacher', wins: 7 },
+  firstGp: 1950, // primera edición del GP de Mónaco en el Mundial de F1
+  editions: 70,
+  mostWinsDriver: { name: 'A. Senna', wins: 6 },
   polePositions: [
-    { year: 2022, driver: 'M. Verstappen' },
+    { year: 2022, driver: 'C. Leclerc' },
     { year: 2023, driver: 'M. Verstappen' },
-    { year: 2024, driver: 'G. Russell' },
-    { year: 2025, driver: 'G. Russell' },
+    { year: 2024, driver: 'C. Leclerc' },
+    { year: 2025, driver: 'C. Leclerc' },
   ],
   funFacts: [
-    'Se disputa en la Île Notre-Dame, isla artificial creada para la Expo 67 de Montreal.',
-    'Su última chicane es famosa por el "Mur des Champions": en 1999 Damon Hill, Schumacher y Villeneuve se estrellaron contra él, todos campeones del mundo.',
-    'Bautizado en honor a Gilles Villeneuve, leyenda canadiense fallecida en Zolder en 1982.',
-    'El GP de 2011 marcó la carrera más larga de la historia de la F1: 4 h 4 min, interrumpida por la lluvia.',
-    'Una de las pistas que más castiga frenos y motores: muchas frenadas fuertes y pocas curvas rápidas.',
+    'Es el circuito más lento y estrecho del calendario, trazado por las calles de Montecarlo desde 1929.',
+    'Adelantar es casi imposible: aquí la pole del sábado vale casi tanto como la propia carrera.',
+    'Su túnel es el único tramo cubierto del calendario; los pilotos pasan de la sombra a la luz a más de 250 km/h.',
+    'Forma parte de la "Triple Corona" del motor junto a las 500 Millas de Indianápolis y las 24h de Le Mans.',
+    'La horquilla del Fairmont (Loews) es la curva más lenta de toda la F1: se toma a unos 47 km/h.',
   ],
   // Sesiones del fin de semana (zona horaria local de España)
   sessions: [
-    { day: 'Viernes 22 de mayo', items: [
-      { label: 'Entrenamientos Libres 1 (FP1)', time: '18:30' },
-      { label: 'Clasificación Sprint',          time: '22:30' },
+    { day: 'Viernes 5 de junio', items: [
+      { label: 'Entrenamientos Libres 1 (FP1)', time: '13:30' },
+      { label: 'Entrenamientos Libres 2 (FP2)', time: '17:00' },
     ]},
-    { day: 'Sábado 23 de mayo', items: [
-      { label: 'Sprint',         time: '18:00' },
-      { label: 'Clasificación',  time: '22:00' },
+    { day: 'Sábado 6 de junio', items: [
+      { label: 'Entrenamientos Libres 3 (FP3)', time: '12:30' },
+      { label: 'Clasificación',                 time: '16:00' },
     ]},
-    { day: 'Domingo 24 de mayo', items: [
-      { label: 'Carrera',        time: '22:00', highlight: true },
+    { day: 'Domingo 7 de junio', items: [
+      { label: 'Carrera',        time: '15:00', highlight: true },
     ]},
   ],
   deadline: {
     label: 'Hora límite envío de la porra',
-    when: 'Domingo 24 de mayo · 21:59',
+    when: 'Domingo 7 de junio · 14:59',
   },
   // Para añadir al calendario del móvil (formato ISO con offset Madrid CEST = +02:00)
   event: {
-    title: 'GP Canadá · La Porra',
-    location: 'Circuit Gilles-Villeneuve, Montreal',
-    description: 'Carrera del GP de Canadá. Hora límite envío de la porra: 21:59h.',
-    start: '2026-05-24T22:00:00+02:00',
-    end:   '2026-05-25T00:00:00+02:00',
-    filename: 'gp-canada-2026.ics',
+    title: 'GP Mónaco · La Porra',
+    location: 'Circuit de Monaco, Montecarlo',
+    description: 'Carrera del GP de Mónaco. Hora límite envío de la porra: 14:59h.',
+    start: '2026-06-07T15:00:00+02:00',
+    end:   '2026-06-07T17:00:00+02:00',
+    filename: 'gp-monaco-2026.ics',
   },
 };
 
@@ -504,7 +519,99 @@ function getKartFastest(name) {
 // URL del documento PDF con las normas de la porra
 const RULES_URL = 'https://drive.google.com/file/d/1sEZVlJRlSHoYKc_j8xRqJWlao-4m_KFN/view?usp=sharing';
 
+// ───────────────────────────────────────────────────────────────────
+// Planes de La Porra Pro (paywall paródico)
+// ───────────────────────────────────────────────────────────────────
+const PRO_PLANS = [
+  {
+    id: 'pro',
+    name: 'Pro',
+    tagline: 'Para ponértelo un poco más fácil',
+    monthly: '1€ bizum al chino',
+    yearly: '9€ bizum al chino',
+    yearlyNote: 'al año',
+    discount: '-25%',
+    accent: '#FFC700',
+    cta: 'Obtener Plan Pro',
+    perks: [
+      'El chino se pone de tu parte si quieres cambiar alguna norma o lo que sea',
+      'Si cometes algún error al enviar la porra, digamos que se te hace la vista gorda',
+    ],
+  },
+  {
+    id: 'max',
+    name: 'Max',
+    tagline: 'Para los más necesitados',
+    monthly: '10€ bizum al chino',
+    yearly: '45€ bizum al chino',
+    yearlyNote: 'al año',
+    discount: '-62%',
+    accent: '#E10600',
+    cta: 'Obtener Plan Max',
+    featured: true,
+    perks: [
+      'Alterar los resultados de carreras anteriores cuando nadie se dé cuenta para sumar más puntos',
+      'Errores al sumar puntos que casualmente te benefician, salvo que los detecte alguien',
+      'Trucar el desempate a tu favor',
+    ],
+  },
+];
+
+// Comunicados que aparecen al pulsar "Obtener Plan X"
+const PRO_COMUNICADOS = {
+  pro: {
+    title: 'Comunicado oficial',
+    emoji: '🚨',
+    kind: 'accusation',
+    body: [
+      'Vaya, vaya. Así que querías PAGAR para inclinar la balanza a tu favor.',
+      'Intentar comprar ventaja en una competición justa es, sencillamente, RASTRERO. Va en contra de todo lo que representa La Porra: el honor, la cuñadez y el sufrimiento compartido.',
+      'Que sepas que tu intento ha quedado registrado. Esto será comunicado al resto del grupo en el chat, con capturas, para que todos sepan la clase de persona que tenemos entre nosotros.',
+      'La Porra no se compra. La Porra se sufre.',
+    ],
+    signature: '— La Comisión de Integridad de La Porra',
+  },
+  max: {
+    title: 'Oda a la rata',
+    emoji: '🐀',
+    kind: 'poem',
+    body: [
+      'Mírate, campeón de la miseria,',
+      'queriendo el oro sin sudar la feria.',
+      'La rata más grande de todo el corral,',
+      'con bigote de Mao y moral de chacal.',
+      '',
+      'Tu pequeño librito rojo y tu plan quinquenal',
+      'no te darán los puntos, te saldrá fatal.',
+      'Que el pueblo te juzgue, camarada tramposo:',
+      'no eres dictador, eres solo un quejoso.',
+      '',
+      'Guárdate el bizum y aprende a perder,',
+      'que la dignidad no se puede vender.',
+    ],
+    signature: '— Con cariño, La Porra',
+  },
+};
+
+// ───────────────────────────────────────────────────────────────────
+// Desafíos / logros de La Porra (estilo trofeos de videojuego)
+// done: true = conseguido (para el prototipo marcamos algunos)
+// ───────────────────────────────────────────────────────────────────
+const CHALLENGES = [
+  { id: 'top3',     emoji: '🍾', name: 'De Champán',          desc: 'Termina entre los 3 primeros en una carrera de la porra.', done: true },
+  { id: 'top5',     emoji: '🎯', name: 'Zona Noble',          desc: 'Termina entre los 5 primeros en una carrera de la porra.', done: true },
+  { id: 'pleno',    emoji: '💯', name: 'Pleno al Quince',     desc: 'Haz un pleno: clava todos los puntos posibles en una carrera.', done: false },
+  { id: 'early',    emoji: '🐓', name: 'El Madrugador',       desc: 'Manda la porra el primero y sé quien más puntos hace en esa carrera.', done: false },
+  { id: 'duo',      emoji: '🤝', name: 'Pareja de Hecho',     desc: 'Tu compañero y tú sois los dos pilotos que más suman en una carrera.', done: false },
+  { id: 'pedos',    emoji: '💨', name: 'Trofeo Pedos',        desc: 'Queda segundo en una clasificación general de la porra.', done: false },
+  { id: 'aleja',    emoji: '📖', name: 'Premio Aleja',        desc: 'Detecta un error en las normas de la porra.', done: true },
+  { id: 'inspector',emoji: '🔍', name: 'Ojo de Lince',        desc: 'Detecta un error en los puntos oficiales de la porra.', done: false },
+  { id: 'lojo',     emoji: '🃏', name: 'Premio Lojo',         desc: 'Haz trampas en el GP de la porra y sal de rositas.', done: false },
+  { id: 'piastri',  emoji: '🥈', name: 'Premio Óscar Piastri',desc: 'Lidera el mundial de la porra... pero no lo ganes.', done: false },
+];
+
 Object.assign(window, {
+  PRO_PLANS, PRO_COMUNICADOS, CHALLENGES,
   PLAYERS, TEAMS, PALETTE, RACES, RACE_NUMBER, NEXT_RACE,
   RACE_RESULTS, TEAM_RESULTS, OFFICIAL_RESULTS,
   TEAM_BEST, PALMARES_DRIVERS, PALMARES_TEAMS, PALMARES_KART, HALL_OF_FAME_TEAMS,

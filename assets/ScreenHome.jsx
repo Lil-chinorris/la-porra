@@ -20,11 +20,20 @@ function CuloSeparator() {
   );
 }
 
-function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPalmares }) {
+function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPalmares, onOpenPro, onOpenDesafios }) {
   const P = window.PALETTE;
   const [tab, setTab] = React.useState('pilotos');
   // view: 'general' | `race-N`
   const [view, setView] = React.useState('general');
+
+  const headerBtn = {
+    padding: '8px 11px', borderRadius: 10,
+    background: 'rgba(255,255,255,0.06)',
+    border: `1px solid ${P.text}15`, color: P.text,
+    fontSize: 11, fontWeight: 700, letterSpacing: 0.4,
+    cursor: 'pointer', fontFamily: 'inherit',
+    display: 'flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap',
+  };
 
   return (
     <div className="lp-screen" style={{
@@ -35,7 +44,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
     }}>
       <ScrollGloss />
       {/* Header */}
-      <div style={{ padding: 'max(32px, env(safe-area-inset-top)) 20px 10px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+      <div style={{ padding: 'max(32px, env(safe-area-inset-top)) 20px 10px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 10 }}>
         <div>
           <div style={{ fontSize: 11, letterSpacing: 2.5, fontWeight: 700, color: P.accent, marginBottom: 6 }}>
             ◆ CAMPEONATO 2026
@@ -44,15 +53,34 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
             La Porra<span style={{ color: P.accent }}>.</span>
           </div>
         </div>
-        <button onClick={onOpenPalmares} className="touchable" style={{
-          padding: '8px 12px', borderRadius: 10,
-          background: 'rgba(255,255,255,0.06)',
-          border: `1px solid ${P.text}15`, color: P.text,
-          fontSize: 11, fontWeight: 700, letterSpacing: 0.8,
-          cursor: 'pointer', fontFamily: 'inherit',
-          display: 'flex', alignItems: 'center', gap: 6,
-        }}>🏆 Palmarés</button>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'stretch' }}>
+          <button onClick={onOpenPalmares} className="touchable" style={headerBtn}>🏆 Palmarés</button>
+          <button onClick={onOpenDesafios} className="touchable" style={headerBtn}>🎖️ Desafíos</button>
+        </div>
       </div>
+
+      {/* Banner La Porra Pro */}
+      <button onClick={onOpenPro} className="touchable" style={{
+        margin: '8px 20px 4px', width: 'calc(100% - 40px)',
+        display: 'flex', alignItems: 'center', gap: 10,
+        padding: '10px 12px', borderRadius: 12,
+        background: `linear-gradient(100deg, ${P.accent2}1A, rgba(255,255,255,0.03) 70%)`,
+        border: `1px solid ${P.accent2}33`,
+        cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
+      }}>
+        <div style={{ fontSize: 18 }}>✨</div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 13, fontWeight: 800, letterSpacing: -0.2, color: P.text }}>
+            Consigue más con La Porra Pro
+          </div>
+        </div>
+        <span style={{
+          fontSize: 12, fontWeight: 800, letterSpacing: 0.2,
+          color: '#1a1a1a', background: P.accent2,
+          padding: '5px 12px', borderRadius: 999,
+          flexShrink: 0,
+        }}>Actualizar</span>
+      </button>
 
       {/* Tabs Pilotos / Equipos */}
       <div style={{
@@ -61,8 +89,8 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
         display: 'flex', gap: 2, border: `1px solid ${P.text}11`,
       }}>
         {[
-          { k: 'pilotos', label: `Pilotos · ${window.PLAYERS.length}` },
-          { k: 'equipos', label: `Equipos · ${window.TEAMS.length}` },
+          { k: 'pilotos', label: 'Pilotos' },
+          { k: 'equipos', label: 'Equipos' },
         ].map(t => (
           <button key={t.k} onClick={() => setTab(t.k)} className="touchable" style={{
             flex: 1, padding: '9px 0', borderRadius: 9,

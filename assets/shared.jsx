@@ -116,6 +116,12 @@ if (typeof document !== 'undefined' && !document.getElementById('lp-styles')) {
       100% { opacity: 1; transform: translateX(0); }
     }
     .lp-count-up { display: inline-block; }
+    /* Hoja modal que sube desde abajo */
+    .lp-sheet { animation: lpSheetUp .42s cubic-bezier(.16,.84,.32,1) both; }
+    @keyframes lpSheetUp {
+      0% { opacity: 0; transform: translateY(100%); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
   `;
   document.head.appendChild(s);
 }
