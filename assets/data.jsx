@@ -14,7 +14,7 @@ const RACES = [
 
 // Próxima: Barcelona (C7)
 const NEXT_RACE = {
-  n: 7, name: 'Barcelona', emoji: '🇪🇸', short: 'BCN',
+  n: 7, name: 'Barcelona', emoji: '💛', short: 'BCN',
   date: '14 JUN 2026',
   circuit: 'Circuit de Barcelona-Catalunya',
   length: '4.657 km',
@@ -205,6 +205,9 @@ const OFFICIAL_RESULTS = {
   5: { top5: ['ANTONELLI','HAMILTON','VERSTAPPEN','LECLERC','HADJAR'],
        driverOfTheDay: { name: 'COLAPINTO', pts: 6 },
        fastestLap: { name: 'ANTONELLI', time: '1:14.210' } },
+  6: { top5: ['ANTONELLI','HAMILTON','HADJAR','PIASTRI','LAWSON'],
+       driverOfTheDay: { name: 'ALONSO', pts: 10 },
+       fastestLap: { name: 'ANTONELLI', time: '1:13.481' } },
 };
 
 // Palmarés
@@ -293,7 +296,7 @@ const CALENDAR = [
   { n: 4,  name: 'Miami',        emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  status: 'done' },
   { n: 5,  name: 'Canadá',       emoji: '🇨🇦', short: 'CAN', date: '24 MAY 2026', status: 'done' },
   { n: 6,  name: 'Mónaco',       emoji: '🇲🇨', short: 'MON', date: '7 JUN 2026',  status: 'done' },
-  { n: 7,  name: 'Barcelona',    emoji: '🇪🇸', short: 'BCN', date: '14 JUN 2026', status: 'next' },
+  { n: 7,  name: 'Barcelona',    emoji: '💛', short: 'BCN', date: '14 JUN 2026', status: 'next' },
   { n: 8,  name: 'Austria',      emoji: '🇦🇹', short: 'AUT', date: '5 JUL 2026',  status: 'future' },
   { n: 9,  name: 'Gran Bretaña', emoji: '🇬🇧', short: 'GBR', date: '19 JUL 2026', status: 'future' },
   { n: 10, name: 'Bélgica',      emoji: '🇧🇪', short: 'BEL', date: '26 JUL 2026', status: 'future' },

@@ -9,8 +9,8 @@
 
 const LP_LANGS = [
   { code: 'es',  label: 'Español',  flag: '🇪🇸' },
-  { code: 'gl',  label: 'Galego',   flag: '🐙' },
-  { code: 'ca',  label: 'Català',   flag: '🐉' },
+  { code: 'gl',  label: 'Galego',   flag: '🩵' },
+  { code: 'ca',  label: 'Català',   flag: '💛' },
   { code: 'en',  label: 'English',  flag: '🇬🇧' },
   { code: 'fil', label: 'Filipino', flag: '🇵🇭' },
   { code: 'de',  label: 'Deutsch',  flag: '🇩🇪' },
@@ -50,8 +50,8 @@ const I18N = {
   'tot.': { gl: 'tot.', ca: 'tot.', en: 'tot.', fil: 'tot.', de: 'ges.' },
 
   // ── Selector de idioma ──
-  '¿En qué idioma te gustaría usar La Porra?': { gl: 'En que idioma queres usar La Porra?', ca: 'En quin idioma vols fer servir La Porra?', en: 'Which language would you like to use La Porra in?', fil: 'Anong wika ang gusto mong gamitin sa La Porra?', de: 'In welcher Sprache möchtest du La Porra nutzen?' },
-  'Podrás cambiarlo cuando quieras desde la Home.': { gl: 'Poderás cambialo cando queiras desde a Home.', ca: 'Podràs canviar-lo quan vulguis des de la Home.', en: 'You can change it anytime from the Home screen.', fil: 'Maaari mo itong baguhin anumang oras mula sa Home.', de: 'Du kannst sie jederzeit auf der Startseite ändern.' },
+  '¿En qué idioma quieres disfrutar La Porra?': { gl: 'En que idioma queres gozar La Porra?', ca: 'En quin idioma vols gaudir La Porra?', en: 'Which language would you like to enjoy La Porra in?', fil: 'Anong wika ang gusto mong i-enjoy ang La Porra?', de: 'In welcher Sprache möchtest du La Porra genießen?' },
+  'Podrás cambiarlo cuando quieras': { gl: 'Poderás cambialo cando queiras', ca: 'Podràs canviar-lo quan vulguis', en: 'You can change it anytime', fil: 'Maaari mo itong baguhin anumang oras', de: 'Du kannst sie jederzeit ändern' },
   'Idioma': { gl: 'Idioma', ca: 'Idioma', en: 'Language', fil: 'Wika', de: 'Sprache' },
 
   // ── Ficha piloto ──
@@ -237,13 +237,13 @@ function LangMenu() {
   return (
     <div style={{ position: 'relative' }}>
       <button onClick={() => setOpen(o => !o)} className="touchable" style={{
-        padding: '8px 11px', borderRadius: 10,
+        height: 38, padding: '0 11px', borderRadius: 10,
         background: 'rgba(255,255,255,0.06)',
         border: `1px solid ${P.text}15`, color: P.text,
         fontSize: 11, fontWeight: 700, letterSpacing: 0.4,
         cursor: 'pointer', fontFamily: 'inherit',
         display: 'flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap',
-        width: '100%', justifyContent: 'center',
+        justifyContent: 'center',
       }}>
         🌐 {current.code.toUpperCase()} <span style={{ fontSize: 8, opacity: 0.6 }}>▼</span>
       </button>
@@ -286,36 +286,46 @@ function LangMenu() {
   );
 }
 
-// ─── UI: pop-up de primera visita ──────────────────────────────────────────
-function LangModal({ onChosen }) {
+// ─── UI: pop-up de primera visita (centrado) ───────────────────────────────
+// onChosen(code) -> el usuario eligió idioma; onClose() -> cerró sin elegir (queda 'es')
+function LangModal({ onChosen, onClose }) {
   const P = window.PALETTE;
   return (
     <div style={{
       position: 'absolute', inset: 0, zIndex: 100,
       background: 'rgba(10,17,24,0.82)',
       backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
-      display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: 20,
     }}>
-      <div className="lp-sheet" style={{
-        width: '100%', maxWidth: 440,
+      <div className="lp-pop" style={{
+        position: 'relative',
+        width: '100%', maxWidth: 380,
         background: `linear-gradient(180deg, ${P.bg2}, ${P.bg})`,
-        borderRadius: '22px 22px 0 0',
-        border: `1px solid ${P.text}14`, borderBottom: 'none',
-        padding: '18px 18px max(20px, env(safe-area-inset-bottom))',
+        borderRadius: 22,
+        border: `1px solid ${P.text}14`,
+        boxShadow: '0 24px 60px -16px rgba(0,0,0,0.8)',
+        padding: '22px 18px 18px',
         fontFamily: '"Space Grotesk", -apple-system, system-ui, sans-serif',
         color: P.text,
       }}>
-        <div style={{
-          width: 40, height: 5, borderRadius: 999,
-          background: `${P.text}22`, margin: '0 auto 16px',
-        }} />
+        {/* Botón cerrar (queda en español por defecto) */}
+        <button onClick={() => onClose && onClose()} className="touchable" aria-label="Cerrar" style={{
+          position: 'absolute', top: 12, right: 12,
+          width: 30, height: 30, borderRadius: 999,
+          background: 'rgba(255,255,255,0.08)', border: `1px solid ${P.text}15`,
+          color: P.text, cursor: 'pointer', fontFamily: 'inherit',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 14, fontWeight: 700, lineHeight: 1,
+        }}>✕</button>
+
         <div style={{ textAlign: 'center', marginBottom: 4 }}>
           <div style={{ fontSize: 30 }}>🌐</div>
-          <div style={{ fontSize: 19, fontWeight: 900, letterSpacing: -0.5, marginTop: 8, lineHeight: 1.25 }}>
-            ¿En qué idioma te gustaría usar La Porra?
+          <div style={{ fontSize: 19, fontWeight: 900, letterSpacing: -0.5, marginTop: 8, lineHeight: 1.25, padding: '0 8px' }}>
+            ¿En qué idioma quieres disfrutar La Porra?
           </div>
           <div style={{ fontSize: 11.5, fontWeight: 600, color: P.muted, marginTop: 6 }}>
-            Podrás cambiarlo cuando quieras desde la Home.
+            Podrás cambiarlo cuando quieras
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 16 }}>

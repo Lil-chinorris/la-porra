@@ -26,13 +26,34 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
   // view: 'general' | `race-N`
   const [view, setView] = React.useState('general');
 
-  const headerBtn = {
-    padding: '8px 11px', borderRadius: 10,
+  // Carrusel de carreras: arranca en la ÚLTIMA carrera disputada,
+  // de modo que se vea  General | última | próxima | ...
+  // Alineamos por getBoundingClientRect (no por offsetLeft) para que sea
+  // robusto al offsetParent y al ancho variable de "General" en cada idioma.
+  const raceScrollRef = React.useRef(null);
+  React.useEffect(() => {
+    const el = raceScrollRef.current;
+    if (!el) return;
+    const align = () => {
+      const target = el.querySelector('[data-last="1"]') || el.querySelector('[data-next="1"]');
+      if (!target) return;
+      const delta = target.getBoundingClientRect().left - el.getBoundingClientRect().left;
+      el.scrollLeft += delta;
+    };
+    align();
+    // reajuste tras cargar fuentes/emojis (pueden cambiar anchos)
+    const raf = requestAnimationFrame(align);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  // Botón cuadrado (solo icono) para Palmarés / Desafíos
+  const iconBtn = {
+    width: 40, height: 38, borderRadius: 10, padding: 0,
     background: 'rgba(255,255,255,0.06)',
     border: `1px solid ${P.text}15`, color: P.text,
-    fontSize: 11, fontWeight: 700, letterSpacing: 0.4,
-    cursor: 'pointer', fontFamily: 'inherit',
-    display: 'flex', alignItems: 'center', gap: 5, whiteSpace: 'nowrap',
+    fontSize: 17, cursor: 'pointer', fontFamily: 'inherit',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    flexShrink: 0,
   };
 
   return (
@@ -53,9 +74,11 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
             La Porra<span style={{ color: P.accent }}>.</span>
           </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'stretch' }}>
-          <button onClick={onOpenPalmares} className="touchable" style={headerBtn}>🏆 {t('Palmarés')}</button>
-          <button onClick={onOpenDesafios} className="touchable" style={headerBtn}>🎖️ {t('Desafíos')}</button>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: 6, alignItems: 'center' }}>
+          <button onClick={onOpenPalmares} className="touchable" style={iconBtn}
+            aria-label={t('Palmarés')} title={t('Palmarés')}>🏆</button>
+          <button onClick={onOpenDesafios} className="touchable" style={iconBtn}
+            aria-label={t('Desafíos')} title={t('Desafíos')}>🎖️</button>
           <LangMenu />
         </div>
       </div>
@@ -103,38 +126,46 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
         ))}
       </div>
 
-      {/* Scroll horizontal: General + chips por carrera (calendario 22) */}
+      {/* Selector de carreras: "General" fijo a la izquierda + carrusel de carreras */}
       <div style={{
-        display: 'flex', gap: 6, padding: '4px 16px 10px',
-        overflowX: 'auto', overflowY: 'hidden',
-        WebkitOverflowScrolling: 'touch',
-        scrollbarWidth: 'none',
+        display: 'flex', gap: 6, padding: '4px 16px 10px', alignItems: 'center',
       }}>
-        <style>{`.lp-scroll::-webkit-scrollbar{display:none}`}</style>
+        <style>{`.lp-race-scroll::-webkit-scrollbar{display:none}`}</style>
+        {/* General — siempre visible, no entra en el scroll */}
         <Chip active={view === 'general'} onClick={() => setView('general')}
           palette={P}>{t('General')}</Chip>
-        {window.CALENDAR.map(r => {
-          const isLast = r.n === window.RACE_NUMBER;
-          const done = r.status === 'done';
-          const isNext = r.status === 'next';
-          const future = r.status === 'future';
-          const onClick = done
-            ? () => setView(`race-${r.n}`)
-            : isNext
-              ? onOpenNext
-              : null;
-          return (
-            <Chip key={r.n} active={view === `race-${r.n}`}
-              onClick={onClick}
-              disabled={future}
-              palette={P}
-              badge={isLast ? t('Últ.') : isNext ? t('Próx.') : null}
-              variant={isNext ? 'next' : future ? 'future' : 'done'}>
-              <span style={{ marginRight: 4, opacity: future ? 0.55 : 1 }}>{r.emoji}</span>
-              <span>{r.short}</span>
-            </Chip>
-          );
-        })}
+        {/* Carrusel de carreras (arranca en el GP próximo) */}
+        <div ref={raceScrollRef} className="lp-race-scroll" style={{
+          position: 'relative',
+          display: 'flex', gap: 6, flex: 1, minWidth: 0,
+          overflowX: 'auto', overflowY: 'hidden',
+          WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none',
+        }}>
+          {window.CALENDAR.map(r => {
+            const isLast = r.n === window.RACE_NUMBER;
+            const done = r.status === 'done';
+            const isNext = r.status === 'next';
+            const future = r.status === 'future';
+            const onClick = done
+              ? () => setView(`race-${r.n}`)
+              : isNext
+                ? onOpenNext
+                : null;
+            return (
+              <Chip key={r.n} active={view === `race-${r.n}`}
+                onClick={onClick}
+                disabled={future}
+                palette={P}
+                dataNext={isNext}
+                dataLast={isLast}
+                badge={isLast ? t('Últ.') : isNext ? t('Próx.') : null}
+                variant={isNext ? 'next' : future ? 'future' : 'done'}>
+                <span style={{ marginRight: 4, opacity: future ? 0.55 : 1 }}>{r.emoji}</span>
+                <span>{r.short}</span>
+              </Chip>
+            );
+          })}
+        </div>
       </div>
 
       {/* Banner sticky: si la vista es una carrera, mostramos resumen + link a detalle */}
@@ -227,7 +258,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
   );
 }
 
-function Chip({ active, onClick, children, palette, badge, disabled, variant }) {
+function Chip({ active, onClick, children, palette, badge, disabled, variant, dataNext, dataLast }) {
   // variant: 'done' (default) | 'next' | 'future'
   const isNext = variant === 'next';
   const isFuture = variant === 'future';
@@ -258,6 +289,8 @@ function Chip({ active, onClick, children, palette, badge, disabled, variant }) 
     <button onClick={disabled ? undefined : onClick}
       className={disabled ? '' : 'touchable'}
       disabled={!!disabled}
+      data-next={dataNext ? '1' : undefined}
+      data-last={dataLast ? '1' : undefined}
       style={{
         flexShrink: 0, padding: '7px 14px',
         borderRadius: 999, fontSize: 12.5, fontWeight: 700,
