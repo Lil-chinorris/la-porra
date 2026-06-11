@@ -38,7 +38,7 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
           <BackButton onClick={onBack} />
           <div style={{ fontSize: 11, fontWeight: 700, color: P.muted, letterSpacing: 1.5 }}>
-            CARRERA {n} / 22 · FINALIZADA
+            {t('CARRERA')} {n} / 22 · {t('FINALIZADA')}
           </div>
         </div>
 
@@ -50,13 +50,14 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
           </div>
         </div>
 
-        {/* Resultado oficial */}
+        {/* Resultado oficial (solo si está cargado) */}
+        {official && (
         <div style={{
           marginTop: 18, background: 'rgba(255,255,255,0.04)',
           border: `1px solid ${P.text}14`, borderRadius: 14, padding: '12px 14px'
         }}>
           <div style={{ fontSize: 10, fontWeight: 800, color: P.muted, letterSpacing: 1.5, marginBottom: 8 }}>
-            RESULTADO OFICIAL · TOP 5
+            {t('RESULTADO OFICIAL · TOP 5')}
           </div>
           {official.top5.map((d, i) =>
           <div key={d} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '5px 0' }}>
@@ -80,18 +81,18 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
             display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10
           }}>
             <div>
-              <div style={{ fontSize: 9, fontWeight: 800, color: P.muted, letterSpacing: 1 }}>PILOTO DE LA SEMANA</div>
+              <div style={{ fontSize: 9, fontWeight: 800, color: P.muted, letterSpacing: 1 }}>{t('PILOTO DE LA SEMANA')}</div>
               <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: -0.2, marginTop: 4 }}>
                 {official.driverOfTheDay.name}
               </div>
               <div style={{
                 fontSize: 10, fontWeight: 700, color: P.accent2, marginTop: 1,
               }}>
-                {official.driverOfTheDay.pts} posición
+                {official.driverOfTheDay.pts} {t('posición')}
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 9, fontWeight: 800, color: P.muted, letterSpacing: 1 }}>VUELTA RÁPIDA</div>
+              <div style={{ fontSize: 9, fontWeight: 800, color: P.muted, letterSpacing: 1 }}>{t('VUELTA RÁPIDA')}</div>
               <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: -0.2, marginTop: 4 }}>
                 {official.fastestLap.name}
               </div>
@@ -104,6 +105,7 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
             </div>
           </div>
         </div>
+        )}
       </div>
 
       {/* Tabs */}
@@ -113,14 +115,14 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
         borderRadius: 12, display: 'flex', gap: 2,
         border: `1px solid ${P.text}11`
       }}>
-        {[{ k: 'pilotos', label: 'Pilotos' }, { k: 'equipos', label: 'Equipos' }].map((t) =>
-        <button key={t.k} onClick={() => setTab(t.k)} className="touchable" style={{
+        {[{ k: 'pilotos', label: t('Pilotos') }, { k: 'equipos', label: t('Equipos') }].map((tb) =>
+        <button key={tb.k} onClick={() => setTab(tb.k)} className="touchable" style={{
           flex: 1, padding: '8px 0', borderRadius: 9,
           fontSize: 13, fontWeight: 700,
-          background: tab === t.k ? P.accent : 'transparent',
-          color: tab === t.k ? '#fff' : P.muted,
+          background: tab === tb.k ? P.accent : 'transparent',
+          color: tab === tb.k ? '#fff' : P.muted,
           border: 'none', cursor: 'pointer', fontFamily: 'inherit'
-        }}>{t.label}</button>
+        }}>{tb.label}</button>
         )}
       </div>
 
@@ -157,10 +159,10 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
         </div> :
 
       <div style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {equipos.map((t, idx) => {
-          const c = P.teams[t.name] || P.accent;
+          {equipos.map((tm, idx) => {
+          const c = P.teams[tm.name] || P.accent;
           return (
-            <div key={t.name} className="lp-row" style={{
+            <div key={tm.name} className="lp-row" style={{
               animationDelay: `${idx * 18}ms`,
               position: 'relative',
               background: P.surface, borderRadius: 12,
@@ -169,16 +171,16 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
               overflow: 'hidden', border: `1px solid ${P.text}10`
             }}>
                 <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, width: 3, background: c }} />
-                <div style={{ width: 26, fontSize: 16, fontWeight: 800, color: t._rank <= 3 ? c : P.muted, textAlign: 'center' }}>{t._rank}</div>
-                <TeamAvatar team={t.name} emoji={t.emoji} size={38} />
+                <div style={{ width: 26, fontSize: 16, fontWeight: 800, color: tm._rank <= 3 ? c : P.muted, textAlign: 'center' }}>{tm._rank}</div>
+                <TeamAvatar team={tm.name} emoji={tm.emoji} size={38} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: -0.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.name}</div>
-                  <div style={{ fontSize: 10.5, color: P.muted, fontWeight: 600 }}>tot. campeonato · {t.total}</div>
+                  <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: -0.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{tm.name}</div>
+                  <div style={{ fontSize: 10.5, color: P.muted, fontWeight: 600 }}>tot. campeonato · {tm.total}</div>
                 </div>
                 <div style={{
                 fontSize: 19, fontWeight: 900, letterSpacing: -0.6,
-                color: t._pts > 0 ? P.text : t._pts < 0 ? P.danger : P.muted
-              }}>{t._pts > 0 ? '+' : ''}{t._pts}</div>
+                color: tm._pts > 0 ? P.text : tm._pts < 0 ? P.danger : P.muted
+              }}>{tm._pts > 0 ? '+' : ''}{tm._pts}</div>
               </div>);
 
         })}

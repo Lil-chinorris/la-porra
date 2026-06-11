@@ -28,7 +28,7 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
           <BackButton onClick={onBack} />
           <div style={{ fontSize: 11, fontWeight: 700, color: P.muted, letterSpacing: 1.5 }}>
-            EQUIPO · P{team.pos}
+            {t('EQUIPO')} · P{team.pos}
           </div>
         </div>
 
@@ -38,7 +38,7 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
             <div style={{ fontSize: 26, fontWeight: 900, lineHeight: 1.05, letterSpacing: -0.8, marginBottom: 6 }}>{team.name}</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
               <div style={{ fontSize: 12, fontWeight: 700, color: P.muted }}>
-                {members.length} {members.length === 1 ? 'piloto' : 'pilotos'}
+                {members.length} {members.length === 1 ? t('piloto') : t('pilotos')}
               </div>
               <div style={{ width: 3, height: 3, borderRadius: '50%', background: P.muted, opacity: 0.5 }} />
               <div style={{
@@ -50,7 +50,7 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
                 padding: '2px 7px', borderRadius: 6,
                 border: `1px solid ${isChamp ? '#FFD93D55' : isRookie ? P.accent2 + '40' : P.text + '14'}`,
               }}>
-                {isChamp ? '👑' : isRookie ? '✦' : '★'} Mejor hist.: {best.label}
+                {isChamp ? '👑' : isRookie ? '✦' : '★'} {t('Mejor hist.')}: {best.label}
               </div>
             </div>
             {titleYears.length > 0 && (
@@ -62,12 +62,12 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
         </div>
 
         <div style={{ marginTop: 22, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
-          <Kpi label="POSICIÓN" value={`P${team.pos}`}
-               sub={team.delta === 0 ? '= sin cambio' :
+          <Kpi label={t('POSICIÓN')} value={`P${team.pos}`}
+               sub={team.delta === 0 ? t('= sin cambio') :
                     team.delta > 0 ? `▲ ${team.delta}` :
                     `▼ ${Math.abs(team.delta)}`}
                subColor={team.delta > 0 ? P.success : team.delta < 0 ? P.danger : P.muted} />
-          <Kpi label="TOTAL" value={<TickNumber value={team.total} />} sub="PUNTOS" highlight />
+          <Kpi label="TOTAL" value={<TickNumber value={team.total} />} sub={t('PUNTOS')} highlight />
           <Kpi label={`GP ${(window.RACES[window.RACE_NUMBER - 1]?.name || '').toUpperCase()}`}
                value={(team.last > 0 ? '+' : '') + team.last}
                subColor={team.last > 0 ? P.success : team.last < 0 ? P.danger : P.muted} />
@@ -75,7 +75,7 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
       </div>
 
       <div style={{ padding: '8px 16px' }}>
-        <SectionTitle>Pilotos del equipo</SectionTitle>
+        <SectionTitle>{t('Pilotos del equipo')}</SectionTitle>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {members.map(p => {
             const isBest = p.name === bestLast.name && members.length > 1;
@@ -105,7 +105,7 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
                     )}
                   </div>
                   <div style={{ fontSize: 11, color: P.muted, fontWeight: 600, marginTop: 2 }}>
-                    Última: {p.last > 0 ? '+' : ''}{p.last} pts · Δ {
+                    {t('Última:')} {p.last > 0 ? '+' : ''}{p.last} pts · Δ {
                       p.delta === 0 ? '—' : (p.delta > 0 ? `▲${p.delta}` : `▼${Math.abs(p.delta)}`)
                     }
                   </div>
@@ -116,30 +116,31 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
           })}
         </div>
 
-        <SectionTitle>Vs. resto de equipos</SectionTitle>
+        <SectionTitle>{t('Vs. resto de equipos')}</SectionTitle>
         <div style={{
           background: P.surface, borderRadius: 14, padding: 14,
           border: `1px solid ${P.text}10`,
           display: 'flex', flexDirection: 'column', gap: 9,
         }}>
-          {window.TEAMS.map(t => {
-            const pct = Math.max(4, (Math.max(0, t.total) / Math.max(1, window.TEAMS[0].total)) * 100);
-            const c = P.teams[t.name] || P.accent;
-            const me = t.name === name;
+          {window.TEAMS.map((tm, ti) => {
+            const pct = Math.max(4, (Math.max(0, tm.total) / Math.max(1, window.TEAMS[0].total)) * 100);
+            const c = P.teams[tm.name] || P.accent;
+            const me = tm.name === name;
             return (
-              <div key={t.name} style={{
+              <div key={tm.name} style={{
                 display: 'grid', gridTemplateColumns: '18px 1fr 36px',
                 alignItems: 'center', gap: 8,
                 opacity: me ? 1 : 0.7,
               }}>
-                <div style={{ fontSize: 11, fontWeight: 800, color: P.muted }}>{t.pos}</div>
+                <div style={{ fontSize: 11, fontWeight: 800, color: P.muted }}>{tm.pos}</div>
                 <div>
                   <div style={{ fontSize: 11, fontWeight: me ? 800 : 700, color: P.text, letterSpacing: -0.1, marginBottom: 3, display: 'flex', alignItems: 'center', gap: 5 }}>
-                    <span>{t.emoji}</span>
-                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{t.name}</span>
+                    <span>{tm.emoji}</span>
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tm.name}</span>
                   </div>
                   <div style={{ height: 6, borderRadius: 3, background: 'rgba(255,255,255,0.05)', overflow: 'hidden' }}>
-                    <div style={{
+                    <div className="lp-bar" style={{
+                      animationDelay: `${ti * 60}ms`,
                       height: '100%', width: `${pct}%`,
                       background: me ? c : `${c}88`,
                       borderRadius: 3,
@@ -147,7 +148,7 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
                     }} />
                   </div>
                 </div>
-                <div style={{ fontSize: 13, fontWeight: 900, textAlign: 'right', letterSpacing: -0.3, color: t.total < 0 ? P.danger : P.text }}>{t.total}</div>
+                <div style={{ fontSize: 13, fontWeight: 900, textAlign: 'right', letterSpacing: -0.3, color: tm.total < 0 ? P.danger : P.text }}>{tm.total}</div>
               </div>
             );
           })}

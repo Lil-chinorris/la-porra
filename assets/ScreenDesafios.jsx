@@ -18,16 +18,16 @@ function ScreenDesafios({ onBack }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
           <BackButton onClick={onBack} />
           <div style={{ fontSize: 11, fontWeight: 700, color: P.muted, letterSpacing: 1.5 }}>
-            LOGROS · {all.length}
+            {t('LOGROS')} · {all.length}
           </div>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <div style={{ fontSize: 46 }}>🎖️</div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 28, fontWeight: 900, letterSpacing: -1, lineHeight: 1 }}>Desafíos</div>
+            <div style={{ fontSize: 28, fontWeight: 900, letterSpacing: -1, lineHeight: 1 }}>{t('Desafíos')}</div>
             <div style={{ fontSize: 12, fontWeight: 700, color: P.muted, marginTop: 4 }}>
-              Trofeos por las gestas (y miserias) de la porra
+              {t('Trofeos por las gestas (y miserias) de la porra')}
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@ function ScreenDesafios({ onBack }) {
               <div style={{
                 fontSize: 11, fontWeight: 600, lineHeight: 1.35, marginTop: 2,
                 color: P.muted,
-              }}>{ch.desc}</div>
+              }}>{t(ch.desc)}</div>
             </div>
           </div>
         ))}

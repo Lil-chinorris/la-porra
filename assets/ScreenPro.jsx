@@ -37,10 +37,10 @@ function ScreenPro({ onBack }) {
       <div style={{ padding: '6px 22px 12px', textAlign: 'center' }}>
         <div style={{ fontSize: 34, marginBottom: 6 }}>✨</div>
         <div style={{ fontSize: 27, fontWeight: 900, letterSpacing: -1, lineHeight: 1.05 }}>
-          Obtén más de La Porra
+          {t('Obtén más de La Porra')}
         </div>
         <div style={{ fontSize: 13, fontWeight: 600, color: P.muted, marginTop: 6 }}>
-          Elige el plan que mejor se adapte a ti
+          {t('Elige el plan que mejor se adapte a ti')}
         </div>
       </div>
 
@@ -51,8 +51,8 @@ function ScreenPro({ onBack }) {
         display: 'flex', gap: 2, border: `1px solid ${P.text}11`,
       }}>
         {[
-          { k: 'monthly', label: 'Mensual' },
-          { k: 'yearly', label: 'Anual' },
+          { k: 'monthly', label: t('Mensual') },
+          { k: 'yearly', label: t('Anual') },
         ].map(b => (
           <button key={b.k} onClick={() => setBilling(b.k)} className="touchable" style={{
             flex: 1, padding: '9px 0', borderRadius: 9,
@@ -69,7 +69,7 @@ function ScreenPro({ onBack }) {
                 background: billing === 'yearly' ? 'rgba(0,0,0,0.25)' : `${P.accent2}22`,
                 color: billing === 'yearly' ? '#fff' : P.accent2,
                 padding: '2px 6px', borderRadius: 6,
-              }}>AHORRA</span>
+              }}>{t('AHORRA')}</span>
             )}
           </button>
         ))}
@@ -87,7 +87,7 @@ function ScreenPro({ onBack }) {
         margin: '16px 24px 0', fontSize: 10.5, lineHeight: 1.5,
         color: P.mutedDim, textAlign: 'center', fontWeight: 600,
       }}>
-        Pago vía bizum al chino. Sin reembolsos, sin vergüenza, sin honor.
+        {t('Pago vía bizum al chino. Sin reembolsos, sin vergüenza, sin honor.')}
       </div>
     </div>
   );
@@ -97,7 +97,7 @@ function PlanCard({ plan, billing, onGet }) {
   const P = window.PALETTE;
   const featured = plan.featured;
   const price = billing === 'yearly' ? plan.yearly : plan.monthly;
-  const note = billing === 'yearly' ? plan.yearlyNote : 'al mes';
+  const note = billing === 'yearly' ? t(plan.yearlyNote) : t('al mes');
 
   return (
     <div style={{
@@ -115,7 +115,7 @@ function PlanCard({ plan, billing, onGet }) {
           fontSize: 9.5, fontWeight: 900, letterSpacing: 1,
           background: plan.accent, color: '#fff',
           padding: '3px 10px', borderRadius: 999,
-        }}>EL MÁS ELEGIDO</div>
+        }}>{t('EL MÁS ELEGIDO')}</div>
       )}
 
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
@@ -124,13 +124,13 @@ function PlanCard({ plan, billing, onGet }) {
         </div>
       </div>
       <div style={{ fontSize: 12, fontWeight: 600, color: P.muted, marginTop: 2 }}>
-        {plan.tagline}
+        {t(plan.tagline)}
       </div>
 
       {/* Precio */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '14px 0 4px', flexWrap: 'wrap' }}>
         <div style={{ fontSize: 19, fontWeight: 900, letterSpacing: -0.5, color: P.text }}>
-          {price}
+          {t(price)}
         </div>
         <div style={{ fontSize: 11, fontWeight: 700, color: P.muted }}>{note}</div>
         {billing === 'yearly' && (
@@ -150,7 +150,7 @@ function PlanCard({ plan, billing, onGet }) {
         fontFamily: 'inherit', fontSize: 14, fontWeight: 800, letterSpacing: 0.2,
         background: featured ? plan.accent : `${plan.accent}22`,
         color: featured ? '#fff' : plan.accent,
-      }}>{plan.cta}</button>
+      }}>{t(plan.cta)}</button>
 
       {/* Beneficios */}
       <div style={{ marginTop: 14, display: 'flex', flexDirection: 'column', gap: 9 }}>
@@ -163,7 +163,7 @@ function PlanCard({ plan, billing, onGet }) {
               fontSize: 11, fontWeight: 900,
             }}>✓</div>
             <div style={{ fontSize: 12.5, lineHeight: 1.4, fontWeight: 600, color: P.text, opacity: 0.92 }}>
-              {perk}
+              {t(perk)}
             </div>
           </div>
         ))}
@@ -198,7 +198,7 @@ function ProComunicado({ id, onClose }) {
         <div style={{
           fontSize: 26, fontWeight: 900, letterSpacing: -0.8, marginTop: 12,
           color: accent,
-        }}>{c.title}</div>
+        }}>{t(c.title)}</div>
       </div>
 
       <div style={{ padding: '20px 24px 0' }}>
@@ -212,14 +212,14 @@ function ProComunicado({ id, onClose }) {
             textAlign: isPoem ? 'center' : 'left',
             color: P.text,
             opacity: line === '' ? 0 : 0.95,
-          }}>{line || ' '}</p>
+          }}>{line ? t(line) : ' '}</p>
         ))}
 
         <div style={{
           marginTop: 18, fontSize: 12.5, fontWeight: 700,
           color: P.muted, textAlign: isPoem ? 'center' : 'right',
           letterSpacing: 0.2,
-        }}>{c.signature}</div>
+        }}>{t(c.signature)}</div>
       </div>
 
       <div style={{ padding: '26px 20px 0' }}>
@@ -228,7 +228,7 @@ function ProComunicado({ id, onClose }) {
           border: `1px solid ${P.text}1A`, cursor: 'pointer', fontFamily: 'inherit',
           background: 'rgba(255,255,255,0.06)', color: P.text,
           fontSize: 14, fontWeight: 800, letterSpacing: 0.2,
-        }}>Lo he entendido, me retiro</button>
+        }}>{t('Lo he entendido, me retiro')}</button>
       </div>
     </div>
   );

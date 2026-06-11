@@ -33,7 +33,7 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
           <BackButton onClick={onBack} />
           <div style={{ fontSize: 11, fontWeight: 700, color: P.muted, letterSpacing: 1.5 }}>
-            PILOTO · P{player.pos}
+            {t('PILOTO')} · P{player.pos}
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: 14 }}>
@@ -67,12 +67,12 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
         </div>
 
         <div style={{ marginTop: 22, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
-          <Kpi label="POSICIÓN" value={`P${player.pos}`} sub={
-            player.delta === 0 ? '= sin cambio' :
+          <Kpi label={t('POSICIÓN')} value={`P${player.pos}`} sub={
+            player.delta === 0 ? t('= sin cambio') :
             player.delta > 0 ? `▲ ${player.delta}` :
             `▼ ${Math.abs(player.delta)}`
           } subColor={player.delta > 0 ? P.success : player.delta < 0 ? P.danger : P.muted} />
-          <Kpi label="TOTAL" value={<TickNumber value={player.total} />} sub="PUNTOS" highlight />
+          <Kpi label="TOTAL" value={<TickNumber value={player.total} />} sub={t('PUNTOS')} highlight />
           <Kpi label={`GP ${(window.RACES[window.RACE_NUMBER - 1]?.name || '').toUpperCase()}`}
                value={(player.last > 0 ? '+' : '') + player.last}
                subColor={player.last > 0 ? P.success : player.last < 0 ? P.danger : P.muted} />
@@ -80,7 +80,7 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
       </div>
 
       <div style={{ padding: '8px 16px' }}>
-        <SectionTitle>Estado de forma · últimas {formValues.length} carreras</SectionTitle>
+        <SectionTitle>{t('Estado de forma · últimas {n} carreras').replace('{n}', formValues.length)}</SectionTitle>
         <div style={{ background: P.surface, borderRadius: 14, padding: '14px 14px 12px', border: `1px solid ${P.text}10` }}>
           {/* Contador destacado: suma del estado de forma */}
           <div style={{
@@ -103,13 +103,13 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
                 fontSize: 9, fontWeight: 800, letterSpacing: 1.2,
                 color: P.muted, lineHeight: 1.1,
               }}>
-                PUNTOS · ÚLT. {formValues.length}
+                {t('PUNTOS · ÚLT. {n}').replace('{n}', formValues.length)}
               </div>
               <div style={{
                 fontSize: 10.5, fontWeight: 700, color: P.mutedDim,
                 letterSpacing: 0.2, lineHeight: 1.1,
               }}>
-                Criterio de desempate
+                {t('Criterio de desempate')}
               </div>
             </div>
           </div>
@@ -123,7 +123,7 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
           </div>
         </div>
 
-        <SectionTitle>Carreras</SectionTitle>
+        <SectionTitle>{t('Carreras')}</SectionTitle>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {window.RACES.map((r, i) => {
             const pts = player.results[i];
@@ -145,10 +145,10 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 14.5, fontWeight: 800, letterSpacing: -0.2, display: 'flex', alignItems: 'center', gap: 6 }}>
                     {r.name}
-                    {isCurrent && <span style={{ fontSize: 9, fontWeight: 800, color: P.accent2, letterSpacing: 1 }}>ÚLT.</span>}
+                    {isCurrent && <span style={{ fontSize: 9, fontWeight: 800, color: P.accent2, letterSpacing: 1 }}>{t('Últ.').toUpperCase()}</span>}
                   </div>
                   <div style={{ fontSize: 10.5, color: P.muted, fontWeight: 600, marginTop: 1 }}>
-                    {r.date} · Carrera {r.n}
+                    {r.date} · {t('Carrera {n}').replace('{n}', r.n)}
                   </div>
                 </div>
                 <div style={{
@@ -163,7 +163,7 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
 
         {teammates.length > 0 && (
           <>
-            <SectionTitle>Compañeros · {player.team}</SectionTitle>
+            <SectionTitle>{t('Compañeros')} · {player.team}</SectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {teammates.map(tm => (
                 <button key={tm.name}
@@ -277,17 +277,20 @@ function FormChart({ values, color, width = 340, height = 78 }) {
           </g>
         );
       })}
-      {/* área bajo la línea, recortada al eje cero */}
-      <path d={`${d} L ${width} ${zeroY} L ${chartLeft} ${zeroY} Z`} fill="url(#form-grad)" />
-      {/* línea principal */}
-      <path d={d} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      {/* área bajo la línea, recortada al eje cero (aparece tras la línea) */}
+      <path d={`${d} L ${width} ${zeroY} L ${chartLeft} ${zeroY} Z`} fill="url(#form-grad)" className="lp-draw-fill" />
+      {/* línea principal: se dibuja sola al entrar */}
+      <path d={d} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+        pathLength="1" className="lp-draw" />
       {/* puntos */}
       {pts.map(([x, y], i) => {
         const isLast = i === pts.length - 1;
         return (
           <circle key={i} cx={x} cy={y} r={isLast ? 4.5 : 3}
             fill={isLast ? color : P.bg}
-            stroke={color} strokeWidth="2" />
+            stroke={color} strokeWidth="2"
+            className="lp-pop"
+            style={{ animationDelay: `${0.2 + i * 0.18}s`, transformOrigin: `${x}px ${y}px` }} />
         );
       })}
     </svg>

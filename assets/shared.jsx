@@ -122,6 +122,31 @@ if (typeof document !== 'undefined' && !document.getElementById('lp-styles')) {
       0% { opacity: 0; transform: translateY(100%); }
       100% { opacity: 1; transform: translateY(0); }
     }
+    /* Línea de gráfico que se dibuja sola (usa pathLength=1) */
+    .lp-draw {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: lpDraw 1.1s cubic-bezier(.4,.1,.3,1) .15s forwards;
+    }
+    @keyframes lpDraw { to { stroke-dashoffset: 0; } }
+    /* Área bajo el gráfico que aparece tras dibujarse la línea */
+    .lp-draw-fill { opacity: 0; animation: lpFadeOpacity .5s ease .85s forwards; }
+    @keyframes lpFadeOpacity { to { opacity: 1; } }
+    /* Barras horizontales que crecen desde la izquierda */
+    .lp-bar {
+      transform-origin: left center;
+      animation: lpBarGrow .7s cubic-bezier(.25,.9,.3,1) both;
+    }
+    @keyframes lpBarGrow {
+      0% { transform: scaleX(0); }
+      100% { transform: scaleX(1); }
+    }
+    /* Pop sutil para chips y puntos de gráfico */
+    .lp-pop { animation: lpPop .35s cubic-bezier(.3,1.4,.5,1) both; }
+    @keyframes lpPop {
+      0% { opacity: 0; transform: scale(.4); }
+      100% { opacity: 1; transform: scale(1); }
+    }
   `;
   document.head.appendChild(s);
 }
@@ -169,7 +194,7 @@ function ChampBadge({ kind, year, size = 'md' }) {
       border: '1px solid rgba(0,0,0,0.15)',
     }}>
       <span style={{ fontSize: small ? 10 : 11 }}>{cfg.icon}</span>
-      <span>{cfg.label} {year}</span>
+      <span>{t(cfg.label)} {year}</span>
     </span>
   );
 }

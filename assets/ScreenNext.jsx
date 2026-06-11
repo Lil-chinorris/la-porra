@@ -59,7 +59,7 @@ function ScreenNext({ onBack }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
           <BackButton onClick={onBack} />
           <div style={{ fontSize: 11, fontWeight: 700, color: P.muted, letterSpacing: 1.5 }}>
-            PRÓXIMA · CARRERA {r.n} / 22
+            {t('PRÓXIMA · CARRERA')} {r.n} / 22
           </div>
         </div>
 
@@ -90,7 +90,7 @@ function ScreenNext({ onBack }) {
                     <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
                       <path d="M6 2v8M2 6h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
                     </svg>
-                    Añadir
+                    {t('Añadir')}
                   </span>
                 </>
               )}
@@ -100,6 +100,29 @@ function ScreenNext({ onBack }) {
       </div>
 
       <div style={{ padding: '8px 16px' }}>
+        {/* Foto del destino (si está cargada) */}
+        {c.image && (
+          <div style={{
+            margin: '4px 0 14px', borderRadius: 16, overflow: 'hidden',
+            border: `1px solid ${P.text}14`,
+            boxShadow: '0 10px 26px -12px rgba(0,0,0,0.6)',
+            position: 'relative',
+          }}>
+            <img src={c.image} alt={r.name} style={{
+              width: '100%', display: 'block', aspectRatio: '16/9', objectFit: 'cover',
+            }} />
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'linear-gradient(180deg, transparent 55%, rgba(15,25,35,0.75) 100%)',
+            }} />
+            <div style={{
+              position: 'absolute', left: 14, bottom: 10,
+              fontSize: 11, fontWeight: 800, letterSpacing: 1.2,
+              color: '#fff', textTransform: 'uppercase', opacity: 0.95,
+            }}>{r.emoji} {r.name}</div>
+          </div>
+        )}
+
         {/* Deadline destacado y prioritario */}
         {c.deadline && (
           <div style={{
@@ -117,17 +140,17 @@ function ScreenNext({ onBack }) {
               fontSize: 130, opacity: 0.12, lineHeight: 1,
             }}>⏱️</div>
             <div style={{ fontSize: 10, fontWeight: 900, letterSpacing: 2, opacity: 0.9 }}>
-              ⚠️ NO TE OLVIDES
+              ⚠️ {t('NO TE OLVIDES')}
             </div>
             <div style={{
               fontSize: 14, fontWeight: 700, marginTop: 6, opacity: 0.95, letterSpacing: -0.1,
             }}>
-              {c.deadline.label}
+              {t(c.deadline.label)}
             </div>
             <div style={{
               fontSize: 22, fontWeight: 900, marginTop: 4, letterSpacing: -0.6, lineHeight: 1.1,
             }}>
-              {c.deadline.when}
+              {t(c.deadline.when)}
             </div>
           </div>
         )}
@@ -135,7 +158,7 @@ function ScreenNext({ onBack }) {
         {/* Sesiones del fin de semana */}
         {c.sessions && c.sessions.length > 0 && (
           <>
-            <SectionTitle>Horarios del GP</SectionTitle>
+            <SectionTitle>{t('Horarios del GP')}</SectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {c.sessions.map((day, di) => (
                 <div key={di} style={{
@@ -148,7 +171,7 @@ function ScreenNext({ onBack }) {
                     borderBottom: `1px solid ${P.text}10`,
                     fontSize: 11, fontWeight: 800, letterSpacing: 0.6,
                     color: P.accent2, textTransform: 'uppercase',
-                  }}>{day.day}</div>
+                  }}>{t(day.day)}</div>
                   {day.items.map((it, ii) => (
                     <div key={ii} style={{
                       display: 'flex', alignItems: 'center', gap: 12,
@@ -160,7 +183,7 @@ function ScreenNext({ onBack }) {
                         fontSize: 13, fontWeight: it.highlight ? 900 : 700,
                         color: it.highlight ? P.accent : P.text,
                         letterSpacing: -0.1, flex: 1,
-                      }}>{it.label}</div>
+                      }}>{t(it.label)}</div>
                       <div style={{
                         fontSize: 14, fontWeight: 900, letterSpacing: -0.3,
                         color: it.highlight ? P.accent : P.text,
@@ -171,40 +194,46 @@ function ScreenNext({ onBack }) {
                 </div>
               ))}
             </div>
+            {c.sessionsNote && (
+              <div style={{
+                fontSize: 10, fontWeight: 600, color: P.mutedDim,
+                marginTop: 8, textAlign: 'right', fontStyle: 'italic',
+              }}>{t(c.sessionsNote)}</div>
+            )}
           </>
         )}
 
         {/* Datos del circuito */}
-        <SectionTitle>Datos del circuito</SectionTitle>
+        <SectionTitle>{t('Datos del circuito')}</SectionTitle>
         <div style={{
           display: 'grid', gridTemplateColumns: 'repeat(2,1fr)',
           gap: 1, background: P.text + '10',
           borderRadius: 14, overflow: 'hidden',
           border: `1px solid ${P.text}10`,
         }}>
-          <Fact label="Longitud" value={r.length} />
-          <Fact label="Vueltas" value={r.laps} />
-          <Fact label="Curvas" value={r.corners} />
-          <Fact label="Ediciones" value={c.editions} />
-          <Fact label="Primera carrera" value={c.firstGp} />
-          <Fact label="Récord vuelta" value={r.lapRecord} mono full />
+          <Fact label={t('Longitud')} value={r.length} />
+          <Fact label={t('Vueltas')} value={r.laps} />
+          <Fact label={t('Curvas')} value={r.corners} />
+          <Fact label={t('Ediciones')} value={c.editions} />
+          <Fact label={t('Primera carrera')} value={c.firstGp} />
+          <Fact label={t('Récord vuelta')} value={r.lapRecord} mono full />
         </div>
 
         {/* Records F1 en el circuito */}
-        <SectionTitle>Récords en {r.name}</SectionTitle>
+        <SectionTitle>{t('Récords en {name}').replace('{name}', r.name)}</SectionTitle>
         <div style={{
           background: P.surface, border: `1px solid ${P.text}10`,
           borderRadius: 14, padding: 4, overflow: 'hidden',
         }}>
           <RecordRow
             icon="🏆"
-            label="Más victorias"
+            label={t('Más victorias')}
             primary={`${c.mostWinsDriver.name} · ${c.mostWinsDriver.wins}`}
-            sub={c.mostWinsCoLeader ? `Empatado con ${c.mostWinsCoLeader.name} (${c.mostWinsCoLeader.wins})` : null}
+            sub={c.mostWinsCoLeader ? `${t('Empatado con {x}').replace('{x}', c.mostWinsCoLeader.name)} (${c.mostWinsCoLeader.wins})` : null}
           />
           <RecordRow
             icon="⚡"
-            label="Récord vuelta rápida"
+            label={t('Récord vuelta rápida')}
             primary={r.lapRecord.split('—')[0].trim()}
             sub={r.lapRecord.split('—')[1] ? r.lapRecord.split('—')[1].trim() : ''}
             last
@@ -243,7 +272,7 @@ function ScreenNext({ onBack }) {
         {/* Datos curiosos */}
         {c.funFacts && c.funFacts.length > 0 && (
           <>
-            <SectionTitle>Datos curiosos</SectionTitle>
+            <SectionTitle>{t('Datos curiosos')}</SectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {c.funFacts.map((fact, i) => (
                 <div key={i} style={{
@@ -259,7 +288,7 @@ function ScreenNext({ onBack }) {
                     fontFamily: 'ui-monospace, monospace',
                   }}>{i + 1}</div>
                   <div style={{ fontSize: 12.5, lineHeight: 1.45, fontWeight: 600, color: P.text, opacity: 0.92 }}>
-                    {fact}
+                    {t(fact)}
                   </div>
                 </div>
               ))}
@@ -270,7 +299,7 @@ function ScreenNext({ onBack }) {
         {/* Histórico ganadores de la porra en este circuito (opcional) */}
         {history.length > 0 && (
           <>
-            <SectionTitle>Mejor de la porra · histórico {r.name}</SectionTitle>
+            <SectionTitle>{t('Mejor de la porra · histórico {name}').replace('{name}', r.name)}</SectionTitle>
             <div style={{
               background: P.surface, border: `1px solid ${P.text}10`,
               borderRadius: 14, padding: 4, overflow: 'hidden',

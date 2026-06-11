@@ -30,15 +30,15 @@ function ScreenPalmares({ onBack }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
           <BackButton onClick={onBack} />
           <div style={{ fontSize: 11, fontWeight: 700, color: P.muted, letterSpacing: 1.5 }}>
-            PALMARÉS · 2021 — 2025
+            {t('PALMARÉS · 2021 — 2025')}
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
           <div style={{ fontSize: 46 }}>🏆</div>
           <div>
-            <div style={{ fontSize: 30, fontWeight: 900, letterSpacing: -1.1, lineHeight: 1 }}>Palmarés</div>
+            <div style={{ fontSize: 30, fontWeight: 900, letterSpacing: -1.1, lineHeight: 1 }}>{t('Palmarés')}</div>
             <div style={{ fontSize: 12, fontWeight: 700, color: P.muted, marginTop: 4 }}>
-              Campeones, equipos y GP de la Porra
+              {t('Campeones, equipos y GP de la Porra')}
             </div>
           </div>
         </div>
@@ -51,17 +51,17 @@ function ScreenPalmares({ onBack }) {
           border: `1px solid ${P.text}11`,
         }}>
           {[
-            { k: 'pilotos', label: 'Pilotos' },
-            { k: 'equipos', label: 'Equipos' },
+            { k: 'pilotos', label: t('Pilotos') },
+            { k: 'equipos', label: t('Equipos') },
             { k: 'kart', label: 'GP Porra' },
-          ].map(t => (
-            <button key={t.k} onClick={() => setTab(t.k)} className="touchable" style={{
+          ].map(tb => (
+            <button key={tb.k} onClick={() => setTab(tb.k)} className="touchable" style={{
               flex: 1, padding: '8px 0', borderRadius: 9,
               fontSize: 12.5, fontWeight: 700,
-              background: tab === t.k ? P.accent : 'transparent',
-              color: tab === t.k ? '#fff' : P.muted,
+              background: tab === tb.k ? P.accent : 'transparent',
+              color: tab === tb.k ? '#fff' : P.muted,
               border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-            }}>{t.label}</button>
+            }}>{tb.label}</button>
           ))}
         </div>
       </div>
@@ -69,7 +69,7 @@ function ScreenPalmares({ onBack }) {
       <div style={{ padding: '6px 16px' }}>
         {tab === 'pilotos' && (
           <>
-            <SectionTitle>Mundial de pilotos</SectionTitle>
+            <SectionTitle>{t('Mundial de pilotos')}</SectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {window.PALMARES_DRIVERS.slice().reverse().map((p, i) => (
                 <TrophyRow key={p.year}
@@ -84,7 +84,7 @@ function ScreenPalmares({ onBack }) {
               ))}
             </div>
 
-            <SectionTitle>Tabla final por temporada</SectionTitle>
+            <SectionTitle>{t('Tabla final por temporada')}</SectionTitle>
             <YearChips options={driverOptions} value={driverYear} onChange={setDriverYear} palette={P} />
             <FinalStandings
               rows={driverYear === 'total' ? window.TOTAL_DRIVERS : window.HISTORY_DRIVERS[driverYear]}
@@ -95,27 +95,27 @@ function ScreenPalmares({ onBack }) {
 
         {tab === 'equipos' && (
           <>
-            <SectionTitle>Mundial de constructores</SectionTitle>
+            <SectionTitle>{t('Mundial de constructores')}</SectionTitle>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {window.PALMARES_TEAMS.slice().reverse().map((t, i) => (
-                <TrophyRow key={t.year}
-                  year={t.year}
-                  emoji={t.emoji}
-                  title={t.name}
-                  subtitle={t.roster}
+              {window.PALMARES_TEAMS.slice().reverse().map((tm, i) => (
+                <TrophyRow key={tm.year}
+                  year={tm.year}
+                  emoji={tm.emoji}
+                  title={tm.name}
+                  subtitle={tm.roster}
                   latest={i === 0}
                 />
               ))}
             </div>
 
-            <SectionTitle>Tabla final por temporada</SectionTitle>
+            <SectionTitle>{t('Tabla final por temporada')}</SectionTitle>
             <YearChips options={teamOptions} value={teamYear} onChange={setTeamYear} palette={P} />
             <FinalStandings
               rows={teamYear === 'total' ? window.TOTAL_TEAMS : window.HISTORY_TEAMS[teamYear]}
               mode="team"
             />
 
-            <SectionTitle>Salón de la fama · equipos históricos</SectionTitle>
+            <SectionTitle>{t('Salón de la fama · equipos históricos')}</SectionTitle>
             <div style={{
               background: P.surface, border: `1px solid ${P.text}10`,
               borderRadius: 14, padding: '6px 4px',
@@ -124,7 +124,7 @@ function ScreenPalmares({ onBack }) {
                 display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)',
                 gap: 0,
               }}>
-                {window.HALL_OF_FAME_TEAMS.map((t, i) => (
+                {window.HALL_OF_FAME_TEAMS.map((tm, i) => (
                   <div key={i} style={{
                     display: 'flex', alignItems: 'center', gap: 8,
                     padding: '8px 8px',
@@ -137,19 +137,19 @@ function ScreenPalmares({ onBack }) {
                       background: 'rgba(255,255,255,0.05)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 14, flexShrink: 0,
-                    }}>{t.emoji}</div>
+                    }}>{tm.emoji}</div>
                     <div style={{
                       fontSize: 11.5, fontWeight: 700,
                       letterSpacing: -0.1,
                       whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                       minWidth: 0,
-                    }}>{t.name}</div>
+                    }}>{tm.name}</div>
                   </div>
                 ))}
               </div>
             </div>
             <div style={{ fontSize: 10, color: P.mutedDim, textAlign: 'center', marginTop: 10, fontWeight: 600, fontStyle: 'italic' }}>
-              {window.HALL_OF_FAME_TEAMS.length} equipos han competido desde 2021
+              {t('{n} equipos han competido desde 2021').replace('{n}', window.HALL_OF_FAME_TEAMS.length)}
             </div>
           </>
         )}
@@ -162,7 +162,7 @@ function ScreenPalmares({ onBack }) {
               background: `${P.accent}12`, border: `1px dashed ${P.accent}40`,
               fontSize: 11.5, lineHeight: 1.45, color: P.muted, fontWeight: 600,
             }}>
-              🏁 Carrera presencial anual de karting entre los participantes.
+              {t('🏁 Carrera presencial anual de karting entre los participantes.')}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {window.PALMARES_KART.slice().reverse().map((k, i) => (
@@ -188,10 +188,10 @@ function ScreenPalmares({ onBack }) {
                     <div style={{ fontSize: 13, letterSpacing: -0.2 }}>{k.year}</div>
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 10, fontWeight: 800, color: P.muted, letterSpacing: 1 }}>CAMPEÓN</div>
+                    <div style={{ fontSize: 10, fontWeight: 800, color: P.muted, letterSpacing: 1 }}>{t('CAMPEÓN')}</div>
                     <div style={{ fontSize: 17, fontWeight: 900, letterSpacing: -0.4, marginTop: 1 }}>🏆 {k.winner}</div>
                     <div style={{ fontSize: 11, color: '#C8A2FF', fontWeight: 700, marginTop: 3 }}>
-                      ⚡ Vuelta rápida: {k.fastest}
+                      ⚡ {t('Vuelta rápida')}: {k.fastest}
                     </div>
                   </div>
                 </div>
@@ -199,7 +199,7 @@ function ScreenPalmares({ onBack }) {
             </div>
 
             {/* Mejores tiempos */}
-            <SectionTitle>Mejores tiempos</SectionTitle>
+            <SectionTitle>{t('Mejores tiempos')}</SectionTitle>
             <div style={{
               padding: 4, borderRadius: 12, marginBottom: 10,
               background: 'rgba(255,255,255,0.06)',
@@ -207,8 +207,8 @@ function ScreenPalmares({ onBack }) {
               display: 'flex', gap: 2,
             }}>
               {[
-                { k: 'dry', label: '☀️ En seco', activeBg: P.accent2, activeFg: '#1a1a1a' },
-                { k: 'wet', label: '🌧️ En mojado', activeBg: '#3DA5F5', activeFg: '#0A1A2A' },
+                { k: 'dry', label: '☀️ ' + t('En seco'), activeBg: P.accent2, activeFg: '#1a1a1a' },
+                { k: 'wet', label: '🌧️ ' + t('En mojado'), activeBg: '#3DA5F5', activeFg: '#0A1A2A' },
               ].map(c => (
                 <button key={c.k} onClick={() => setTrackCond(c.k)} className="touchable" style={{
                   flex: 1, padding: '8px 0', borderRadius: 9,
@@ -294,7 +294,7 @@ function FinalStandings({ rows, mode }) {
         padding: '12px 14px', borderRadius: 12,
         background: P.surface, border: `1px dashed ${P.text}15`,
         fontSize: 12, color: P.muted, textAlign: 'center',
-      }}>Sin datos disponibles</div>
+      }}>{t('Sin datos disponibles')}</div>
     );
   }
   return (
@@ -424,7 +424,7 @@ function TrophyRow({ year, emoji, title, subtitle, icon = '🏆', iconBg, iconCo
           fontSize: 9, fontWeight: 900, letterSpacing: 0.8,
           padding: '3px 6px', borderRadius: 5,
           background: '#FFD93D', color: '#1a1a1a',
-        }}>VIGENTE</div>
+        }}>{t('VIGENTE')}</div>
       )}
     </div>
   );

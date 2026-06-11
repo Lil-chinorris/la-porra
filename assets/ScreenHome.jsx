@@ -14,7 +14,7 @@ function CuloSeparator() {
         padding: '3px 10px', borderRadius: 999,
         background: `${P.danger}1A`,
         border: `1px solid ${P.danger}40`,
-      }}>💩 culo</div>
+      }}>💩 {t('culo')}</div>
       <div style={{ flex: 1, height: 1, background: `${P.text}14` }} />
     </div>
   );
@@ -47,15 +47,16 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
       <div style={{ padding: 'max(32px, env(safe-area-inset-top)) 20px 10px', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 10 }}>
         <div>
           <div style={{ fontSize: 11, letterSpacing: 2.5, fontWeight: 700, color: P.accent, marginBottom: 6 }}>
-            ◆ CAMPEONATO 2026
+            ◆ {t('CAMPEONATO 2026')}
           </div>
           <div style={{ fontSize: 40, fontWeight: 900, lineHeight: 1, letterSpacing: -1.4 }}>
             La Porra<span style={{ color: P.accent }}>.</span>
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'stretch' }}>
-          <button onClick={onOpenPalmares} className="touchable" style={headerBtn}>🏆 Palmarés</button>
-          <button onClick={onOpenDesafios} className="touchable" style={headerBtn}>🎖️ Desafíos</button>
+          <button onClick={onOpenPalmares} className="touchable" style={headerBtn}>🏆 {t('Palmarés')}</button>
+          <button onClick={onOpenDesafios} className="touchable" style={headerBtn}>🎖️ {t('Desafíos')}</button>
+          <LangMenu />
         </div>
       </div>
 
@@ -71,7 +72,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
         <div style={{ fontSize: 18 }}>✨</div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 13, fontWeight: 800, letterSpacing: -0.2, color: P.text }}>
-            Consigue más con La Porra Pro
+            {t('Consigue más con La Porra Pro')}
           </div>
         </div>
         <span style={{
@@ -79,7 +80,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
           color: '#1a1a1a', background: P.accent2,
           padding: '5px 12px', borderRadius: 999,
           flexShrink: 0,
-        }}>Actualizar</span>
+        }}>{t('Actualizar')}</span>
       </button>
 
       {/* Tabs Pilotos / Equipos */}
@@ -89,16 +90,16 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
         display: 'flex', gap: 2, border: `1px solid ${P.text}11`,
       }}>
         {[
-          { k: 'pilotos', label: 'Pilotos' },
-          { k: 'equipos', label: 'Equipos' },
-        ].map(t => (
-          <button key={t.k} onClick={() => setTab(t.k)} className="touchable" style={{
+          { k: 'pilotos', label: t('Pilotos') },
+          { k: 'equipos', label: t('Equipos') },
+        ].map(tb => (
+          <button key={tb.k} onClick={() => setTab(tb.k)} className="touchable" style={{
             flex: 1, padding: '9px 0', borderRadius: 9,
             fontSize: 13, fontWeight: 700,
-            background: tab === t.k ? P.accent : 'transparent',
-            color: tab === t.k ? '#fff' : P.muted,
+            background: tab === tb.k ? P.accent : 'transparent',
+            color: tab === tb.k ? '#fff' : P.muted,
             border: 'none', cursor: 'pointer', fontFamily: 'inherit',
-          }}>{t.label}</button>
+          }}>{tb.label}</button>
         ))}
       </div>
 
@@ -111,7 +112,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
       }}>
         <style>{`.lp-scroll::-webkit-scrollbar{display:none}`}</style>
         <Chip active={view === 'general'} onClick={() => setView('general')}
-          palette={P}>General</Chip>
+          palette={P}>{t('General')}</Chip>
         {window.CALENDAR.map(r => {
           const isLast = r.n === window.RACE_NUMBER;
           const done = r.status === 'done';
@@ -127,7 +128,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
               onClick={onClick}
               disabled={future}
               palette={P}
-              badge={isLast ? 'Últ.' : isNext ? 'Próx.' : null}
+              badge={isLast ? t('Últ.') : isNext ? t('Próx.') : null}
               variant={isNext ? 'next' : future ? 'future' : 'done'}>
               <span style={{ marginRight: 4, opacity: future ? 0.55 : 1 }}>{r.emoji}</span>
               <span>{r.short}</span>
@@ -153,10 +154,10 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
             <div style={{ fontSize: 26 }}>{r.emoji}</div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 10, fontWeight: 700, color: P.muted, letterSpacing: 1.5 }}>
-                CARRERA {n} · {r.date}
+                {t('CARRERA')} {n} · {r.date}
               </div>
               <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: -0.2 }}>
-                GP {r.name} · Ver resultados
+                GP {r.name} · {t('Ver resultados')}
               </div>
             </div>
             <svg width="8" height="14" viewBox="0 0 8 14" style={{ opacity: 0.6 }}>
@@ -183,7 +184,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
         <div style={{ fontSize: 28 }}>{window.NEXT_RACE.emoji}</div>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: P.muted, letterSpacing: 1.2 }}>
-            PRÓXIMA · CARRERA {window.NEXT_RACE.n}
+            {t('PRÓXIMA · CARRERA')} {window.NEXT_RACE.n}
           </div>
           <div style={{ fontSize: 15, fontWeight: 800, letterSpacing: -0.2 }}>
             GP {window.NEXT_RACE.name}
@@ -212,7 +213,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
             DOCUMENTO OFICIAL
           </div>
           <div style={{ fontSize: 15, fontWeight: 800, letterSpacing: -0.2 }}>
-            Normas de la porra
+            {t('Normas de la porra')}
           </div>
           <div style={{ fontSize: 11, color: P.muted, fontWeight: 700, marginTop: 2 }}>
             Abre en Google Drive
@@ -303,7 +304,7 @@ function PlayerList({ view, onOpen }) {
         const big = view === 'general' ? p.total : p._racePts;
         const sub = view === 'general'
           ? <LastChip last={p.last} />
-          : <div style={{ fontSize: 10, fontWeight: 700, color: P.muted }}>tot. {p.total}</div>;
+          : <div style={{ fontSize: 10, fontWeight: 700, color: P.muted }}>{t('tot.')} {p.total}</div>;
         // Separador "culo" antes del último de la tabla general
         const showCulo = view === 'general' && idx === list.length - 1;
 
@@ -361,26 +362,26 @@ function TeamList({ view, onOpen }) {
     const n = parseInt(view.split('-')[1], 10);
     const rr = window.TEAM_RESULTS[n];
     return [...window.TEAMS]
-      .map(t => ({ ...t, _racePts: rr[t.name] ?? 0 }))
+      .map(t => ({ ...t, _racePts: rr[tm.name] ?? 0 }))
       .sort((a, b) => b._racePts - a._racePts)
       .map((t, i) => ({ ...t, _rank: i + 1 }));
   }, [view]);
 
   return (
     <div style={{ padding: '0 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-      {list.map((t, idx) => {
-        const teamColor = P.teams[t.name] || P.accent;
-        const rank = view === 'general' ? t.pos : t._rank;
+      {list.map((tm, idx) => {
+        const teamColor = P.teams[tm.name] || P.accent;
+        const rank = view === 'general' ? tm.pos : tm._rank;
         const isPodium = rank <= 3;
         const isLeader = rank === 1;
-        const count = window.PLAYERS.filter(p => p.team === t.name).length;
-        const big = view === 'general' ? t.total : t._racePts;
+        const count = window.PLAYERS.filter(p => p.team === tm.name).length;
+        const big = view === 'general' ? tm.total : tm._racePts;
         const showCulo = view === 'general' && idx === list.length - 1;
 
         return (
-          <React.Fragment key={t.name}>
+          <React.Fragment key={tm.name}>
             {showCulo && <CuloSeparator />}
-          <button onClick={() => onOpen(t.name)}
+          <button onClick={() => onOpen(tm.name)}
             className="lp-row touchable" style={{
               animationDelay: `${idx * 20}ms`,
               position: 'relative',
@@ -401,12 +402,12 @@ function TeamList({ view, onOpen }) {
               {isPodium ? <PodiumBadge pos={rank} size={30} /> : (
                 <div style={{ fontSize: 19, fontWeight: 800, color: P.muted, letterSpacing: -0.5 }}>{rank}</div>
               )}
-              {view === 'general' && <DeltaChip delta={t.delta} size="sm" />}
+              {view === 'general' && <DeltaChip delta={tm.delta} size="sm" />}
             </div>
-            <TeamAvatar team={t.name} emoji={t.emoji} size={46} />
+            <TeamAvatar team={tm.name} emoji={tm.emoji} size={46} />
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 15.5, fontWeight: 800, letterSpacing: -0.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.name}</div>
-              <div style={{ fontSize: 11, color: P.muted, fontWeight: 600, marginTop: 2 }}>{count} {count === 1 ? 'piloto' : 'pilotos'}</div>
+              <div style={{ fontSize: 15.5, fontWeight: 800, letterSpacing: -0.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{tm.name}</div>
+              <div style={{ fontSize: 11, color: P.muted, fontWeight: 600, marginTop: 2 }}>{count} {count === 1 ? t('piloto') : t('pilotos')}</div>
             </div>
             <div style={{ flexShrink: 0, textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3 }}>
               <div style={{
@@ -415,8 +416,8 @@ function TeamList({ view, onOpen }) {
                 letterSpacing: -0.7, lineHeight: 1,
               }}>{view === 'general' ? big : (big > 0 ? '+' + big : big)}</div>
               {view === 'general'
-                ? <LastChip last={t.last} />
-                : <div style={{ fontSize: 10, fontWeight: 700, color: P.muted }}>tot. {t.total}</div>}
+                ? <LastChip last={tm.last} />
+                : <div style={{ fontSize: 10, fontWeight: 700, color: P.muted }}>{t('tot.')} {tm.total}</div>}
             </div>
           </button>
           </React.Fragment>

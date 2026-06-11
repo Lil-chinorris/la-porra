@@ -9,15 +9,15 @@
   <meta property="og:title" content="La Porra · Campeonato 2026">
   <meta property="og:description" content="Clasificación, equipos, palmarés y próxima carrera.">
   <meta property="og:url" content="https://lil-chinorris.github.io/la-porra/">
-  <meta property="og:image" content="https://lil-chinorris.github.io/la-porra/assets/og-image.jpg">
+  <meta property="og:image" content="https://lil-chinorris.github.io/la-porra/assets/og-monaco.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="La Porra · ¿Es el año del Cruasán?">
+  <meta property="og:image:alt" content="La Porra presenta: Monaco">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="La Porra · Campeonato 2026">
   <meta name="twitter:description" content="Clasificación, equipos, palmarés y próxima carrera.">
-  <meta name="twitter:image" content="https://lil-chinorris.github.io/la-porra/assets/og-image.jpg">
+  <meta name="twitter:image" content="https://lil-chinorris.github.io/la-porra/assets/og-monaco.jpg">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -116,6 +116,7 @@
 
   <script type="text/babel" src="assets/IOSDevice.jsx"></script>
   <script type="text/babel" src="assets/data.jsx"></script>
+  <script type="text/babel" src="assets/i18n.jsx"></script>
   <script type="text/babel" src="assets/shared.jsx"></script>
   <script type="text/babel" src="assets/ScreenHome.jsx"></script>
   <script type="text/babel" src="assets/ScreenPlayer.jsx"></script>
@@ -135,10 +136,18 @@
       const [fullscreen, setFullscreen] = React.useState(
         typeof window !== 'undefined' && window.innerWidth < 768
       );
+      // Idioma: estado + pop-up de primera visita (solo si nunca eligió)
+      const [lang, setLangState] = React.useState(window.getLang());
+      const [askLang, setAskLang] = React.useState(!window.getLang());
       React.useEffect(() => {
+        const onLang = (e) => { setLangState(e.detail); };
+        window.addEventListener('lp-lang-changed', onLang);
         const onResize = () => setFullscreen(window.innerWidth < 768);
         window.addEventListener('resize', onResize);
-        return () => window.removeEventListener('resize', onResize);
+        return () => {
+          window.removeEventListener('lp-lang-changed', onLang);
+          window.removeEventListener('resize', onResize);
+        };
       }, []);
       const push = (entry) => setStack(s => [...s, entry]);
       const pop = () => setStack(s => s.length > 1 ? s.slice(0, -1) : s);
@@ -189,22 +198,31 @@
         }
       })();
 
+      // key={lang} fuerza el re-render completo al cambiar idioma
+      const langModal = askLang
+        ? <LangModal onChosen={() => setAskLang(false)} />
+        : null;
+
       if (fullscreen) {
         // En móvil: pantalla completa, sin marco iPhone, sin status bar simulada
         return (
-          <div style={{
+          <div key={lang || 'es'} style={{
             width: '100vw', height: '100vh', overflow: 'hidden',
-            background: '#0F1923',
+            background: '#0F1923', position: 'relative',
           }}>
             {screen}
+            {langModal}
           </div>
         );
       }
       // Escritorio: mockup centrado
       return (
-        <div style={{ transform: 'scale(var(--lp-scale, 1))', transformOrigin: 'center center' }}>
+        <div key={lang || 'es'} style={{ transform: 'scale(var(--lp-scale, 1))', transformOrigin: 'center center' }}>
           <IOSDevice dark={true} width={402} height={874}>
-            {screen}
+            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+              {screen}
+              {langModal}
+            </div>
           </IOSDevice>
         </div>
       );

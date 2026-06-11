@@ -1,6 +1,6 @@
-// data.jsx — La Porra · datos reales hasta Carrera 5 (Canadá · 24 may 2026)
+// data.jsx — La Porra · datos reales hasta Carrera 6 (Mónaco · 7 jun 2026)
 
-const RACE_NUMBER = 5;
+const RACE_NUMBER = 6;
 
 // Calendario — solo las carreras disputadas + próxima
 const RACES = [
@@ -9,18 +9,19 @@ const RACES = [
   { n: 3, name: 'Japón',     emoji: '🇯🇵', short: 'JPN', date: '29 MAR 2026', circuit: 'Suzuka' },
   { n: 4, name: 'Miami',     emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  circuit: 'Miami International Autodrome' },
   { n: 5, name: 'Canadá',    emoji: '🇨🇦', short: 'CAN', date: '24 MAY 2026', circuit: 'Circuit Gilles-Villeneuve' },
+  { n: 6, name: 'Mónaco',    emoji: '🇲🇨', short: 'MON', date: '7 JUN 2026',  circuit: 'Circuit de Monaco' },
 ];
 
-// Próxima: Mónaco (C6)
+// Próxima: Barcelona (C7)
 const NEXT_RACE = {
-  n: 6, name: 'Mónaco', emoji: '🇲🇨', short: 'MON',
-  date: '7 JUN 2026',
-  circuit: 'Circuit de Monaco',
-  length: '3.337 km',
-  laps: 78,
-  corners: 19,
-  lapRecord: "1:12.909 — L. Hamilton (2021)",
-  firstGp: 1950,
+  n: 7, name: 'Barcelona', emoji: '🇪🇸', short: 'BCN',
+  date: '14 JUN 2026',
+  circuit: 'Circuit de Barcelona-Catalunya',
+  length: '4.657 km',
+  laps: 66,
+  corners: 14,
+  lapRecord: "1:16.330 — M. Verstappen (2023)",
+  firstGp: 1991,
 };
 
 // Resultados por carrera (nombre → puntos esa carrera)
@@ -50,6 +51,11 @@ const RACE_RESULTS = {
     CHINO: -1, ENRIC: -1, DAPE: -2, MISTIC: -1, MARVIN: 1, CAÑA: -1, ALEX: 1,
     MARTÍ: 0, LOJO: -2, ITZIAR: -2, SARAY: -2, JANE: -1, JAVISUA: -2, SAMU: -2, ÁLVARO: -2,
   },
+  6: { // Mónaco
+    BALADO: 2, ALBA: 1, ALEJA: -2, BLANQUI: 1, PATACA: 1, EVA: 1, LARA: -1,
+    CHINO: 0, ENRIC: 0, DAPE: 1, MISTIC: -3, MARVIN: 1, CAÑA: 0, ALEX: 1,
+    MARTÍ: 1, LOJO: 0, ITZIAR: 0, SARAY: -2, JANE: 1, JAVISUA: 0, SAMU: -2, ÁLVARO: 0,
+  },
 };
 
 const TEAM_RESULTS = {
@@ -68,6 +74,9 @@ const TEAM_RESULTS = {
   5: { 'Freyja Racing Team': -4, 'Amigas Alo': -2, 'Red Force': -2, 'Pepinou': -3,
        'Azkarrak Racing': -3, 'El Cruasán': 2, 'Tapas Team': -2, 'Champis': -3,
        'No Power F1 Team': -3, 'Os Rapatundas': -3, 'Agente Libre': -2 },
+  6: { 'Freyja Racing Team': 3, 'Amigas Alo': 2, 'Red Force': -1, 'Pepinou': 1,
+       'Azkarrak Racing': -2, 'El Cruasán': 2, 'Tapas Team': 1, 'Champis': 0,
+       'No Power F1 Team': -5, 'Os Rapatundas': -1, 'Agente Libre': 1 },
 };
 
 // Roster
@@ -249,11 +258,7 @@ const HALL_OF_FAME_TEAMS = [
 ];
 
 // Histórico ganador de la porra en el próximo circuito (vacío si no aplica)
-const NEXT_HISTORY = [ // Mónaco
-  { year: 2023, player: 'Marvin', pts: 5 },
-  { year: 2024, player: 'Chino',  pts: 14 },
-  { year: 2025, player: 'Cris',   pts: 12 },
-];
+const NEXT_HISTORY = []; // Barcelona: sin histórico cargado por ahora
 
 // Paleta Paddock
 const PALETTE = {
@@ -287,8 +292,8 @@ const CALENDAR = [
   { n: 3,  name: 'Japón',        emoji: '🇯🇵', short: 'JPN', date: '29 MAR 2026', status: 'done' },
   { n: 4,  name: 'Miami',        emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  status: 'done' },
   { n: 5,  name: 'Canadá',       emoji: '🇨🇦', short: 'CAN', date: '24 MAY 2026', status: 'done' },
-  { n: 6,  name: 'Mónaco',       emoji: '🇲🇨', short: 'MON', date: '7 JUN 2026',  status: 'next' },
-  { n: 7,  name: 'Barcelona',    emoji: '🇪🇸', short: 'BCN', date: '21 JUN 2026', status: 'future' },
+  { n: 6,  name: 'Mónaco',       emoji: '🇲🇨', short: 'MON', date: '7 JUN 2026',  status: 'done' },
+  { n: 7,  name: 'Barcelona',    emoji: '🇪🇸', short: 'BCN', date: '14 JUN 2026', status: 'next' },
   { n: 8,  name: 'Austria',      emoji: '🇦🇹', short: 'AUT', date: '5 JUL 2026',  status: 'future' },
   { n: 9,  name: 'Gran Bretaña', emoji: '🇬🇧', short: 'GBR', date: '19 JUL 2026', status: 'future' },
   { n: 10, name: 'Bélgica',      emoji: '🇧🇪', short: 'BEL', date: '26 JUL 2026', status: 'future' },
@@ -398,51 +403,54 @@ const BEST_LAPS_WET = [
 ];
 
 // ───────────────────────────────────────────────────────────────────
-// Datos del circuito de la próxima carrera (Mónaco)
+// Datos del circuito de la próxima carrera (Barcelona)
 // ───────────────────────────────────────────────────────────────────
 const NEXT_CIRCUIT = {
-  firstGp: 1950, // primera edición del GP de Mónaco en el Mundial de F1
-  editions: 70,
-  mostWinsDriver: { name: 'A. Senna', wins: 6 },
+  firstGp: 1991, // primera edición del GP de España en Montmeló
+  editions: 35,
+  mostWinsDriver: { name: 'L. Hamilton', wins: 6 },
+  mostWinsCoLeader: { name: 'M. Schumacher', wins: 6 },
+  image: 'assets/barcelona.jpg', // foto de cabecera (Unsplash)
   polePositions: [
     { year: 2022, driver: 'C. Leclerc' },
     { year: 2023, driver: 'M. Verstappen' },
-    { year: 2024, driver: 'C. Leclerc' },
-    { year: 2025, driver: 'C. Leclerc' },
+    { year: 2024, driver: 'L. Norris' },
+    { year: 2025, driver: 'O. Piastri' },
   ],
   funFacts: [
-    'Es el circuito más lento y estrecho del calendario, trazado por las calles de Montecarlo desde 1929.',
-    'Adelantar es casi imposible: aquí la pole del sábado vale casi tanto como la propia carrera.',
-    'Su túnel es el único tramo cubierto del calendario; los pilotos pasan de la sombra a la luz a más de 250 km/h.',
-    'Forma parte de la "Triple Corona" del motor junto a las 500 Millas de Indianápolis y las 24h de Le Mans.',
-    'La horquilla del Fairmont (Loews) es la curva más lenta de toda la F1: se toma a unos 47 km/h.',
+    'Los equipos lo conocen de memoria: durante décadas fue EL circuito de test de pretemporada de la F1.',
+    'Se dice que un coche que va bien en Montmeló va bien en todas partes: tiene curvas de todos los tipos.',
+    'La curva 3, larguísima y de derechas, es una de las que más castiga el neumático delantero izquierdo de todo el calendario.',
+    'En 2023 se eliminó la chicane final y volvió el trazado original: dos curvas rápidas de derechas para cerrar la vuelta.',
+    'El viento cambia mucho el comportamiento del coche aquí: por la tarde suele girar y desestabiliza la frenada de la curva 1.',
   ],
-  // Sesiones del fin de semana (zona horaria local de España)
+  // Sesiones del fin de semana (horario peninsular español)
   sessions: [
-    { day: 'Viernes 5 de junio', items: [
+    { day: 'Viernes 12 de junio', items: [
       { label: 'Entrenamientos Libres 1 (FP1)', time: '13:30' },
       { label: 'Entrenamientos Libres 2 (FP2)', time: '17:00' },
     ]},
-    { day: 'Sábado 6 de junio', items: [
+    { day: 'Sábado 13 de junio', items: [
       { label: 'Entrenamientos Libres 3 (FP3)', time: '12:30' },
       { label: 'Clasificación',                 time: '16:00' },
     ]},
-    { day: 'Domingo 7 de junio', items: [
+    { day: 'Domingo 14 de junio', items: [
       { label: 'Carrera',        time: '15:00', highlight: true },
     ]},
   ],
+  sessionsNote: '* Horario peninsular español',
   deadline: {
     label: 'Hora límite envío de la porra',
-    when: 'Domingo 7 de junio · 14:59',
+    when: 'Domingo 14 de junio · 14:59',
   },
   // Para añadir al calendario del móvil (formato ISO con offset Madrid CEST = +02:00)
   event: {
-    title: 'GP Mónaco · La Porra',
-    location: 'Circuit de Monaco, Montecarlo',
-    description: 'Carrera del GP de Mónaco. Hora límite envío de la porra: 14:59h.',
-    start: '2026-06-07T15:00:00+02:00',
-    end:   '2026-06-07T17:00:00+02:00',
-    filename: 'gp-monaco-2026.ics',
+    title: 'GP Barcelona · La Porra',
+    location: 'Circuit de Barcelona-Catalunya, Montmeló',
+    description: 'Carrera del GP de Barcelona. Hora límite envío de la porra: 14:59h.',
+    start: '2026-06-14T15:00:00+02:00',
+    end:   '2026-06-14T17:00:00+02:00',
+    filename: 'gp-barcelona-2026.ics',
   },
 };
 
