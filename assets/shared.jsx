@@ -174,6 +174,7 @@ function TickNumber({ value, duration = 800, style }) {
 
 // ─── Champion badges (driver title / team title / GP de la Porra winner) ──
 function ChampBadge({ kind, year, size = 'md' }) {
+  const P = window.PALETTE;
   // kind: 'driver' (título pilotos) | 'team' (título equipos) | 'kart' (GP Porra)
   //       | 'fastest' (vuelta rápida GP Porra)
   const cfg = {

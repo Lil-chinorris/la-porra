@@ -264,7 +264,7 @@ function YearChips({ options, value, onChange, palette }) {
         const label = isTotal ? 'Σ Total' : opt;
         const bg = active
           ? (isTotal ? palette.accent2 : palette.accent)
-          : P.ov(0.04);
+          : palette.ov(0.04);
         const fg = active
           ? (isTotal ? '#1a1a1a' : '#fff')
           : palette.muted;

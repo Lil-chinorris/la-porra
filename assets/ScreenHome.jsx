@@ -269,8 +269,8 @@ function Chip({ active, onClick, children, palette, badge, disabled, variant, da
     : isNext
       ? `${palette.accent}18`
       : isFuture
-        ? P.ov(0.02)
-        : P.ov(0.04);
+        ? palette.ov(0.02)
+        : palette.ov(0.04);
   const color = active
     ? palette.accent2
     : isFuture
