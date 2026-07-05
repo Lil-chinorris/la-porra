@@ -81,7 +81,7 @@ function BackButton({ onClick }) {
   return (
     <button onClick={onClick} className="touchable" style={{
       width: 38, height: 38, borderRadius: 12,
-      background: 'rgba(255,255,255,0.08)',
+      background: P.ov(0.08),
       border: `1px solid ${P.text}14`,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       cursor: 'pointer', flexShrink: 0, padding: 0,
@@ -180,8 +180,8 @@ function ChampBadge({ kind, year, size = 'md' }) {
     driver:  { label: 'Campeón', icon: '👑', bg: 'linear-gradient(135deg,#FFD93D,#FFB800)', fg: '#1a1a1a' },
     team:    { label: 'Título',  icon: '🏆', bg: 'linear-gradient(135deg,#FFD93D,#FFB800)', fg: '#1a1a1a' },
     kart:    { label: 'GP Porra', icon: '🏁', bg: 'linear-gradient(135deg,#C8A2FF,#7B5FE0)', fg: '#fff' },
-    fastest: { label: 'V. rápida', icon: '⚡', bg: 'rgba(255,255,255,0.06)', fg: '#C8A2FF' },
-  }[kind] || { label: '', icon: '★', bg: 'rgba(255,255,255,0.08)', fg: '#fff' };
+    fastest: { label: 'V. rápida', icon: '⚡', bg: P.ov(0.06), fg: '#C8A2FF' },
+  }[kind] || { label: '', icon: '★', bg: P.ov(0.08), fg: '#fff' };
   const small = size === 'sm';
   return (
     <span style={{
@@ -199,14 +199,16 @@ function ChampBadge({ kind, year, size = 'md' }) {
   );
 }
 
-// ─── ScrollGloss: degradado oscuro sticky en la parte superior de cada pantalla ─
+// ─── ScrollGloss: degradado sticky arriba (se funde con el fondo del tema) ─
 function ScrollGloss() {
+  const P = window.PALETTE;
+  const s = P.scrim || '15,25,35';
   return (
     <div style={{
       position: 'sticky', top: 0, left: 0, right: 0,
       height: 56, marginBottom: -56,
       pointerEvents: 'none', zIndex: 5,
-      background: 'linear-gradient(180deg, rgba(15,25,35,0.95) 0%, rgba(15,25,35,0.55) 55%, rgba(15,25,35,0) 100%)',
+      background: `linear-gradient(180deg, rgba(${s},0.95) 0%, rgba(${s},0.55) 55%, rgba(${s},0) 100%)`,
     }} />
   );
 }

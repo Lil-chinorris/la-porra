@@ -116,6 +116,7 @@
 
   <script type="text/babel" src="assets/IOSDevice.jsx"></script>
   <script type="text/babel" src="assets/data.jsx"></script>
+  <script type="text/babel" src="assets/theme.jsx"></script>
   <script type="text/babel" src="assets/i18n.jsx"></script>
   <script type="text/babel" src="assets/shared.jsx"></script>
   <script type="text/babel" src="assets/ScreenHome.jsx"></script>
@@ -139,13 +140,18 @@
       // Idioma: estado + pop-up de primera visita (solo si nunca eligió)
       const [lang, setLangState] = React.useState(window.getLang());
       const [askLang, setAskLang] = React.useState(!window.getLang());
+      // Tema activo (oscuro / claro / orgullo)
+      const [theme, setThemeState] = React.useState(window.getTheme());
       React.useEffect(() => {
         const onLang = (e) => { setLangState(e.detail); };
+        const onTheme = (e) => { setThemeState(e.detail); };
         window.addEventListener('lp-lang-changed', onLang);
+        window.addEventListener('lp-theme-changed', onTheme);
         const onResize = () => setFullscreen(window.innerWidth < 768);
         window.addEventListener('resize', onResize);
         return () => {
           window.removeEventListener('lp-lang-changed', onLang);
+          window.removeEventListener('lp-theme-changed', onTheme);
           window.removeEventListener('resize', onResize);
         };
       }, []);
@@ -207,24 +213,36 @@
           />
         : null;
 
+      // key incluye idioma + tema: fuerza re-render completo al cambiar cualquiera.
+      const rkey = (lang || 'es') + '|' + theme;
+      // Fondo del contenedor: en oscuro/claro el color base; en orgullo, negro
+      // para que el degradado animado destaque por debajo de las superficies.
+      const frameBg = theme === 'light' ? '#EEF1F6' : theme === 'pride' ? '#0A0614' : '#0F1923';
+
       if (fullscreen) {
         // En móvil: pantalla completa, sin marco iPhone, sin status bar simulada
         return (
-          <div key={lang || 'es'} style={{
+          <div key={rkey} style={{
             width: '100vw', height: '100vh', overflow: 'hidden',
-            background: '#0F1923', position: 'relative',
+            background: frameBg, position: 'relative',
           }}>
-            {screen}
+            <ThemeBackdrop theme={theme} />
+            <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%' }}>
+              {screen}
+            </div>
             {langModal}
           </div>
         );
       }
       // Escritorio: mockup centrado
       return (
-        <div key={lang || 'es'} style={{ transform: 'scale(var(--lp-scale, 1))', transformOrigin: 'center center' }}>
+        <div key={rkey} style={{ transform: 'scale(var(--lp-scale, 1))', transformOrigin: 'center center' }}>
           <IOSDevice dark={true} width={402} height={874}>
-            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-              {screen}
+            <div style={{ position: 'relative', width: '100%', height: '100%', background: frameBg }}>
+              <ThemeBackdrop theme={theme} />
+              <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%' }}>
+                {screen}
+              </div>
               {langModal}
             </div>
           </IOSDevice>

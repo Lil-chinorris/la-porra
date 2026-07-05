@@ -26,7 +26,7 @@ function ScreenPro({ onBack }) {
         <button onClick={onBack} className="touchable" aria-label="Cerrar" style={{
           position: 'absolute', top: 'max(14px, env(safe-area-inset-top))', right: 16,
           width: 30, height: 30, borderRadius: 999,
-          background: 'rgba(255,255,255,0.08)', border: `1px solid ${P.text}15`,
+          background: P.ov(0.08), border: `1px solid ${P.text}15`,
           color: P.text, cursor: 'pointer', fontFamily: 'inherit',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 15, fontWeight: 700, lineHeight: 1,
@@ -47,7 +47,7 @@ function ScreenPro({ onBack }) {
       {/* Toggle de facturación */}
       <div style={{
         margin: '4px 20px 14px', padding: 4,
-        background: 'rgba(255,255,255,0.06)', borderRadius: 12,
+        background: P.ov(0.06), borderRadius: 12,
         display: 'flex', gap: 2, border: `1px solid ${P.text}11`,
       }}>
         {[
@@ -226,7 +226,7 @@ function ProComunicado({ id, onClose }) {
         <button onClick={onClose} className="touchable" style={{
           width: '100%', padding: '13px 0', borderRadius: 12,
           border: `1px solid ${P.text}1A`, cursor: 'pointer', fontFamily: 'inherit',
-          background: 'rgba(255,255,255,0.06)', color: P.text,
+          background: P.ov(0.06), color: P.text,
           fontSize: 14, fontWeight: 800, letterSpacing: 0.2,
         }}>{t('Lo he entendido, me retiro')}</button>
       </div>

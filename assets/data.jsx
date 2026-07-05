@@ -1,27 +1,30 @@
-// data.jsx — La Porra · datos reales hasta Carrera 6 (Mónaco · 7 jun 2026)
+// data.jsx — La Porra · datos reales hasta Carrera 9 (Gran Bretaña · 12 jul 2026)
 
-const RACE_NUMBER = 6;
+const RACE_NUMBER = 9;
 
 // Calendario — solo las carreras disputadas + próxima
 const RACES = [
-  { n: 1, name: 'Australia', emoji: '🇦🇺', short: 'AUS', date: '16 MAR 2026', circuit: 'Albert Park' },
-  { n: 2, name: 'China',     emoji: '🇨🇳', short: 'CHN', date: '23 MAR 2026', circuit: 'Shanghai Intl.' },
-  { n: 3, name: 'Japón',     emoji: '🇯🇵', short: 'JPN', date: '29 MAR 2026', circuit: 'Suzuka' },
-  { n: 4, name: 'Miami',     emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  circuit: 'Miami International Autodrome' },
-  { n: 5, name: 'Canadá',    emoji: '🇨🇦', short: 'CAN', date: '24 MAY 2026', circuit: 'Circuit Gilles-Villeneuve' },
-  { n: 6, name: 'Mónaco',    emoji: '🇲🇨', short: 'MON', date: '7 JUN 2026',  circuit: 'Circuit de Monaco' },
+  { n: 1, name: 'Australia',    emoji: '🇦🇺', short: 'AUS', date: '16 MAR 2026', circuit: 'Albert Park' },
+  { n: 2, name: 'China',        emoji: '🇨🇳', short: 'CHN', date: '23 MAR 2026', circuit: 'Shanghai Intl.' },
+  { n: 3, name: 'Japón',        emoji: '🇯🇵', short: 'JPN', date: '29 MAR 2026', circuit: 'Suzuka' },
+  { n: 4, name: 'Miami',        emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  circuit: 'Miami International Autodrome' },
+  { n: 5, name: 'Canadá',       emoji: '🇨🇦', short: 'CAN', date: '24 MAY 2026', circuit: 'Circuit Gilles-Villeneuve' },
+  { n: 6, name: 'Mónaco',       emoji: '🇲🇨', short: 'MON', date: '7 JUN 2026',  circuit: 'Circuit de Monaco' },
+  { n: 7, name: 'Barcelona',    emoji: '💛', short: 'BCN', date: '14 JUN 2026', circuit: 'Circuit de Barcelona-Catalunya' },
+  { n: 8, name: 'Austria',      emoji: '🇦🇹', short: 'AUT', date: '5 JUL 2026',  circuit: 'Red Bull Ring' },
+  { n: 9, name: 'Gran Bretaña', emoji: '🇬🇧', short: 'GBR', date: '12 JUL 2026', circuit: 'Silverstone' },
 ];
 
-// Próxima: Barcelona (C7)
+// Próxima: Bélgica (C10)
 const NEXT_RACE = {
-  n: 7, name: 'Barcelona', emoji: '💛', short: 'BCN',
-  date: '14 JUN 2026',
-  circuit: 'Circuit de Barcelona-Catalunya',
-  length: '4.657 km',
-  laps: 66,
-  corners: 14,
-  lapRecord: "1:16.330 — M. Verstappen (2023)",
-  firstGp: 1991,
+  n: 10, name: 'Bélgica', emoji: '🇧🇪', short: 'BEL',
+  date: '19 JUL 2026',
+  circuit: 'Circuit de Spa-Francorchamps',
+  length: '7.004 km',
+  laps: 44,
+  corners: 19,
+  lapRecord: "1:46.286 — V. Bottas (2018)",
+  firstGp: 1950,
 };
 
 // Resultados por carrera (nombre → puntos esa carrera)
@@ -56,6 +59,21 @@ const RACE_RESULTS = {
     CHINO: 0, ENRIC: 0, DAPE: 1, MISTIC: -3, MARVIN: 1, CAÑA: 0, ALEX: 1,
     MARTÍ: 1, LOJO: 0, ITZIAR: 0, SARAY: -2, JANE: 1, JAVISUA: 0, SAMU: -2, ÁLVARO: 0,
   },
+  7: { // Barcelona
+    BALADO: 0, ALBA: -1, ALEJA: 0, BLANQUI: -1, PATACA: 0, EVA: 2, LARA: 0,
+    CHINO: 0, ENRIC: -1, DAPE: 0, MISTIC: 0, MARVIN: -1, CAÑA: 0, ALEX: 0,
+    MARTÍ: -2, LOJO: 2, ITZIAR: 0, SARAY: 1, JANE: 1, JAVISUA: -1, SAMU: 2, ÁLVARO: -2,
+  },
+  8: { // Austria
+    BALADO: 3, ALBA: 3, ALEJA: 3, BLANQUI: 3, PATACA: 4, EVA: 3, LARA: 3,
+    CHINO: 1, ENRIC: 1, DAPE: 1, MISTIC: 1, MARVIN: 0, CAÑA: 1, ALEX: 1,
+    MARTÍ: 4, LOJO: 3, ITZIAR: 1, SARAY: 2, JANE: 3, JAVISUA: 3, SAMU: 3, ÁLVARO: 2,
+  },
+  9: { // Gran Bretaña
+    BALADO: 0, ALBA: 0, ALEJA: 0, BLANQUI: 2, PATACA: 0, EVA: -1, LARA: 0,
+    CHINO: 0, ENRIC: 2, DAPE: 0, MISTIC: -3, MARVIN: 1, CAÑA: -3, ALEX: -1,
+    MARTÍ: -2, LOJO: 3, ITZIAR: 0, SARAY: 2, JANE: -1, JAVISUA: 0, SAMU: 1, ÁLVARO: 2,
+  },
 };
 
 const TEAM_RESULTS = {
@@ -77,6 +95,15 @@ const TEAM_RESULTS = {
   6: { 'Freyja Racing Team': 3, 'Amigas Alo': 2, 'Red Force': -1, 'Pepinou': 1,
        'Azkarrak Racing': -2, 'El Cruasán': 2, 'Tapas Team': 1, 'Champis': 0,
        'No Power F1 Team': -5, 'Os Rapatundas': -1, 'Agente Libre': 1 },
+  7: { 'Freyja Racing Team': -1, 'Amigas Alo': 1, 'Red Force': -1, 'Pepinou': 0,
+       'Azkarrak Racing': 2, 'El Cruasán': -1, 'Tapas Team': -1, 'Champis': 0,
+       'No Power F1 Team': 2, 'Os Rapatundas': 2, 'Agente Libre': -4 },
+  8: { 'Freyja Racing Team': 6, 'Amigas Alo': 6, 'Red Force': 4, 'Pepinou': 2,
+       'Azkarrak Racing': 6, 'El Cruasán': 1, 'Tapas Team': 7, 'Champis': 2,
+       'No Power F1 Team': 4, 'Os Rapatundas': 5, 'Agente Libre': 6 },
+  9: { 'Freyja Racing Team': 2, 'Amigas Alo': -1, 'Red Force': 2, 'Pepinou': 0,
+       'Azkarrak Racing': 3, 'El Cruasán': 0, 'Tapas Team': 0, 'Champis': -3,
+       'No Power F1 Team': -2, 'Os Rapatundas': 1, 'Agente Libre': 0 },
 };
 
 // Roster
@@ -208,6 +235,15 @@ const OFFICIAL_RESULTS = {
   6: { top5: ['ANTONELLI','HAMILTON','HADJAR','PIASTRI','LAWSON'],
        driverOfTheDay: { name: 'ALONSO', pts: 10 },
        fastestLap: { name: 'ANTONELLI', time: '1:13.481' } },
+  7: { top5: ['HAMILTON','RUSSELL','NORRIS','VERSTAPPEN','PIASTRI'],
+       driverOfTheDay: { name: 'PIASTRI', pts: 5 },
+       fastestLap: { name: 'HAMILTON', time: '1:20.122' } },
+  8: { top5: ['RUSSELL','VERSTAPPEN','ANTONELLI','PIASTRI','HAMILTON'],
+       driverOfTheDay: { name: 'STROLL', pts: 19 },
+       fastestLap: { name: 'ANTONELLI', time: '1:10.374' } },
+  9: { top5: ['LECLERC','RUSSELL','HAMILTON','NORRIS','HADJAR'],
+       driverOfTheDay: { name: 'LAWSON', pts: 6 },
+       fastestLap: { name: 'ANTONELLI', time: '1:31.777' } },
 };
 
 // Palmarés
@@ -261,9 +297,25 @@ const HALL_OF_FAME_TEAMS = [
 ];
 
 // Histórico ganador de la porra en el próximo circuito (vacío si no aplica)
-const NEXT_HISTORY = []; // Barcelona: sin histórico cargado por ahora
+const NEXT_HISTORY = []; // Bélgica: sin histórico cargado por ahora
 
-// Paleta Paddock
+// Colores de equipo (compartidos por todos los temas)
+const TEAM_COLORS = {
+  'Freyja Racing Team': '#E1206D',
+  'Amigas Alo':         '#8B2FC9',
+  'Azkarrak Racing':    '#00AFAA',
+  'Tapas Team':         '#FF8000',
+  'Red Force':          '#D40000',
+  'Pepinou':            '#27AE60',
+  'No Power F1 Team':   '#1E88E5',
+  'El Cruasán':         '#D4A041',
+  'Champis':            '#A0522D',
+  'Os Rapatundas':      '#00897B',
+  'Agente Libre':       '#78849A',
+};
+
+// Paleta Paddock (tema oscuro, por defecto). `ov(a)` = overlay sobre superficie,
+// varía según tema (blanco en oscuro/pride, oscuro en claro).
 const PALETTE = {
   name: 'Paddock',
   bg: '#0F1923', bg2: '#1A2634',
@@ -271,19 +323,9 @@ const PALETTE = {
   text: '#F5F7FA', muted: '#8B98A7', mutedDim: '#5B6878',
   accent: '#E10600', accent2: '#FFC700',
   success: '#27AE60', danger: '#E63946',
-  teams: {
-    'Freyja Racing Team': '#E1206D',
-    'Amigas Alo':         '#8B2FC9',
-    'Azkarrak Racing':    '#00AFAA',
-    'Tapas Team':         '#FF8000',
-    'Red Force':          '#D40000',
-    'Pepinou':            '#27AE60',
-    'No Power F1 Team':   '#1E88E5',
-    'El Cruasán':         '#D4A041',
-    'Champis':            '#A0522D',
-    'Os Rapatundas':      '#00897B',
-    'Agente Libre':       '#78849A',
-  },
+  ov: (a) => `rgba(255,255,255,${a})`,
+  scrim: '15,25,35',
+  teams: TEAM_COLORS,
 };
 
 // ───────────────────────────────────────────────────────────────────
@@ -296,10 +338,10 @@ const CALENDAR = [
   { n: 4,  name: 'Miami',        emoji: '🇺🇸', short: 'MIA', date: '3 MAY 2026',  status: 'done' },
   { n: 5,  name: 'Canadá',       emoji: '🇨🇦', short: 'CAN', date: '24 MAY 2026', status: 'done' },
   { n: 6,  name: 'Mónaco',       emoji: '🇲🇨', short: 'MON', date: '7 JUN 2026',  status: 'done' },
-  { n: 7,  name: 'Barcelona',    emoji: '💛', short: 'BCN', date: '14 JUN 2026', status: 'next' },
-  { n: 8,  name: 'Austria',      emoji: '🇦🇹', short: 'AUT', date: '5 JUL 2026',  status: 'future' },
-  { n: 9,  name: 'Gran Bretaña', emoji: '🇬🇧', short: 'GBR', date: '19 JUL 2026', status: 'future' },
-  { n: 10, name: 'Bélgica',      emoji: '🇧🇪', short: 'BEL', date: '26 JUL 2026', status: 'future' },
+  { n: 7,  name: 'Barcelona',    emoji: '💛', short: 'BCN', date: '14 JUN 2026', status: 'done' },
+  { n: 8,  name: 'Austria',      emoji: '🇦🇹', short: 'AUT', date: '5 JUL 2026',  status: 'done' },
+  { n: 9,  name: 'Gran Bretaña', emoji: '🇬🇧', short: 'GBR', date: '12 JUL 2026', status: 'done' },
+  { n: 10, name: 'Bélgica',      emoji: '🇧🇪', short: 'BEL', date: '19 JUL 2026', status: 'next' },
   { n: 11, name: 'Hungría',      emoji: '🇭🇺', short: 'HUN', date: '2 AGO 2026',  status: 'future' },
   { n: 12, name: 'Países Bajos', emoji: '🇳🇱', short: 'NED', date: '23 AGO 2026', status: 'future' },
   { n: 13, name: 'Italia',       emoji: '🇮🇹', short: 'ITA', date: '6 SEP 2026',  status: 'future' },
@@ -406,54 +448,53 @@ const BEST_LAPS_WET = [
 ];
 
 // ───────────────────────────────────────────────────────────────────
-// Datos del circuito de la próxima carrera (Barcelona)
+// Datos del circuito de la próxima carrera (Bélgica · Spa-Francorchamps)
 // ───────────────────────────────────────────────────────────────────
 const NEXT_CIRCUIT = {
-  firstGp: 1991, // primera edición del GP de España en Montmeló
-  editions: 35,
-  mostWinsDriver: { name: 'L. Hamilton', wins: 6 },
-  mostWinsCoLeader: { name: 'M. Schumacher', wins: 6 },
-  image: 'assets/barcelona.jpg', // foto de cabecera (Unsplash)
+  firstGp: 1950, // GP de Bélgica, presente desde la primera temporada del Mundial
+  editions: 58,
+  mostWinsDriver: { name: 'M. Schumacher', wins: 6 },
   polePositions: [
-    { year: 2022, driver: 'C. Leclerc' },
+    { year: 2022, driver: 'C. Sainz' },
     { year: 2023, driver: 'M. Verstappen' },
-    { year: 2024, driver: 'L. Norris' },
-    { year: 2025, driver: 'O. Piastri' },
+    { year: 2024, driver: 'C. Leclerc' },
+    { year: 2025, driver: 'L. Norris' },
   ],
   funFacts: [
-    'Los equipos lo conocen de memoria: durante décadas fue EL circuito de test de pretemporada de la F1.',
-    'Se dice que un coche que va bien en Montmeló va bien en todas partes: tiene curvas de todos los tipos.',
-    'La curva 3, larguísima y de derechas, es una de las que más castiga el neumático delantero izquierdo de todo el calendario.',
-    'En 2023 se eliminó la chicane final y volvió el trazado original: dos curvas rápidas de derechas para cerrar la vuelta.',
-    'El viento cambia mucho el comportamiento del coche aquí: por la tarde suele girar y desestabiliza la frenada de la curva 1.',
+    'Es el circuito más largo del calendario: 7 km de subidas, bajadas y bosque en plena región de las Ardenas.',
+    'Eau Rouge–Raidillon es la secuencia más mítica de la F1: una subida ciega que los coches actuales toman casi a fondo.',
+    'El microclima de Spa es legendario: puede estar lloviendo en una punta del trazado y seco en la otra al mismo tiempo.',
+    'La recta de Kemmel, tras Eau Rouge, es una de las mejores zonas para adelantar de todo el año.',
+    'Aquí Michael Schumacher debutó en 1991 y logró su primera victoria en 1992: Spa es "su" circuito.',
   ],
   // Sesiones del fin de semana (horario peninsular español)
   sessions: [
-    { day: 'Viernes 12 de junio', items: [
+    { day: 'Viernes 17 de julio', items: [
       { label: 'Entrenamientos Libres 1 (FP1)', time: '13:30' },
       { label: 'Entrenamientos Libres 2 (FP2)', time: '17:00' },
     ]},
-    { day: 'Sábado 13 de junio', items: [
-      { label: 'Entrenamientos Libres 3 (FP3)', time: '12:30' },
-      { label: 'Clasificación',                 time: '16:00' },
+    { day: 'Sábado 18 de julio', items: [
+      { label: 'Entrenamientos Libres 3 (FP3)',  time: '12:30' },
+      { label: 'Previa clasificación DAZN',      time: '15:30' },
+      { label: 'Clasificación',                  time: '16:00' },
     ]},
-    { day: 'Domingo 14 de junio', items: [
+    { day: 'Domingo 19 de julio', items: [
       { label: 'Carrera',        time: '15:00', highlight: true },
     ]},
   ],
   sessionsNote: '* Horario peninsular español',
   deadline: {
     label: 'Hora límite envío de la porra',
-    when: 'Domingo 14 de junio · 14:59',
+    when: 'Domingo 19 de julio · 14:59',
   },
   // Para añadir al calendario del móvil (formato ISO con offset Madrid CEST = +02:00)
   event: {
-    title: 'GP Barcelona · La Porra',
-    location: 'Circuit de Barcelona-Catalunya, Montmeló',
-    description: 'Carrera del GP de Barcelona. Hora límite envío de la porra: 14:59h.',
-    start: '2026-06-14T15:00:00+02:00',
-    end:   '2026-06-14T17:00:00+02:00',
-    filename: 'gp-barcelona-2026.ics',
+    title: 'GP Bélgica · La Porra',
+    location: 'Circuit de Spa-Francorchamps, Stavelot',
+    description: 'Carrera del GP de Bélgica. Hora límite envío de la porra: 14:59h.',
+    start: '2026-07-19T15:00:00+02:00',
+    end:   '2026-07-19T17:00:00+02:00',
+    filename: 'gp-belgica-2026.ics',
   },
 };
 

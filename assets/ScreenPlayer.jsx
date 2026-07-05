@@ -139,7 +139,7 @@ function ScreenPlayer({ name, onBack, onOpenTeam, onOpenRace, onOpenPlayer }) {
               }}>
                 <div style={{
                   width: 32, height: 32, borderRadius: 9,
-                  background: isCurrent ? `${teamColor}22` : 'rgba(255,255,255,0.04)',
+                  background: isCurrent ? `${teamColor}22` : P.ov(0.04),
                   display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16,
                 }}>{r.emoji}</div>
                 <div style={{ flex: 1, minWidth: 0 }}>

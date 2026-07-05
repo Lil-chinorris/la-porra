@@ -46,7 +46,7 @@ function ScreenPalmares({ onBack }) {
         {/* Tabs */}
         <div style={{
           marginTop: 20, padding: 4,
-          background: 'rgba(255,255,255,0.06)',
+          background: P.ov(0.06),
           borderRadius: 12, display: 'flex', gap: 2,
           border: `1px solid ${P.text}11`,
         }}>
@@ -76,7 +76,7 @@ function ScreenPalmares({ onBack }) {
                   year={p.year}
                   title={p.winner}
                   subtitle={p.team}
-                  iconBg={i === 0 ? 'linear-gradient(135deg,#FFD93D,#FFB800)' : 'rgba(255,255,255,0.08)'}
+                  iconBg={i === 0 ? 'linear-gradient(135deg,#FFD93D,#FFB800)' : P.ov(0.08)}
                   iconColor={i === 0 ? '#1a1a1a' : P.muted}
                   latest={i === 0}
                   icon="🏆"
@@ -134,7 +134,7 @@ function ScreenPalmares({ onBack }) {
                   }}>
                     <div style={{
                       width: 28, height: 28, borderRadius: 8,
-                      background: 'rgba(255,255,255,0.05)',
+                      background: P.ov(0.05),
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 14, flexShrink: 0,
                     }}>{tm.emoji}</div>
@@ -177,7 +177,7 @@ function ScreenPalmares({ onBack }) {
                     width: 44, height: 44, borderRadius: 11,
                     background: i === 0
                       ? 'linear-gradient(135deg,#FFD93D,#FFB800)'
-                      : 'rgba(255,255,255,0.06)',
+                      : P.ov(0.06),
                     color: i === 0 ? '#1a1a1a' : P.muted,
                     display: 'flex', flexDirection: 'column',
                     alignItems: 'center', justifyContent: 'center',
@@ -202,7 +202,7 @@ function ScreenPalmares({ onBack }) {
             <SectionTitle>{t('Mejores tiempos')}</SectionTitle>
             <div style={{
               padding: 4, borderRadius: 12, marginBottom: 10,
-              background: 'rgba(255,255,255,0.06)',
+              background: P.ov(0.06),
               border: `1px solid ${P.text}11`,
               display: 'flex', gap: 2,
             }}>
@@ -264,7 +264,7 @@ function YearChips({ options, value, onChange, palette }) {
         const label = isTotal ? 'Σ Total' : opt;
         const bg = active
           ? (isTotal ? palette.accent2 : palette.accent)
-          : 'rgba(255,255,255,0.04)';
+          : P.ov(0.04);
         const fg = active
           ? (isTotal ? '#1a1a1a' : '#fff')
           : palette.muted;
@@ -391,7 +391,7 @@ function TrophyRow({ year, emoji, title, subtitle, icon = '🏆', iconBg, iconCo
   const P = window.PALETTE;
   const bg = iconBg || (latest
     ? 'linear-gradient(135deg,#FFD93D,#FFB800)'
-    : 'rgba(255,255,255,0.08)');
+    : P.ov(0.08));
   const col = iconColor || (latest ? '#1a1a1a' : P.muted);
   return (
     <div className="lp-row" style={{

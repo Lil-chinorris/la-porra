@@ -131,7 +131,7 @@ function ScreenNext({ onBack }) {
             borderRadius: 16,
             background: `linear-gradient(135deg, ${P.accent}, #B30500)`,
             color: '#fff',
-            boxShadow: `0 12px 24px -8px ${P.accent}88, inset 0 1px 0 rgba(255,255,255,0.18)`,
+            boxShadow: `0 12px 24px -8px ${P.accent}88, inset 0 1px 0 ${P.ov(0.18)}`,
             border: `1px solid ${P.accent}`,
             position: 'relative', overflow: 'hidden',
           }}>
@@ -322,7 +322,7 @@ function ScreenNext({ onBack }) {
                     }}>{h.year}</div>
                     <div style={{
                       width: 28, height: 28, borderRadius: 8,
-                      background: isLatest ? `linear-gradient(135deg,#FFD93D,#FFB800)` : 'rgba(255,255,255,0.06)',
+                      background: isLatest ? `linear-gradient(135deg,#FFD93D,#FFB800)` : P.ov(0.06),
                       color: isLatest ? '#1a1a1a' : P.muted,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 14,
@@ -375,7 +375,7 @@ function RecordRow({ icon, label, primary, sub, last }) {
     }}>
       <div style={{
         width: 32, height: 32, borderRadius: 9,
-        background: 'rgba(255,255,255,0.06)',
+        background: P.ov(0.06),
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: 16, flexShrink: 0,
       }}>{icon}</div>

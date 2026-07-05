@@ -53,7 +53,7 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
         {/* Resultado oficial (solo si está cargado) */}
         {official && (
         <div style={{
-          marginTop: 18, background: 'rgba(255,255,255,0.04)',
+          marginTop: 18, background: P.ov(0.04),
           border: `1px solid ${P.text}14`, borderRadius: 14, padding: '12px 14px'
         }}>
           <div style={{ fontSize: 10, fontWeight: 800, color: P.muted, letterSpacing: 1.5, marginBottom: 8 }}>
@@ -66,7 +66,7 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
               background: i === 0 ? 'linear-gradient(135deg,#FFD93D,#FFB800)' :
               i === 1 ? 'linear-gradient(135deg,#E8E8F0,#B8B8C4)' :
               i === 2 ? 'linear-gradient(135deg,#D88F5A,#A86232)' :
-              'rgba(255,255,255,0.08)',
+              P.ov(0.08),
               color: i < 3 ? '#1a1a1a' : P.muted,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 10, fontWeight: 900
@@ -111,7 +111,7 @@ function ScreenRace({ raceNumber, onBack, onOpenPlayer }) {
       {/* Tabs */}
       <div style={{
         margin: '8px 20px 12px', padding: 4,
-        background: 'rgba(255,255,255,0.06)',
+        background: P.ov(0.06),
         borderRadius: 12, display: 'flex', gap: 2,
         border: `1px solid ${P.text}11`
       }}>

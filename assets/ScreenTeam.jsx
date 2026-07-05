@@ -46,7 +46,7 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
                 fontSize: 11, fontWeight: 800, letterSpacing: 0.3,
                 color: isChamp ? '#FFD93D' : isRookie ? P.accent2 : P.text,
                 background: isChamp ? 'rgba(255,217,61,0.15)' :
-                           isRookie ? `${P.accent2}1E` : 'rgba(255,255,255,0.06)',
+                           isRookie ? `${P.accent2}1E` : P.ov(0.06),
                 padding: '2px 7px', borderRadius: 6,
                 border: `1px solid ${isChamp ? '#FFD93D55' : isRookie ? P.accent2 + '40' : P.text + '14'}`,
               }}>
@@ -138,7 +138,7 @@ function ScreenTeam({ name, onBack, onOpenPlayer }) {
                     <span>{tm.emoji}</span>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{tm.name}</span>
                   </div>
-                  <div style={{ height: 6, borderRadius: 3, background: 'rgba(255,255,255,0.05)', overflow: 'hidden' }}>
+                  <div style={{ height: 6, borderRadius: 3, background: P.ov(0.05), overflow: 'hidden' }}>
                     <div className="lp-bar" style={{
                       animationDelay: `${ti * 60}ms`,
                       height: '100%', width: `${pct}%`,

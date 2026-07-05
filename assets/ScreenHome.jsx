@@ -49,7 +49,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
   // Botón cuadrado (solo icono) para Palmarés / Desafíos
   const iconBtn = {
     width: 40, height: 38, borderRadius: 10, padding: 0,
-    background: 'rgba(255,255,255,0.06)',
+    background: P.ov(0.06),
     border: `1px solid ${P.text}15`, color: P.text,
     fontSize: 17, cursor: 'pointer', fontFamily: 'inherit',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -71,10 +71,12 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
             ◆ {t('CAMPEONATO 2026')}
           </div>
           <div style={{ fontSize: 40, fontWeight: 900, lineHeight: 1, letterSpacing: -1.4 }}>
-            La Porra<span style={{ color: P.accent }}>.</span>
+            <span className={P.heroGradient ? 'lp-hero-pride' : undefined}>La Porra</span>
+            <span style={{ color: P.accent }}>.</span>
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'row', gap: 6, alignItems: 'center' }}>
+          <ThemeMenu />
           <button onClick={onOpenPalmares} className="touchable" style={iconBtn}
             aria-label={t('Palmarés')} title={t('Palmarés')}>🏆</button>
           <button onClick={onOpenDesafios} className="touchable" style={iconBtn}
@@ -88,7 +90,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
         margin: '8px 20px 4px', width: 'calc(100% - 40px)',
         display: 'flex', alignItems: 'center', gap: 10,
         padding: '10px 12px', borderRadius: 12,
-        background: `linear-gradient(100deg, ${P.accent2}1A, rgba(255,255,255,0.03) 70%)`,
+        background: `linear-gradient(100deg, ${P.accent2}1A, ${P.ov(0.03)} 70%)`,
         border: `1px solid ${P.accent2}33`,
         cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
       }}>
@@ -109,7 +111,7 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
       {/* Tabs Pilotos / Equipos */}
       <div style={{
         margin: '14px 20px 10px', padding: 4,
-        background: 'rgba(255,255,255,0.06)', borderRadius: 12,
+        background: P.ov(0.06), borderRadius: 12,
         display: 'flex', gap: 2, border: `1px solid ${P.text}11`,
       }}>
         {[
@@ -267,8 +269,8 @@ function Chip({ active, onClick, children, palette, badge, disabled, variant, da
     : isNext
       ? `${palette.accent}18`
       : isFuture
-        ? 'rgba(255,255,255,0.02)'
-        : 'rgba(255,255,255,0.04)';
+        ? P.ov(0.02)
+        : P.ov(0.04);
   const color = active
     ? palette.accent2
     : isFuture
