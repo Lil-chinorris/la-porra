@@ -71,10 +71,12 @@ function ScreenHome({ onOpenPlayer, onOpenTeam, onOpenRace, onOpenNext, onOpenPa
             ◆ {t('CAMPEONATO 2026')}
           </div>
           <div style={{ fontSize: 40, fontWeight: 900, lineHeight: 1, letterSpacing: -1.4 }}>
-            La Porra<span style={{ color: P.accent }}>.</span>
+            <span className={P.heroGradient ? 'lp-hero-pride' : undefined}>La Porra</span>
+            <span style={{ color: P.accent }}>.</span>
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'row', gap: 6, alignItems: 'center' }}>
+          <ThemeMenu />
           <button onClick={onOpenPalmares} className="touchable" style={iconBtn}
             aria-label={t('Palmarés')} title={t('Palmarés')}>🏆</button>
           <button onClick={onOpenDesafios} className="touchable" style={iconBtn}
