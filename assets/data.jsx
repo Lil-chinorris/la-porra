@@ -57,7 +57,7 @@ const RACE_RESULTS = {
   6: { // Mónaco
     BALADO: 2, ALBA: 1, ALEJA: -2, BLANQUI: 1, PATACA: 1, EVA: 1, LARA: -1,
     CHINO: 0, ENRIC: 0, DAPE: 1, MISTIC: -3, MARVIN: 1, CAÑA: 0, ALEX: 1,
-    MARTÍ: 1, LOJO: 0, ITZIAR: 0, SARAY: -2, JANE: 1, JAVISUA: 0, SAMU: -2, ÁLVARO: 0,
+    MARTÍ: 2, LOJO: 0, ITZIAR: 0, SARAY: -2, JANE: 1, JAVISUA: 0, SAMU: -2, ÁLVARO: 0,
   },
   7: { // Barcelona
     BALADO: 0, ALBA: -1, ALEJA: 0, BLANQUI: -1, PATACA: 0, EVA: 2, LARA: 0,
@@ -94,7 +94,7 @@ const TEAM_RESULTS = {
        'No Power F1 Team': -3, 'Os Rapatundas': -3, 'Agente Libre': -2 },
   6: { 'Freyja Racing Team': 3, 'Amigas Alo': 2, 'Red Force': -1, 'Pepinou': 1,
        'Azkarrak Racing': -2, 'El Cruasán': 2, 'Tapas Team': 1, 'Champis': 0,
-       'No Power F1 Team': -5, 'Os Rapatundas': -1, 'Agente Libre': 1 },
+       'No Power F1 Team': -5, 'Os Rapatundas': -1, 'Agente Libre': 2 },
   7: { 'Freyja Racing Team': -1, 'Amigas Alo': 1, 'Red Force': -1, 'Pepinou': 0,
        'Azkarrak Racing': 2, 'El Cruasán': -1, 'Tapas Team': -1, 'Champis': 0,
        'No Power F1 Team': 2, 'Os Rapatundas': 2, 'Agente Libre': -4 },
