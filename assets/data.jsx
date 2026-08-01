@@ -1,6 +1,6 @@
-// data.jsx — La Porra · datos reales hasta Carrera 9 (Gran Bretaña · 12 jul 2026)
+// data.jsx — La Porra · datos reales hasta Carrera 11 (Hungría · 2 ago 2026)
 
-const RACE_NUMBER = 9;
+const RACE_NUMBER = 11;
 
 // Calendario — solo las carreras disputadas + próxima
 const RACES = [
@@ -13,18 +13,20 @@ const RACES = [
   { n: 7, name: 'Barcelona',    emoji: '💛', short: 'BCN', date: '14 JUN 2026', circuit: 'Circuit de Barcelona-Catalunya' },
   { n: 8, name: 'Austria',      emoji: '🇦🇹', short: 'AUT', date: '5 JUL 2026',  circuit: 'Red Bull Ring' },
   { n: 9, name: 'Gran Bretaña', emoji: '🇬🇧', short: 'GBR', date: '12 JUL 2026', circuit: 'Silverstone' },
+  { n: 10, name: 'Bélgica',     emoji: '🇧🇪', short: 'BEL', date: '19 JUL 2026', circuit: 'Circuit de Spa-Francorchamps' },
+  { n: 11, name: 'Hungría',     emoji: '🇭🇺', short: 'HUN', date: '2 AGO 2026',  circuit: 'Hungaroring' },
 ];
 
-// Próxima: Bélgica (C10)
+// Próxima: Países Bajos (C12)
 const NEXT_RACE = {
-  n: 10, name: 'Bélgica', emoji: '🇧🇪', short: 'BEL',
-  date: '19 JUL 2026',
-  circuit: 'Circuit de Spa-Francorchamps',
-  length: '7.004 km',
-  laps: 44,
-  corners: 19,
-  lapRecord: "1:46.286 — V. Bottas (2018)",
-  firstGp: 1950,
+  n: 12, name: 'Países Bajos', emoji: '🇳🇱', short: 'NED',
+  date: '31 AGO 2026',
+  circuit: 'Circuit Zandvoort',
+  length: '4.259 km',
+  laps: 72,
+  corners: 14,
+  lapRecord: "1:11.097 — L. Hamilton (2021)",
+  firstGp: 1952,
 };
 
 // Resultados por carrera (nombre → puntos esa carrera)
@@ -74,6 +76,16 @@ const RACE_RESULTS = {
     CHINO: 0, ENRIC: 2, DAPE: 0, MISTIC: -3, MARVIN: 1, CAÑA: -3, ALEX: -1,
     MARTÍ: -2, LOJO: 3, ITZIAR: 0, SARAY: 2, JANE: -1, JAVISUA: 0, SAMU: 1, ÁLVARO: 2,
   },
+  10: { // Bélgica
+    BALADO: 3, ALBA: 5, ALEJA: 2, BLANQUI: 1, PATACA: 4, EVA: 2, LARA: -1,
+    CHINO: 1, ENRIC: 2, DAPE: 3, MISTIC: 2, MARVIN: 2, CAÑA: 2, ALEX: 2,
+    MARTÍ: 2, LOJO: 1, ITZIAR: 3, SARAY: 2, JANE: 3, JAVISUA: 1, SAMU: 1, ÁLVARO: 4,
+  },
+  11: { // Hungría
+    BALADO: -1, ALBA: -2, ALEJA: -3, BLANQUI: 2, PATACA: -2, EVA: -1, LARA: 1,
+    CHINO: -2, ENRIC: 1, DAPE: -1, MISTIC: -3, MARVIN: 0, CAÑA: -1, ALEX: 2,
+    MARTÍ: -2, LOJO: 2, ITZIAR: 2, SARAY: 1, JANE: 1, JAVISUA: -1, SAMU: -1, ÁLVARO: -1,
+  },
 };
 
 const TEAM_RESULTS = {
@@ -104,6 +116,12 @@ const TEAM_RESULTS = {
   9: { 'Freyja Racing Team': 2, 'Amigas Alo': -1, 'Red Force': 2, 'Pepinou': 0,
        'Azkarrak Racing': 3, 'El Cruasán': 0, 'Tapas Team': 0, 'Champis': -3,
        'No Power F1 Team': -2, 'Os Rapatundas': 1, 'Agente Libre': 0 },
+  10: { 'Freyja Racing Team': 4, 'Amigas Alo': 7, 'Red Force': 1, 'Pepinou': 4,
+        'Azkarrak Racing': 3, 'El Cruasán': 4, 'Tapas Team': 5, 'Champis': 5,
+        'No Power F1 Team': 3, 'Os Rapatundas': 5, 'Agente Libre': 6 },
+  11: { 'Freyja Racing Team': 1, 'Amigas Alo': -3, 'Red Force': 2, 'Pepinou': -3,
+        'Azkarrak Racing': -1, 'El Cruasán': 2, 'Tapas Team': -3, 'Champis': 1,
+        'No Power F1 Team': -4, 'Os Rapatundas': 2, 'Agente Libre': -3 },
 };
 
 // Roster
@@ -244,6 +262,12 @@ const OFFICIAL_RESULTS = {
   9: { top5: ['LECLERC','RUSSELL','HAMILTON','NORRIS','HADJAR'],
        driverOfTheDay: { name: 'LAWSON', pts: 6 },
        fastestLap: { name: 'ANTONELLI', time: '1:31.777' } },
+  10: { top5: ['ANTONELLI','LECLERC','VERSTAPPEN','HAMILTON','PIASTRI'],
+        driverOfTheDay: { name: 'BOTTAS', pts: 18 },
+        fastestLap: { name: 'NORRIS', time: '1:48.890' } },
+  11: { top5: ['NORRIS','VERSTAPPEN','ANTONELLI','LECLERC','HAMILTON'],
+        driverOfTheDay: { name: 'PIASTRI', pts: 20 },
+        fastestLap: { name: 'LECLERC', time: '1:22.000' } },
 };
 
 // Palmarés
@@ -341,9 +365,9 @@ const CALENDAR = [
   { n: 7,  name: 'Barcelona',    emoji: '💛', short: 'BCN', date: '14 JUN 2026', status: 'done' },
   { n: 8,  name: 'Austria',      emoji: '🇦🇹', short: 'AUT', date: '5 JUL 2026',  status: 'done' },
   { n: 9,  name: 'Gran Bretaña', emoji: '🇬🇧', short: 'GBR', date: '12 JUL 2026', status: 'done' },
-  { n: 10, name: 'Bélgica',      emoji: '🇧🇪', short: 'BEL', date: '19 JUL 2026', status: 'next' },
-  { n: 11, name: 'Hungría',      emoji: '🇭🇺', short: 'HUN', date: '2 AGO 2026',  status: 'future' },
-  { n: 12, name: 'Países Bajos', emoji: '🇳🇱', short: 'NED', date: '23 AGO 2026', status: 'future' },
+  { n: 10, name: 'Bélgica',      emoji: '🇧🇪', short: 'BEL', date: '19 JUL 2026', status: 'done' },
+  { n: 11, name: 'Hungría',      emoji: '🇭🇺', short: 'HUN', date: '2 AGO 2026',  status: 'done' },
+  { n: 12, name: 'Países Bajos', emoji: '🇳🇱', short: 'NED', date: '31 AGO 2026', status: 'next' },
   { n: 13, name: 'Italia',       emoji: '🇮🇹', short: 'ITA', date: '6 SEP 2026',  status: 'future' },
   { n: 14, name: 'Azerbaiyán',   emoji: '🇦🇿', short: 'AZE', date: '13 SEP 2026', status: 'future' },
   { n: 15, name: 'Singapur',     emoji: '🇸🇬', short: 'SIN', date: '27 SEP 2026', status: 'future' },
@@ -448,53 +472,54 @@ const BEST_LAPS_WET = [
 ];
 
 // ───────────────────────────────────────────────────────────────────
-// Datos del circuito de la próxima carrera (Bélgica · Spa-Francorchamps)
+// Datos del circuito de la próxima carrera (Países Bajos · Zandvoort)
 // ───────────────────────────────────────────────────────────────────
 const NEXT_CIRCUIT = {
-  firstGp: 1950, // GP de Bélgica, presente desde la primera temporada del Mundial
-  editions: 58,
-  mostWinsDriver: { name: 'M. Schumacher', wins: 6 },
+  firstGp: 1952, // primer GP de Países Bajos puntuable para el Mundial
+  editions: 35,
+  mostWinsDriver: { name: 'M. Verstappen', wins: 3 },
   polePositions: [
-    { year: 2022, driver: 'C. Sainz' },
+    { year: 2022, driver: 'M. Verstappen' },
     { year: 2023, driver: 'M. Verstappen' },
-    { year: 2024, driver: 'C. Leclerc' },
-    { year: 2025, driver: 'L. Norris' },
+    { year: 2024, driver: 'L. Norris' },
+    { year: 2025, driver: 'O. Piastri' },
   ],
   funFacts: [
-    'Es el circuito más largo del calendario: 7 km de subidas, bajadas y bosque en plena región de las Ardenas.',
-    'Eau Rouge–Raidillon es la secuencia más mítica de la F1: una subida ciega que los coches actuales toman casi a fondo.',
-    'El microclima de Spa es legendario: puede estar lloviendo en una punta del trazado y seco en la otra al mismo tiempo.',
-    'La recta de Kemmel, tras Eau Rouge, es una de las mejores zonas para adelantar de todo el año.',
-    'Aquí Michael Schumacher debutó en 1991 y logró su primera victoria en 1992: Spa es "su" circuito.',
+    'Zandvoort está literalmente entre dunas, junto al Mar del Norte: la arena en pista es un clásico del fin de semana.',
+    'Tiene dos curvas peraltadas: la 3 (Hugenholtz) y la 14 (Arie Luyendyk), esta última con un peralte de 18 grados.',
+    'Ese peralte final permite entrar en la recta a fondo y hace que el DRS valga oro en la primera frenada.',
+    'Volvió al calendario en 2021 tras 36 años de ausencia, empujado por la fiebre naranja de Verstappen.',
+    'Es de los trazados más estrechos y con menos escapatoria: adelantar aquí es casi tan difícil como en Mónaco.',
   ],
   // Sesiones del fin de semana (horario peninsular español)
   sessions: [
-    { day: 'Viernes 17 de julio', items: [
-      { label: 'Entrenamientos Libres 1 (FP1)', time: '13:30' },
-      { label: 'Entrenamientos Libres 2 (FP2)', time: '17:00' },
+    { day: 'Viernes 29 de agosto', items: [
+      { label: 'Entrenamientos Libres 1 (FP1)', time: '12:30' },
+      { label: 'Previa clasificación Sprint',   time: '16:00' },
+      { label: 'Clasificación Sprint',          time: '16:30' },
     ]},
-    { day: 'Sábado 18 de julio', items: [
-      { label: 'Entrenamientos Libres 3 (FP3)',  time: '12:30' },
-      { label: 'Previa clasificación DAZN',      time: '15:30' },
-      { label: 'Clasificación',                  time: '16:00' },
+    { day: 'Sábado 30 de agosto', items: [
+      { label: 'Previa Sprint DAZN', time: '11:00' },
+      { label: 'Sprint',             time: '12:00' },
+      { label: 'Clasificación',      time: '16:00' },
     ]},
-    { day: 'Domingo 19 de julio', items: [
+    { day: 'Domingo 31 de agosto', items: [
       { label: 'Carrera',        time: '15:00', highlight: true },
     ]},
   ],
   sessionsNote: '* Horario peninsular español',
   deadline: {
     label: 'Hora límite envío de la porra',
-    when: 'Domingo 19 de julio · 14:59',
+    when: 'Domingo 31 de agosto · 14:59',
   },
   // Para añadir al calendario del móvil (formato ISO con offset Madrid CEST = +02:00)
   event: {
-    title: 'GP Bélgica · La Porra',
-    location: 'Circuit de Spa-Francorchamps, Stavelot',
-    description: 'Carrera del GP de Bélgica. Hora límite envío de la porra: 14:59h.',
-    start: '2026-07-19T15:00:00+02:00',
-    end:   '2026-07-19T17:00:00+02:00',
-    filename: 'gp-belgica-2026.ics',
+    title: 'GP Países Bajos · La Porra',
+    location: 'Circuit Zandvoort, Países Bajos',
+    description: 'Carrera del GP de Países Bajos. Hora límite envío de la porra: 14:59h.',
+    start: '2026-08-31T15:00:00+02:00',
+    end:   '2026-08-31T17:00:00+02:00',
+    filename: 'gp-paises-bajos-2026.ics',
   },
 };
 
